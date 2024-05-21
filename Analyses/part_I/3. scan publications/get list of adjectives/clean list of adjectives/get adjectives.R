@@ -7,7 +7,7 @@ graphics.off()
 dir()
 
 
-vec_adjectices <- read.table(file = "listAdjectives_inProgress.txt", header = FALSE)
+vec_adjectices <- read.table(file = "listAdjectives.txt", header = FALSE)
 vec_adjectices <- vec_adjectices$V1
 
 library(tidyverse)
