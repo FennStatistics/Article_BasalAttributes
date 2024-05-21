@@ -1,5 +1,5 @@
 ---
-title: "Analyze textual data for part II of basal attributes article"
+title: "Analyze text data for part II of basal attributes article"
 author: "Julius Fenn"
 format:
   html:
@@ -235,21 +235,21 @@ DT::datatable(questionnaire[!is.na(questionnaire$feedback_critic),c("PROLIFIC_PI
 ```{r}
 #| label: save data for sentiment analysis
 
-setwd("03_partII_text_sentiment analysis")
+setwd("sentiment analysis")
 
 
 tmp_dat <-  questionnaire[, c("PROLIFIC_PID", "multipleEthic", "openQuestion_Ethic")]
 
 write.xlsx2(x = tmp_dat, file = "data_text.xlsx", fileEncoding = "UTF-8", row.names = FALSE)
 
-tmp_dat <-  read.xlsx2(file = "data_text_translated.xlsx", sheetIndex = 1)
-write.csv(x = tmp_dat, file = "data_text.csv")
+# tmp_dat <-  read.xlsx2(file = "data_text_translated.xlsx", sheetIndex = 1)
+# write.csv(x = tmp_dat, file = "data_text.csv")
 ```
 
 ```{r}
 #| label: predicting significant mean differences in CAMs
 
-setwd("03_partII_text_sentiment analysis")
+setwd("sentiment analysis")
 
 sentimentAnalysis <- read.csv(file = "sentiment_text.csv", header = TRUE)
 table(sentimentAnalysis$sentimentVadder)
@@ -257,6 +257,7 @@ table(sentimentAnalysis$sentimentVadder)
 networkIndicators$sentimentVadder <- sentimentAnalysis$sentimentVadder
 networkIndicators$sentimentVadder <- as.factor(networkIndicators$sentimentVadder)
 boxplot(networkIndicators$mean_valence_macro ~ networkIndicators$sentimentVadder)
+summary(aov(formula = networkIndicators$mean_valence_macro ~ networkIndicators$sentimentVadder))
 ```
 
 
@@ -351,7 +352,7 @@ tmp_dat$openQuestion_Ethic[tmp_dat$boolean_ecology == FALSE]
 
 
 
-setwd("outputs/03_partII_text")
+setwd("outputs/02_analyses_text")
 xlsx::write.xlsx2(x = tmp_dat, file = "ethicalRelevance.xlsx")
 ```
 

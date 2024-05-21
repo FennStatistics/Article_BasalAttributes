@@ -7,8 +7,5 @@
 2. [02_analyses_CAMs.qmd](https://github.com/FennStatistics/Article_BasalAttributes/blob/main/Analyses/part_II/02_analyses_CAMs.qmd) - Dynamic script written with the [Quarto framework](https://quarto.org/) containing all analyses for the Cognitive-Affective Map data (micro, meso level of networks)
     + see script published on RPubs: XXX
 2. [02_analyses_text.qmd](https://github.com/FennStatistics/Article_BasalAttributes/blob/main/Analyses/part_II/02_analyses_text.qmd) - Dynamic script written with the [Quarto framework](https://quarto.org/) containing all analyses for the open text data (ethical aspects of material systems)
-    + see script published on RPubs: XXX
+    + see script published on RPubs: https://rpubs.com/fennstat777/1187417
     + exploratory a [sentiment analysis](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_II/sentiment%20analysis) was conducted, indicating no effect of the sentiment of the given text answers to the average valence of the Cognitive-Affective Maps (not reported in the article)
-
-
-
