@@ -11,7 +11,7 @@ The methodology explored two central questions regarding emerging technologies:
  - Which clusters of basal attributes significantly predict the acceptability of future technologies?
 
 
-## Table of Contents
+## Folders
 - [Online Study Files](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Online%20Study%20Files) - Contains the studies related to the livMatS basal attributes analysis.
 - [Analyses](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses) - Contains the analyses related to the livMatS basal attributes study.
 - [Materials](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials) - Contains the specific study and analysis scripts for the livMatS basal attributes study.
