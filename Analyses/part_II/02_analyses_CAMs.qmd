@@ -79,7 +79,15 @@ if(!reticulate::py_module_available("scipy")){
 if(!reticulate::py_module_available("leidenalg")){
   py_install("leidenalg")
 }
-
+if(!reticulate::py_module_available("os")){
+  py_install("os")
+}
+if(!reticulate::py_module_available("seed")){
+  py_install("seed")
+}
+if(!reticulate::py_module_available("numpy")){
+  py_install("numpy")
+}
 ## install Python modules
 # py_install("matplotlib")
 # py_install("scipy")
@@ -501,7 +509,7 @@ np.fill_diagonal(adj_matrix, 0)
 G = ig.Graph.Adjacency(matrix=adj_matrix, mode="undirected")
 
 gamma_range = (0, 2)
-leiden_gammas = np.linspace(*gamma_range, 10 ** 5)   # 100k runs of Leiden algorithm
+leiden_gammas = np.linspace(*gamma_range, 10 ** 5) # 1   # 100k runs of Leiden algorithm
 
 seed(12345)
 partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
@@ -532,6 +540,32 @@ plt.xlabel(r"$\gamma$", fontsize=14)
 plt.ylabel("Number of communities", fontsize=14)
 plt.show()
 ```
+
+
+```{python}
+# plot gamma estimates and domains of optimality
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plot_estimates(gamma_estimates)
+plt.title(r"CHAMP Domains of Optimality and $\gamma$ Estimates", fontsize=14)
+plt.xlabel(r"$\gamma$", fontsize=14)
+plt.ylabel("Number of communities", fontsize=14)
+plt.show()
+```
+
+```{python}
+import matplotlib.pyplot as plt
+plt.title("A line")
+axis_x = range(1, 11)
+grd2 = [1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2, 10.2]
+plt.plot(axis_x, grd2, '-g', label='BR1')
+plt.savefig("test.png", format="png") # specify filetype explicitly
+plt.show()
+plt.close()
+```
+
+
+
 
 
 ### Leiden algorithm on multilayer graph with ModularityPruning (Gibson and Mucha, 2022)
