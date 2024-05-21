@@ -700,6 +700,8 @@ for(i in 1:20) {
 
 DT::datatable(multilayer_extraction_communities, options = list(pageLength = 5))
 ```
+
+
 # Macro level
 
 * Macro-level analysis looks at the network as a whole, focusing on large-scale patterns and structures.
@@ -844,8 +846,3 @@ lpa <- valenceDataShort %>% select(-CAM) %>%
                         covariances = c("zero", "equal", "zero"))
 }
 ```
-
-
-
-
-
