@@ -1,9 +1,9 @@
-# livmats-basal-attributes-analysis
+# Article basal attributes
 
 In the article we developed a methodology divided in three parts:
-- Part I: Generated a list of 32 basal attributes based on expert interviews and existing literature.
-- Part II: Laypersons cognitively and emotionally evaluated these attributes, forming clusters of semantically related basal attributes.
-- Part III: Employed ChatGPT to systematically generate text about future material systems using identified clusters. These texts were evaluated by both experts and laypersons.
+- [Part I](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_I): Generated a list of 32 basal attributes based on expert interviews and existing literature.
+- [Part II](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_II): Laypersons cognitively and emotionally evaluated these attributes, forming clusters of semantically related basal attributes.
+- [Part III](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_III): Employed ChatGPT to systematically generate text about future material systems using identified clusters. These texts were evaluated by both experts and laypersons.
 
 
 The methodology explored two central questions regarding emerging technologies:
@@ -16,4 +16,15 @@ The methodology explored two central questions regarding emerging technologies:
 - [Analyses](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses) - Contains the analyses related to the livMatS basal attributes study.
 - [Materials](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials) - Contains the specific study and analysis scripts for the livMatS basal attributes study.
 
-Please refer to the above links for more information about each folder's content.
+
+*Please refer to the above links for more information about each folder's content.*
+
+
+## License
+
+This project is licensed under the MIT License. Feel free to use, modify, and distribute the code and content in this repository, without commercial use.
+
+
+## Contact Information
+
+For any inquiries or questions, please contact Julius Fenn at [julius.fenn@psychologie.uni-freiburg.de](mailto:julius.fenn@psychologie.uni-freiburg.de).
