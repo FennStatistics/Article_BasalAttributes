@@ -367,16 +367,7 @@ graph_object <-
   graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected")
 
 
-# for(i in seq(.1, 2, by = .1)){
-#   print(i)
-#   partition <- leiden::leiden(object = graph_object, resolution_parameter = i)
-#   print(table(partition))
-# }
-
-
-# partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.27)
 partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.37)
-# partition <- leiden::leiden(object = graph_object, resolution_parameter = 1)
 
 for (i in sort(unique(partition))) {
   cat(
@@ -391,22 +382,6 @@ for (i in sort(unique(partition))) {
 
 
 node.cols <- brewer.pal(max(c(3, partition)), "Pastel1")[partition]
-# plot(graph_object, vertex.color = node.cols)
-
-
-# plot(
-#   graph_object,
-#   edge.arrow.size = 0,
-#   layout = layout_nicely,
-#   vertex.frame.color = "black",
-#   asp = .5,
-#   margin = -0.1,
-#   vertex.size = diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]])) *
-#     10,
-#   vertex.label.cex = .9,
-#   edge.weight = 2,
-#   vertex.color = node.cols
-# )
 
 
 ### colour aggregated CAM
@@ -420,11 +395,13 @@ E(g2)$weight = sapply(E(g2), function(e) {
 E(g2)$weight = E(g2)$weight * 2
 
 
-plot(g2, edge.arrow.size = 0,
+for(i in 1:5){
+  plot(g2, edge.arrow.size = 0,
      layout=layout_nicely, vertex.frame.color="black", asp = .4, margin = .1,
      vertex.size=diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]]))*5,
      vertex.label.cex = .9,
-     edge.weight=2, edge.width=(E(g2)$weight/45),   vertex.color = node.cols)
+     edge.weight=2, edge.width=(E(g2)$weight/35),   vertex.color = node.cols)
+}
 ```
 
 ### save final parition solution
@@ -467,11 +444,12 @@ saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
 
 
 ### Leiden algorithm on aggregated multi-edge graph with ModularityPruning (Gibson and Mucha, 2022)
-Community detection based on the single-layer multi-edge aggregated graph.
-Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning)
-to keep only stable and modularity-optimal solutions.
+
+Community detection based on the single-layer multi-edge aggregated graph. Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning) to keep only stable and modularity-optimal solutions.
 
 ```{python}
+#| eval: false
+
 import numpy as np
 import igraph as ig
 from modularitypruning import prune_to_stable_partitions
@@ -509,7 +487,7 @@ np.fill_diagonal(adj_matrix, 0)
 G = ig.Graph.Adjacency(matrix=adj_matrix, mode="undirected")
 
 gamma_range = (0, 2)
-leiden_gammas = np.linspace(*gamma_range, 10 ** 5) # 1   # 100k runs of Leiden algorithm
+leiden_gammas = np.linspace(*gamma_range, 10 ** 1) # 5   # 100k runs of Leiden algorithm
 
 seed(12345)
 partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
@@ -542,38 +520,13 @@ plt.show()
 ```
 
 
-```{python}
-# plot gamma estimates and domains of optimality
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plot_estimates(gamma_estimates)
-plt.title(r"CHAMP Domains of Optimality and $\gamma$ Estimates", fontsize=14)
-plt.xlabel(r"$\gamma$", fontsize=14)
-plt.ylabel("Number of communities", fontsize=14)
-plt.show()
-```
-
-```{python}
-import matplotlib.pyplot as plt
-plt.title("A line")
-axis_x = range(1, 11)
-grd2 = [1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2, 10.2]
-plt.plot(axis_x, grd2, '-g', label='BR1')
-plt.savefig("test.png", format="png") # specify filetype explicitly
-plt.show()
-plt.close()
-```
-
-
-
-
 
 ### Leiden algorithm on multilayer graph with ModularityPruning (Gibson and Mucha, 2022)
-Community detection based on a multilayer graph with participants as layers.
-Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning)
-to keep only stable and modularity-optimal solutions.
+Community detection based on a multilayer graph with participants as layers. Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning) to keep only stable and modularity-optimal solutions.
 
 ```{python}
+#| eval: false
+
 import numpy as np
 import igraph as ig
 from modularitypruning import prune_to_multilayer_stable_partitions
@@ -681,6 +634,7 @@ plt.gca().tick_params(axis='both', labelsize=12)
 plt.tight_layout()
 plt.show()
 ```
+
 
 ### MultilayerExtraction algorithm (Wilson et al., 2017)
 Community detection based on a multilayer graph with participants as layers using the MultilayerExtraction by Wilson et al., 2017 (https://github.com/jdwilson4/MultilayerExtraction).
