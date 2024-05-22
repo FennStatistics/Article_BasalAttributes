@@ -746,7 +746,7 @@ multilayer_extraction_communities <- data.frame(n_communities = seq(1:20))
 multilayer_extraction_communities[paste0("community", 1:20)] <- NA
 
 for(i in 1:20) {
-  object <- refine(multilayer_extraction_results, k = i, m = 192, n = nrow(CAMwordlist))
+  object <- refine(multilayer_extraction_results, k = i, m = length(CAMdrawn), n = nrow(CAMwordlist))
 
   for(j in 1:i) {
     multilayer_extraction_communities[i,j+1] <- paste(attributes_names[which(object$Vertices[,j] == 1)], collapse = ", ")
