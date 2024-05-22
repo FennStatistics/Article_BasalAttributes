@@ -436,11 +436,78 @@ for(i in 1:nrow(dat_out)){
 
 dat_out$words <- str_replace_all(string = dat_out$words, pattern = " {2,6}", replacement = " ")
 
+dat_out$sd_valence <- as.numeric(dat_out$sd_valence)
+dat_out$mean_valence <- round(x = dat_out$mean_valence, digits = 2) 
+
+
 ## save as .xlsx file
-xlsx::write.xlsx2(x = dat_out, file = "LeidenAlgorithm_solution.xlsx")
+xlsx::write.xlsx2(x = dat_out, file = "LeidenAlgorithm_solution.xlsx", row.names = FALSE)
 ## save as R object
 saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
+
+## add means for partitions
+
+partitions_means <- dat_out %>% 
+  group_by(parition) %>%
+  summarise(N = n(), mean = mean (mean_valence), SD = mean(sd_valence))
+
+dat_out$sd_valence <- NULL
+dat_out$group_mean <- NA
+
+partitions_means$mean <- round(x = partitions_means$mean, digits = 2) 
+partitions_means$SD <- round(x = partitions_means$SD, digits = 2) 
+
+for(i in 1:nrow(partitions_means)){
+  tmp_boolean <- dat_out$parition == i
+  tmp_boolean <- which(tmp_boolean)[length(which(tmp_boolean))]
+  dat_out$group_mean[tmp_boolean] <- paste0(partitions_means$mean[i], " (", partitions_means$SD[i], ")")
+}
+
+
+stargazer(dat_out, type = "html", summary = FALSE, rownames = FALSE, out = "tableAppendixD.html")
+
+stargazer(dat_out, type = "latex", summary = FALSE, rownames = FALSE)
 ```
+
+Compute all means for all possible tuples of the identified partitions:
+
+```{r}
+#| label: save possible hypotheses out of solution Leiden algorithm
+
+setwd("outputs/02_analyses_CAMs/Leiden algorithm aggregated CAM")
+
+
+# Generate all combinations of 2 elements
+combinations <- combn(partitions_means$parition, 2, simplify = FALSE)
+
+for(i in 1:length(combinations)){
+  
+  tmp <- data.frame(partitionA = combinations[[i]][1], 
+             partitionB = combinations[[i]][2], 
+             mean = mean(partitions_means$mean[combinations[[i]]]), 
+             wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "), 
+             wordsB = paste0(dat_out$words[dat_out$parition == combinations[[i]][2]], collapse = " \\ "))
+  
+  if(i == 1){
+    dat_out_hypotheses <- tmp
+  }else{
+    dat_out_hypotheses <- rbind(dat_out_hypotheses, tmp)
+  }
+}
+
+
+dat_out_hypotheses <- dat_out_hypotheses[order(dat_out_hypotheses$mean),]
+
+
+## save as .xlsx file
+xlsx::write.xlsx2(x = dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.xlsx", row.names = FALSE)
+## save as R object
+saveRDS(dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.rds")
+
+
+```
+
+
 
 
 ### Leiden algorithm on aggregated multi-edge graph with ModularityPruning (Gibson and Mucha, 2022)
