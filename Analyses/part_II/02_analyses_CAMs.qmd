@@ -404,6 +404,17 @@ for(i in 1:5){
 }
 ```
 
+
+```{r}
+graph_object <-
+  graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected", weighted = TRUE)
+# partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.37)
+imc <- cluster_infomap(graph_object, e.weights = E(graph_object)$weight, nb.trials = 100)
+membership(imc)
+communities(imc)
+```
+
+
 ### save final parition solution
 
 ```{r}
