@@ -145,6 +145,7 @@ data_summary <- function(data, varname, groupnames){
   return(data_sum)
 }
 ```
+
 # Describe sample
 
 ```{r}
@@ -410,8 +411,15 @@ graph_object <-
   graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected", weighted = TRUE)
 # partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.37)
 imc <- cluster_infomap(graph_object, e.weights = E(graph_object)$weight, nb.trials = 100)
+imc <- cluster_infomap(graph_object, e.weights = NULL, nb.trials = 100)
 membership(imc)
 communities(imc)
+
+edges <- as_edgelist(graph_object)
+
+for(i in edges) {
+  print(i)
+}
 ```
 
 
@@ -448,7 +456,7 @@ for(i in 1:nrow(dat_out)){
 dat_out$words <- str_replace_all(string = dat_out$words, pattern = " {2,6}", replacement = " ")
 
 dat_out$sd_valence <- as.numeric(dat_out$sd_valence)
-dat_out$mean_valence <- round(x = dat_out$mean_valence, digits = 2) 
+dat_out$mean_valence <- round(x = dat_out$mean_valence, digits = 2)
 
 
 ## save as .xlsx file
@@ -458,15 +466,15 @@ saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
 
 ## add means for partitions
 
-partitions_means <- dat_out %>% 
+partitions_means <- dat_out %>%
   group_by(parition) %>%
   summarise(N = n(), mean = mean (mean_valence), SD = mean(sd_valence))
 
 dat_out$sd_valence <- NULL
 dat_out$group_mean <- NA
 
-partitions_means$mean <- round(x = partitions_means$mean, digits = 2) 
-partitions_means$SD <- round(x = partitions_means$SD, digits = 2) 
+partitions_means$mean <- round(x = partitions_means$mean, digits = 2)
+partitions_means$SD <- round(x = partitions_means$SD, digits = 2)
 
 for(i in 1:nrow(partitions_means)){
   tmp_boolean <- dat_out$parition == i
@@ -492,13 +500,13 @@ setwd("outputs/02_analyses_CAMs/Leiden algorithm aggregated CAM")
 combinations <- combn(partitions_means$parition, 2, simplify = FALSE)
 
 for(i in 1:length(combinations)){
-  
-  tmp <- data.frame(partitionA = combinations[[i]][1], 
-             partitionB = combinations[[i]][2], 
-             mean = mean(partitions_means$mean[combinations[[i]]]), 
-             wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "), 
+
+  tmp <- data.frame(partitionA = combinations[[i]][1],
+             partitionB = combinations[[i]][2],
+             mean = mean(partitions_means$mean[combinations[[i]]]),
+             wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "),
              wordsB = paste0(dat_out$words[dat_out$parition == combinations[[i]][2]], collapse = " \\ "))
-  
+
   if(i == 1){
     dat_out_hypotheses <- tmp
   }else{
@@ -521,7 +529,7 @@ saveRDS(dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.rds")
 
 
 
-### Leiden algorithm on aggregated multi-edge graph with ModularityPruning (Gibson and Mucha, 2022)
+## Leiden algorithm on aggregated multi-edge graph with ModularityPruning (Gibson and Mucha, 2022)
 
 Community detection based on the single-layer multi-edge aggregated graph. Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning) to keep only stable and modularity-optimal solutions.
 
@@ -568,7 +576,7 @@ gamma_range = (0, 2)
 leiden_gammas = np.linspace(*gamma_range, 10 ** 1) # 5   # 100k runs of Leiden algorithm
 
 seed(12345)
-partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
+# partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
 
 # prune to the stable partitions from (gamma=0, omega=0) to (gamma=2, omega=2)
 seed(12345)
@@ -597,9 +605,59 @@ plt.ylabel("Number of communities", fontsize=14)
 plt.show()
 ```
 
+## Infomap
+
+```{python}
+import numpy as np
+import igraph as ig
+from random import seed
+
+np.set_printoptions(threshold=np.inf)
+
+with open("outputs/01_dataPreperation/final/CAMaggregated_adj_matrix.csv", "r") as f:
+    names = f.readline()
+
+names = names.split('" "')
+names[0] = names[0][1:]     # strip the first "
+names[-1] = names[-1][:-2]  # strip the last \n
+
+names = dict(enumerate(names))
+
+adj_matrix = np.loadtxt(open("outputs/01_dataPreperation/final/CAMaggregated_adj_matrix.csv", "rb"), delimiter=" ", skiprows=1)
 
 
-### Leiden algorithm on multilayer graph with ModularityPruning (Gibson and Mucha, 2022)
+# remove self-loops
+np.fill_diagonal(adj_matrix, 0)
+
+G = ig.Graph.Adjacency(matrix=adj_matrix, mode="undirected")
+edges = G.get_edgelist()
+edges_set = set(edges)
+edges_list = list(edges_set)
+edges_list = sorted(edges_list, key=lambda x: (x[0], x[1]))
+
+tuple_list = []
+
+for e in edges_list:
+    tuple_list += [(e[0], e[1], edges.count(e))]
+
+
+G_weighted = ig.Graph.TupleList(edges=tuple_list, directed=False, weights=True)
+new_list = G_weighted.get_edgelist()
+new_list = sorted(new_list, key=lambda x: (x[0], x[1]))
+new_set = set(new_list)
+
+# some sanity checks
+new_set == edges_set
+G_weighted.es["weight"] == list(map(lambda x: x[2], tuple_list))
+
+seed(12345)
+info_partition = G_weighted.community_infomap(edge_weights="weight", trials=100)
+print(info_partition)
+
+```
+
+
+## Leiden algorithm on multilayer graph with ModularityPruning (Gibson and Mucha, 2022)
 Community detection based on a multilayer graph with participants as layers. Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning) to keep only stable and modularity-optimal solutions.
 
 ```{python}
@@ -646,9 +704,14 @@ n_per_layer = 33
 # layer_vec holds the layer membership of each node
 # e.g. layer_vec[5] = 2 means that node 5 resides in layer 2 (the third layer)
 layer_vec = [i // n_per_layer for i in range(n_per_layer * num_layers)]
-interlayer_edges = [(n_per_layer * layer + v, n_per_layer * layer + v + n_per_layer)
-                    for layer in range(num_layers - 1)
-                    for v in range(n_per_layer)]
+
+# create interlayer edges non-ordered, i.e. each node is connected to the same node in all
+# other layers, not just the adjacent layers.
+interlayer_edges = []
+for node in range(n_per_layer):
+    for layer in range(num_layers):
+        for neighbor in range(layer + 1, num_layers):
+            interlayer_edges += [(layer * n_per_layer + node, neighbor * n_per_layer + node)]
 
 
 # intralayer edges: we need a list of tuples (i.e. edgelist)
@@ -671,9 +734,9 @@ G_intralayer = G_intralayer.simplify()
 
 # run Leiden on a uniform 32x32 grid (1024 samples) of gamma and omega in [0, 2]
 gamma_range = (0, 2)
-omega_range = (0, 2)
+omega_range = (0, 20)
 leiden_gammas = np.linspace(*gamma_range, 32)
-leiden_omegas = np.linspace(*omega_range, 32)
+leiden_omegas = np.linspace(*omega_range, 320)
 
 seed(12345)
 parts = repeated_parallel_leiden_from_gammas_omegas(G_intralayer, G_interlayer, layer_vec, gammas=leiden_gammas, omegas=leiden_omegas)
@@ -714,7 +777,7 @@ plt.show()
 ```
 
 
-### MultilayerExtraction algorithm (Wilson et al., 2017)
+## MultilayerExtraction algorithm (Wilson et al., 2017)
 Community detection based on a multilayer graph with participants as layers using the MultilayerExtraction by Wilson et al., 2017 (https://github.com/jdwilson4/MultilayerExtraction).
 
 ```{r}
@@ -766,7 +829,6 @@ for(i in 1:20) {
 
 DT::datatable(multilayer_extraction_communities, options = list(pageLength = 5))
 ```
-
 
 # Macro level
 
