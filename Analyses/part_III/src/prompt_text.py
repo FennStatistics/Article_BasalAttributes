@@ -25,6 +25,29 @@ Verwende dabei alle Wörter aus der folgenden Liste.>
 
     Answer: """
 
+template_partitions_OLD = """
+<Aufgabe:
+"Schreibe eine kurze Erzählung, welche eine neue Materialtechnologie in einer realen Anwendung beschreibt. 
+Die Erzählung sollte sich um ein technisches oder wissenschaftliches Projekt drehen, bei dem 
+Werbematerialien für ein neues Bau- oder Infrastrukturprojekt entwickelt werden, bei dem dieses 
+innovative Material zum Einsatz kommt. Das Projekt sollte in einem Umfeld angesiedelt sein, in dem die 
+einzigartigen Eigenschaften des Materials bestehende Probleme lösen könnten, 
+es aber möglicherweise noch zugrundeliegende Herausforderungen gibt, 
+die in den Werbematerialien nicht vollständig angesprochen werden. 
+Verwende dabei alle Wörter aus der folgenden Liste.>
+
+<Liste:
+({items_list})>
+
+<Aufgabenstellungen:
+1) Der Text muss weniger als 200 Wörter beinhalten.
+2) Schreibe neutral aus der Dritten Person.
+3) Die Anwendung muss plausibel sein.
+4) Gehe Schritt für Schritt vor. 
+5) Verwende alle Wörter, die in der Liste angegeben sind.>
+
+    Answer: """
+
 
 test_prompt_text = """
 A person is asked to describe a situation based on a few words:
