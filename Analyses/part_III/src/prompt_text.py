@@ -3,25 +3,26 @@ prompt template
 """
 
 template_partitions = """
+
+
+
 <Aufgabe:
-"Schreibe eine kurze Erzählung, welche eine neue Materialtechnologie in einer realen Anwendung beschreibt. 
-Die Erzählung sollte sich um ein technisches oder wissenschaftliches Projekt drehen, bei dem 
-Werbematerialien für ein neues Bau- oder Infrastrukturprojekt entwickelt werden, bei dem dieses 
-innovative Material zum Einsatz kommt. Das Projekt sollte in einem Umfeld angesiedelt sein, in dem die 
-einzigartigen Eigenschaften des Materials bestehende Probleme lösen könnten, 
-es aber möglicherweise noch zugrundeliegende Herausforderungen gibt, 
-die in den Werbematerialien nicht vollständig angesprochen werden. 
-Verwende dabei alle Wörter aus der folgenden Liste.>
+Entwickle eine für Laien verständliche Beschreibung eines neuen Materialsystems für den Einsatz in einem realen Bau- oder Infrastrukturprojekt. Das Projekt sollte die Eigenschaften des Materials nutzen, um bestehende Probleme effektiv zu adressieren, während es auch auf mögliche Herausforderungen und Schwierigkeiten des Materialsystems eingeht. 
+
+
+Genrell zeichnet sich das neue Materialsystem durch neuartige Eigenschaften aus, die es von herkömmlichen Materialien unterscheidet. Verwende hierzu alle Wörter aus der folgenden Liste, um die neuartigen Eigenschaften, aber auch die bestehenden Herausforderungen des Materialsystems zu beschreiben.>
 
 <Liste:
 ({items_list})>
 
 <Aufgabenstellungen:
-1) Der Text muss weniger als 200 Wörter beinhalten.
-2) Schreibe neutral aus der Dritten Person.
-3) Die Anwendung muss plausibel sein.
-4) Gehe Schritt für Schritt vor. 
-5) Verwende alle Wörter, die in der Liste angegeben sind.>
+1) Der Text muss weniger als 150 Wörter beinhalten.
+2) Schreibe neutral aus der Dritten Person und beziehe dich auf das konkrete Projekt.
+3) Achte bei der Verwendung der Wörter darauf, nicht Wörter mit unterschiedlichen emotionalen Konnotationen zu vermischen.
+4) Das Projekt muss konkret und plausibel sein.
+5) Beginne mit einem einleitenden kurzen Satz, der das Projekt beschreibt.
+6) Gehe Schritt für Schritt vor. 
+7) Verwende alle Wörter, die in der Liste angegeben sind.>
 
     Answer: """
 
