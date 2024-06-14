@@ -4,3 +4,6 @@ rsconnect/
 .env
 
 __pycache__/
+
+
+api_key.py
