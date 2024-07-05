@@ -1,7 +1,7 @@
 def print_partition(partition, partitions, names, parameter_estimates, type="singlelayer"):
     if type == "singlelayer":
         part_index = 2
-        gamma_index = 2
+        gamma_index = -1
     else:
         part_index = -3
         gamma_index = -2
