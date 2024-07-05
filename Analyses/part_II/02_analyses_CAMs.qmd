@@ -18,7 +18,7 @@ format:
 #| label: global variables
 
 ### Macro level
-runLPA = FALSE # takes quite long
+runLPA <- FALSE # takes quite long
 ```
 
 
@@ -39,13 +39,15 @@ In graph theory and network analysis, the terms "micro," "meso" and "macro" refe
 
 ### load packages
 require(pacman)
-p_load('tidyverse', 'jsonlite', 'magrittr', 'xlsx',
-       'stargazer', 'psych', 'jtools', 'DT', 'ggstatsplot',
-       'lavaan',
-       'regsem', 'MplusAutomation', 'igraph', 'shiny', 'ggplot2', 'tidyLPA', 'MultilayerExtraction',
-       'Matrix', 'igraph', 'foreach', 'doParallel', 'parallel', 'R.matlab',
-       'reticulate',
-       'RColorBrewer')
+p_load(
+    "tidyverse", "jsonlite", "magrittr", "xlsx",
+    "stargazer", "psych", "jtools", "DT", "ggstatsplot",
+    "lavaan",
+    "regsem", "MplusAutomation", "igraph", "shiny", "ggplot2", "tidyLPA", "MultilayerExtraction",
+    "Matrix", "igraph", "foreach", "doParallel", "parallel", "R.matlab",
+    "reticulate",
+    "RColorBrewer"
+)
 
 # To install MultilayerExtraction (https://github.com/jdwilson4/MultilayerExtraction):
 # install.packages("devtools")
@@ -64,29 +66,29 @@ library(MultilayerExtraction, quietly = TRUE)
 
 
 
-if(!reticulate::py_module_available("igraph")){
-  py_install("igraph") # pip install python-igraph
+if (!reticulate::py_module_available("igraph")) {
+    py_install("igraph") # pip install python-igraph
 }
-if(!reticulate::py_module_available("modularitypruning")){
-  py_install("modularitypruning") # pip install modularitypruning
+if (!reticulate::py_module_available("modularitypruning")) {
+    py_install("modularitypruning") # pip install modularitypruning
 }
-if(!reticulate::py_module_available("matplotlib")){
-  py_install("matplotlib")
+if (!reticulate::py_module_available("matplotlib")) {
+    py_install("matplotlib")
 }
-if(!reticulate::py_module_available("scipy")){
-  py_install("scipy")
+if (!reticulate::py_module_available("scipy")) {
+    py_install("scipy")
 }
-if(!reticulate::py_module_available("leidenalg")){
-  py_install("leidenalg")
+if (!reticulate::py_module_available("leidenalg")) {
+    py_install("leidenalg")
 }
-if(!reticulate::py_module_available("os")){
-  py_install("os")
+if (!reticulate::py_module_available("os")) {
+    py_install("os")
 }
-if(!reticulate::py_module_available("seed")){
-  py_install("seed")
+if (!reticulate::py_module_available("seed")) {
+    py_install("seed")
 }
-if(!reticulate::py_module_available("numpy")){
-  py_install("numpy")
+if (!reticulate::py_module_available("numpy")) {
+    py_install("numpy")
 }
 ## install Python modules
 # py_install("matplotlib")
@@ -117,32 +119,36 @@ CAMwordlist$mean_degree <- as.numeric(CAMwordlist$mean_degree)
 ### load functions
 # print(getwd())
 setwd("../../../functions")
-for(i in 1:length(dir())){
-  # print(dir()[i])
-  source(dir()[i], encoding = "utf-8")
+for (i in 1:length(dir())) {
+    # print(dir()[i])
+    source(dir()[i], encoding = "utf-8")
 }
 
 
 setwd("../functions_CAMapp")
-for(i in 1:length(dir())){
-  # print(dir()[i])
-  source(dir()[i], encoding = "utf-8")
+for (i in 1:length(dir())) {
+    # print(dir()[i])
+    source(dir()[i], encoding = "utf-8")
 }
 rm(i)
 
 
 
 ### summary function
-data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
-      se = sd(x[[col]], na.rm=TRUE) / sqrt(length(x[[col]])))
-  }
-  data_sum<-ddply(data, groupnames, .fun=summary_func,
-                  varname)
-  data_sum <- plyr::rename(data_sum, c("mean" = varname))
-  return(data_sum)
+data_summary <- function(data, varname, groupnames) {
+    require(plyr)
+    summary_func <- function(x, col) {
+        c(
+            mean = mean(x[[col]], na.rm = TRUE),
+            se = sd(x[[col]], na.rm = TRUE) / sqrt(length(x[[col]]))
+        )
+    }
+    data_sum <- ddply(data, groupnames,
+        .fun = summary_func,
+        varname
+    )
+    data_sum <- plyr::rename(data_sum, c("mean" = varname))
+    return(data_sum)
 }
 ```
 
@@ -178,9 +184,11 @@ Check distributions of
 valenceData <- CAMfiles[[1]]
 valenceData$value[valenceData$value == 10] <- 0
 valenceData$text <-
-  str_replace_all(string = valenceData$text,
-                  pattern = "  ",
-                  replacement = " ")
+    str_replace_all(
+        string = valenceData$text,
+        pattern = "  ",
+        replacement = " "
+    )
 
 tmp_names <- sort(unique(valenceData$text))
 length(tmp_names)
@@ -192,47 +200,55 @@ hist2_names <- tmp_names[17:length(tmp_names)]
 
 # adjust aesthetics of ggplot
 ggplot_theme <- theme(
-  axis.title.x = element_blank(),
-  axis.title.y = element_text(size = 12),
-  axis.text.x = element_text(
-    size = 10,
-    hjust = 0.5,
-    vjust = 0.5,
-    face = "plain",
-    colour = "black"
-  ),
-  axis.text.y = element_text(
-    size = 12,
-    face = "plain",
-    colour = "black"
-  ),
-  panel.border = element_blank(),
-  axis.line = element_line(colour = "black"),
-  panel.grid.major = element_blank(),
-  panel.grid.minor = element_blank(),
-  panel.background = element_blank()
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(size = 12),
+    axis.text.x = element_text(
+        size = 10,
+        hjust = 0.5,
+        vjust = 0.5,
+        face = "plain",
+        colour = "black"
+    ),
+    axis.text.y = element_text(
+        size = 12,
+        face = "plain",
+        colour = "black"
+    ),
+    panel.border = element_blank(),
+    axis.line = element_line(colour = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank()
 )
 
 ### plot average valence
 #> histograms sorted by mean valence
 hist1_names_mean <-
-  CAMwordlist[order(CAMwordlist$mean_valence, decreasing = TRUE), "Words"][1:16]
+    CAMwordlist[order(CAMwordlist$mean_valence, decreasing = TRUE), "Words"][1:16]
 hist2_names_mean <-
-  CAMwordlist[order(CAMwordlist$mean_valence, decreasing = TRUE), "Words"][17:33]
+    CAMwordlist[order(CAMwordlist$mean_valence, decreasing = TRUE), "Words"][17:33]
 
-valenceData %>% filter(text %in% hist1_names_mean) %>%
-  ggplot(aes(x = value)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist1_names_mean),
-              ncol = 4,
-              nrow = 4) +
-  ggtitle("Sorted by avg. valence (first)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist1_names_mean) %>%
+    ggplot(aes(x = value)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist1_names_mean),
+        ncol = 4,
+        nrow = 4
+    ) +
+    ggtitle("Sorted by avg. valence (first)") +
+    ggplot_theme
 
-valenceData %>% filter(text %in% hist2_names_mean) %>%
-  ggplot(aes(x = value)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist2_names_mean),
-              ncol = 4,
-              nrow = 5) +
-  ggtitle("Sorted by avg. valence (second)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist2_names_mean) %>%
+    ggplot(aes(x = value)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist2_names_mean),
+        ncol = 4,
+        nrow = 5
+    ) +
+    ggtitle("Sorted by avg. valence (second)") +
+    ggplot_theme
 
 
 ### create data for mean degree, transitivity
@@ -240,21 +256,23 @@ valenceData$degree <- NA
 valenceData$transitivity <- NA
 
 for (i in unique(valenceData$participantCAM)) {
-  tmp_deg <- igraph::degree(graph = CAMdrawn[[i]], mode = "total")
-  tmp_transitivity <-
-    igraph::transitivity(graph = as.undirected(CAMdrawn[[i]]),
-                         type = "local")
+    tmp_deg <- igraph::degree(graph = CAMdrawn[[i]], mode = "total")
+    tmp_transitivity <-
+        igraph::transitivity(
+            graph = as.undirected(CAMdrawn[[i]]),
+            type = "local"
+        )
 
-  counter = 1
+    counter <- 1
 
-  for (n in V(CAMdrawn[[i]])$name) {
-    valenceData[valenceData$participantCAM %in% i &
-                  valenceData$id == n, "degree"] <- tmp_deg[counter]
-    valenceData[valenceData$participantCAM %in% i &
-                  valenceData$id == n, "transitivity"] <-
-      tmp_transitivity[counter]
-    counter = counter + 1
-  }
+    for (n in V(CAMdrawn[[i]])$name) {
+        valenceData[valenceData$participantCAM %in% i &
+            valenceData$id == n, "degree"] <- tmp_deg[counter]
+        valenceData[valenceData$participantCAM %in% i &
+            valenceData$id == n, "transitivity"] <-
+            tmp_transitivity[counter]
+        counter <- counter + 1
+    }
 }
 
 
@@ -262,25 +280,33 @@ for (i in unique(valenceData$participantCAM)) {
 ### plot average degree
 #> histograms sorted by mean degree
 hist1_names_degree <-
-  CAMwordlist[order(CAMwordlist$mean_degree, decreasing = TRUE), "Words"][1:16]
+    CAMwordlist[order(CAMwordlist$mean_degree, decreasing = TRUE), "Words"][1:16]
 hist2_names_degree <-
-  CAMwordlist[order(CAMwordlist$mean_degree, decreasing = TRUE), "Words"][17:33]
+    CAMwordlist[order(CAMwordlist$mean_degree, decreasing = TRUE), "Words"][17:33]
 
 
-valenceData %>% filter(text %in% hist1_names_degree) %>%
-  ggplot(aes(x = degree)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist1_names_degree),
-              ncol = 4,
-              nrow = 4) +
-  ggtitle("Sorted by avg. degree (first)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist1_names_degree) %>%
+    ggplot(aes(x = degree)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist1_names_degree),
+        ncol = 4,
+        nrow = 4
+    ) +
+    ggtitle("Sorted by avg. degree (first)") +
+    ggplot_theme
 
 
-valenceData %>% filter(text %in% hist2_names_degree) %>%
-  ggplot(aes(x = degree)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist2_names_degree),
-              ncol = 4,
-              nrow = 5) +
-  ggtitle("Sorted by avg. degree (second)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist2_names_degree) %>%
+    ggplot(aes(x = degree)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist2_names_degree),
+        ncol = 4,
+        nrow = 5
+    ) +
+    ggtitle("Sorted by avg. degree (second)") +
+    ggplot_theme
 
 
 
@@ -289,32 +315,40 @@ valenceData %>% filter(text %in% hist2_names_degree) %>%
 #> ! interpret carefully
 CAMwordlist$mean_transitivity <- NA
 
-for(i in 1:nrow(CAMwordlist)){
-  CAMwordlist$mean_transitivity[i] <- mean(x = valenceData$transitivity[valenceData$text == CAMwordlist$Words[i]], na.rm = TRUE)
+for (i in 1:nrow(CAMwordlist)) {
+    CAMwordlist$mean_transitivity[i] <- mean(x = valenceData$transitivity[valenceData$text == CAMwordlist$Words[i]], na.rm = TRUE)
 }
 
 
 hist1_names_transitivity <-
-  CAMwordlist[order(CAMwordlist$mean_transitivity, decreasing = TRUE), "Words"][1:16]
+    CAMwordlist[order(CAMwordlist$mean_transitivity, decreasing = TRUE), "Words"][1:16]
 hist2_names_transitivity <-
-  CAMwordlist[order(CAMwordlist$mean_transitivity, decreasing = TRUE), "Words"][17:33]
+    CAMwordlist[order(CAMwordlist$mean_transitivity, decreasing = TRUE), "Words"][17:33]
 
 
 
-valenceData %>% filter(text %in% hist1_names_transitivity) %>%
-  ggplot(aes(x = transitivity)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist1_names_transitivity),
-              ncol = 4,
-              nrow = 4) +
-  ggtitle("Sorted by avg. local clustering coefficient (first)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist1_names_transitivity) %>%
+    ggplot(aes(x = transitivity)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist1_names_transitivity),
+        ncol = 4,
+        nrow = 4
+    ) +
+    ggtitle("Sorted by avg. local clustering coefficient (first)") +
+    ggplot_theme
 
 
-valenceData %>% filter(text %in% hist2_names_transitivity) %>%
-  ggplot(aes(x = transitivity)) + geom_histogram() +
-  facet_wrap( ~ factor(text, levels = hist2_names_transitivity),
-              ncol = 4,
-              nrow = 5) +
-  ggtitle("Sorted by avg. local clustering coefficient (second)") + ggplot_theme
+valenceData %>%
+    filter(text %in% hist2_names_transitivity) %>%
+    ggplot(aes(x = transitivity)) +
+    geom_histogram() +
+    facet_wrap(~ factor(text, levels = hist2_names_transitivity),
+        ncol = 4,
+        nrow = 5
+    ) +
+    ggtitle("Sorted by avg. local clustering coefficient (second)") +
+    ggplot_theme
 ```
 
 ## check bimodal pattern of local clustering coefficient
@@ -326,12 +360,16 @@ tmp_transitivity_0 <- valenceData$participantCAM[valenceData$text == "Insekten Ã
 tmp_transitivity_1 <- valenceData$participantCAM[valenceData$text == "Insekten Ã¤hnlich" & valenceData$transitivity == 1 & !is.na(valenceData$transitivity)]
 
 
-plot(CAMdrawn[[tmp_transitivity_0[1]]], edge.arrow.size = .7,
-     layout=layout_nicely, vertex.frame.color="black", asp = .5, margin = -0.1,
-     vertex.size = 10, vertex.label.cex = .9)
-plot(CAMdrawn[[tmp_transitivity_1[1]]], edge.arrow.size = .7,
-     layout=layout_nicely, vertex.frame.color="black", asp = .5, margin = -0.1,
-     vertex.size = 10, vertex.label.cex = .9)
+plot(CAMdrawn[[tmp_transitivity_0[1]]],
+    edge.arrow.size = .7,
+    layout = layout_nicely, vertex.frame.color = "black", asp = .5, margin = -0.1,
+    vertex.size = 10, vertex.label.cex = .9
+)
+plot(CAMdrawn[[tmp_transitivity_1[1]]],
+    edge.arrow.size = .7,
+    layout = layout_nicely, vertex.frame.color = "black", asp = .5, margin = -0.1,
+    vertex.size = 10, vertex.label.cex = .9
+)
 ```
 
 
@@ -365,19 +403,19 @@ adjacency_matrix <- CAMaggregated[[1]]
 
 diag(adjacency_matrix) <- 0
 graph_object <-
-  graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected")
+    graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected")
 
 
 partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.37)
 
 for (i in sort(unique(partition))) {
-  cat(
-    "\nfor partion",
-    i,
-    "the following words have been found:\n",
-    rownames(adjacency_matrix)[partition == i],
-    "\n"
-  )
+    cat(
+        "\nfor partion",
+        i,
+        "the following words have been found:\n",
+        rownames(adjacency_matrix)[partition == i],
+        "\n"
+    )
 }
 
 
@@ -386,29 +424,32 @@ node.cols <- brewer.pal(max(c(3, partition)), "Pastel1")[partition]
 
 
 ### colour aggregated CAM
-g = CAMaggregated[[2]]
-g2 = simplify(CAMaggregated[[2]])
+g <- CAMaggregated[[2]]
+g2 <- simplify(CAMaggregated[[2]])
 # plot(g2, edge.arrow.size=0.01,
 #      vertex.size=diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]]))*20)
 
-E(g2)$weight = sapply(E(g2), function(e) {
-  length(all_shortest_paths(g, from=ends(g2, e)[1], to=ends(g2, e)[2])$res) } )
-E(g2)$weight = E(g2)$weight * 2
+E(g2)$weight <- sapply(E(g2), function(e) {
+    length(all_shortest_paths(g, from = ends(g2, e)[1], to = ends(g2, e)[2])$res)
+})
+E(g2)$weight <- E(g2)$weight * 2
 
 
-for(i in 1:5){
-  plot(g2, edge.arrow.size = 0,
-     layout=layout_nicely, vertex.frame.color="black", asp = .4, margin = .1,
-     vertex.size=diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]]))*5,
-     vertex.label.cex = .9,
-     edge.weight=2, edge.width=(E(g2)$weight/35),   vertex.color = node.cols)
+for (i in 1:5) {
+    plot(g2,
+        edge.arrow.size = 0,
+        layout = layout_nicely, vertex.frame.color = "black", asp = .4, margin = .1,
+        vertex.size = diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]])) * 5,
+        vertex.label.cex = .9,
+        edge.weight = 2, edge.width = (E(g2)$weight / 35), vertex.color = node.cols
+    )
 }
 ```
 
 
 ```{r}
 graph_object <-
-  graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected", weighted = TRUE)
+    graph_from_adjacency_matrix(adjacency_matrix, mode = "undirected", weighted = TRUE)
 # partition <- leiden::leiden(object = graph_object, resolution_parameter = 1.37)
 imc <- cluster_infomap(graph_object, e.weights = E(graph_object)$weight, nb.trials = 100)
 imc <- cluster_infomap(graph_object, e.weights = NULL, nb.trials = 100)
@@ -417,8 +458,8 @@ communities(imc)
 
 edges <- as_edgelist(graph_object)
 
-for(i in edges) {
-  print(i)
+for (i in edges) {
+    print(i)
 }
 ```
 
@@ -432,25 +473,27 @@ setwd("outputs/02_analyses_CAMs/Leiden algorithm aggregated CAM")
 
 
 
-h = 1
+h <- 1
 for (i in sort(unique(partition))) {
-  if(h == 1){
-    dat_out <- data.frame(parition = i, words = rownames(adjacency_matrix)[partition == i])
-  }else{
-    dat_out <- rbind(dat_out,
-                     data.frame(parition = i, words = rownames(adjacency_matrix)[partition == i]))
-  }
+    if (h == 1) {
+        dat_out <- data.frame(partition = i, words = rownames(adjacency_matrix)[partition == i])
+    } else {
+        dat_out <- rbind(
+            dat_out,
+            data.frame(partition = i, words = rownames(adjacency_matrix)[partition == i])
+        )
+    }
 
-  h = h + 1
+    h <- h + 1
 }
 
 
 
 dat_out$mean_valence <- NA
 dat_out$sd_valence <- NA
-for(i in 1:nrow(dat_out)){
-  dat_out$mean_valence[i] <- CAMwordlist$mean_valence[CAMwordlist$Words == dat_out$words[i]]
-  dat_out$sd_valence[i] <- CAMwordlist$sd_valence[CAMwordlist$Words == dat_out$words[i]]
+for (i in 1:nrow(dat_out)) {
+    dat_out$mean_valence[i] <- CAMwordlist$mean_valence[CAMwordlist$Words == dat_out$words[i]]
+    dat_out$sd_valence[i] <- CAMwordlist$sd_valence[CAMwordlist$Words == dat_out$words[i]]
 }
 
 dat_out$words <- str_replace_all(string = dat_out$words, pattern = " {2,6}", replacement = " ")
@@ -467,8 +510,8 @@ saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
 ## add means for partitions
 
 partitions_means <- dat_out %>%
-  group_by(parition) %>%
-  summarise(N = n(), mean = mean (mean_valence), SD = mean(sd_valence))
+    group_by(parition) %>%
+    summarise(N = n(), mean = mean(mean_valence), SD = mean(sd_valence))
 
 dat_out$sd_valence <- NULL
 dat_out$group_mean <- NA
@@ -476,10 +519,10 @@ dat_out$group_mean <- NA
 partitions_means$mean <- round(x = partitions_means$mean, digits = 2)
 partitions_means$SD <- round(x = partitions_means$SD, digits = 2)
 
-for(i in 1:nrow(partitions_means)){
-  tmp_boolean <- dat_out$parition == i
-  tmp_boolean <- which(tmp_boolean)[length(which(tmp_boolean))]
-  dat_out$group_mean[tmp_boolean] <- paste0(partitions_means$mean[i], " (", partitions_means$SD[i], ")")
+for (i in 1:nrow(partitions_means)) {
+    tmp_boolean <- dat_out$parition == i
+    tmp_boolean <- which(tmp_boolean)[length(which(tmp_boolean))]
+    dat_out$group_mean[tmp_boolean] <- paste0(partitions_means$mean[i], " (", partitions_means$SD[i], ")")
 }
 
 
@@ -499,23 +542,24 @@ setwd("outputs/02_analyses_CAMs/Leiden algorithm aggregated CAM")
 # Generate all combinations of 2 elements
 combinations <- combn(partitions_means$parition, 2, simplify = FALSE)
 
-for(i in 1:length(combinations)){
+for (i in 1:length(combinations)) {
+    tmp <- data.frame(
+        partitionA = combinations[[i]][1],
+        partitionB = combinations[[i]][2],
+        mean = mean(partitions_means$mean[combinations[[i]]]),
+        wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "),
+        wordsB = paste0(dat_out$words[dat_out$parition == combinations[[i]][2]], collapse = " \\ ")
+    )
 
-  tmp <- data.frame(partitionA = combinations[[i]][1],
-             partitionB = combinations[[i]][2],
-             mean = mean(partitions_means$mean[combinations[[i]]]),
-             wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "),
-             wordsB = paste0(dat_out$words[dat_out$parition == combinations[[i]][2]], collapse = " \\ "))
-
-  if(i == 1){
-    dat_out_hypotheses <- tmp
-  }else{
-    dat_out_hypotheses <- rbind(dat_out_hypotheses, tmp)
-  }
+    if (i == 1) {
+        dat_out_hypotheses <- tmp
+    } else {
+        dat_out_hypotheses <- rbind(dat_out_hypotheses, tmp)
+    }
 }
 
 
-dat_out_hypotheses <- dat_out_hypotheses[order(dat_out_hypotheses$mean),]
+dat_out_hypotheses <- dat_out_hypotheses[order(dat_out_hypotheses$mean), ]
 
 
 ## save as .xlsx file
@@ -534,7 +578,7 @@ saveRDS(dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.rds")
 Community detection based on the single-layer multi-edge aggregated graph. Partitions are then pruned with ModularityPruning (http://github.com/ragibson/ModularityPruning) to keep only stable and modularity-optimal solutions.
 
 ```{python}
-#| eval: false
+#| eval: true
 
 import numpy as np
 import igraph as ig
@@ -573,13 +617,15 @@ np.fill_diagonal(adj_matrix, 0)
 G = ig.Graph.Adjacency(matrix=adj_matrix, mode="undirected")
 
 gamma_range = (0, 2)
-leiden_gammas = np.linspace(*gamma_range, 10 ** 1) # 5   # 100k runs of Leiden algorithm
+leiden_gammas = np.linspace(*gamma_range, 10 ** 5)    # 100k runs of Leiden algorithm
 
 seed(12345)
-# partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
+np.random.seed(12345)
+partitions = repeated_parallel_leiden_from_gammas(G, leiden_gammas)
 
 # prune to the stable partitions from (gamma=0, omega=0) to (gamma=2, omega=2)
 seed(12345)
+np.random.seed(12345)
 stable_parts = prune_to_stable_partitions(G, partitions, *gamma_range)
 
 # run CHAMP to obtain the dominant partitions along with their regions of optimality
@@ -819,12 +865,12 @@ plot(multilayer_extraction_results, main = "Diagnostic Plot")
 multilayer_extraction_communities <- data.frame(n_communities = seq(1:20))
 multilayer_extraction_communities[paste0("community", 1:20)] <- NA
 
-for(i in 1:20) {
-  object <- refine(multilayer_extraction_results, k = i, m = length(CAMdrawn), n = nrow(CAMwordlist))
+for (i in 1:20) {
+    object <- refine(multilayer_extraction_results, k = i, m = length(CAMdrawn), n = nrow(CAMwordlist))
 
-  for(j in 1:i) {
-    multilayer_extraction_communities[i,j+1] <- paste(attributes_names[which(object$Vertices[,j] == 1)], collapse = ", ")
-  }
+    for (j in 1:i) {
+        multilayer_extraction_communities[i, j + 1] <- paste(attributes_names[which(object$Vertices[, j] == 1)], collapse = ", ")
+    }
 }
 
 DT::datatable(multilayer_extraction_communities, options = list(pageLength = 5))
@@ -839,14 +885,15 @@ DT::datatable(multilayer_extraction_communities, options = list(pageLength = 5))
 ```{r}
 #| label: aggregate CAMs
 
-g = CAMaggregated[[2]]
-g2 = simplify(CAMaggregated[[2]])
+g <- CAMaggregated[[2]]
+g2 <- simplify(CAMaggregated[[2]])
 # plot(g2, edge.arrow.size=0.01,
 #      vertex.size=diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]]))*20)
 
-E(g2)$weight = sapply(E(g2), function(e) {
-  length(all_shortest_paths(g, from=ends(g2, e)[1], to=ends(g2, e)[2])$res) } )
-E(g2)$weight = E(g2)$weight * 2
+E(g2)$weight <- sapply(E(g2), function(e) {
+    length(all_shortest_paths(g, from = ends(g2, e)[1], to = ends(g2, e)[2])$res)
+})
+E(g2)$weight <- E(g2)$weight * 2
 # E(g2)$weight[E(g2)$weight == 1] <- NA
 
 V(g2)$color[V(g2)$value <= .5 & V(g2)$value >= -.5] <- "yellow"
@@ -857,12 +904,14 @@ V(g2)$shape <- ifelse(test = V(g2)$color == "yellow", yes = "square", no = "circ
 
 
 ### > plot multiple times because of random layout
-for(i in 1:3){
-  plot(g2, edge.arrow.size = 0,
-     layout=layout_nicely, vertex.frame.color="black", asp = .5, margin = -0.1,
-     vertex.size=diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]]))*5,
-     vertex.label.cex = .9,
-     edge.weight=2, edge.width=(E(g2)$weight/45))
+for (i in 1:3) {
+    plot(g2,
+        edge.arrow.size = 0,
+        layout = layout_nicely, vertex.frame.color = "black", asp = .5, margin = -0.1,
+        vertex.size = diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]])) * 5,
+        vertex.label.cex = .9,
+        edge.weight = 2, edge.width = (E(g2)$weight / 45)
+    )
 }
 ```
 
@@ -880,50 +929,50 @@ hc_dat <- data.frame(CAM = unique(CAMfiles[[1]]$CAM), participantCAM = unique(CA
 
 ### create data set
 ## word vars
-for(w in unique(CAMfiles[[1]]$text)){
-  varName_w <- str_remove_all(string = str_to_title(string = w, locale = "en"), pattern = " |\\W+")
+for (w in unique(CAMfiles[[1]]$text)) {
+    varName_w <- str_remove_all(string = str_to_title(string = w, locale = "en"), pattern = " |\\W+")
 
-  hc_dat[[paste0("N_", varName_w)]] <- NA
-  hc_dat[[paste0("mean_", varName_w)]] <- NA
-  hc_dat[[paste0("SD_", varName_w)]] <- NA
+    hc_dat[[paste0("N_", varName_w)]] <- NA
+    hc_dat[[paste0("mean_", varName_w)]] <- NA
+    hc_dat[[paste0("SD_", varName_w)]] <- NA
 }
 
 
 ## get N, mean, sd of single summarized concepts
-verbose = FALSE
+verbose <- FALSE
 
-for(c in unique(CAMfiles[[1]]$CAM)){
-  if(verbose){
-      cat("considered CAM: ", c, "\n")
-  }
-  tmp_CAM_nodes <- CAMfiles[[1]][CAMfiles[[1]]$CAM == c, ]
-  tmp_CAM_nodes$value <- ifelse(test = tmp_CAM_nodes$value == 10, yes = 0, no = tmp_CAM_nodes$value)
-
-  for(w in unique(CAMfiles[[1]]$text)){
-      if(verbose){
-    cat("considered concept: ", w, "\n")
-      }
-
-    varName_w <- str_remove_all(string = str_to_title(string = w, locale = "en"), pattern = " |\\W+")
-          if(verbose){
-    cat("   > the freqeuncy, mean, SD are saved with the prefix N_, mean_, SD_ plus
-      word without white spaces: ", varName_w, "\n")
-          }
-
-    if(sum(tmp_CAM_nodes$text == w) > 0){
-      tmp_CAM_nodes_w <- tmp_CAM_nodes[tmp_CAM_nodes$text == w, ]
-
-      ## add N
-      hc_dat[hc_dat$CAM == c, paste0("N_", varName_w)] <- nrow(tmp_CAM_nodes_w)
-      ## add mean
-      hc_dat[hc_dat$CAM == c, paste0("mean_", varName_w)] <- mean(x = tmp_CAM_nodes_w$value)
-      ## add SD, only if > 1
-      hc_dat[hc_dat$CAM == c, paste0("SD_", varName_w)] <- sd(x = tmp_CAM_nodes_w$value)
+for (c in unique(CAMfiles[[1]]$CAM)) {
+    if (verbose) {
+        cat("considered CAM: ", c, "\n")
     }
-  }
-        if(verbose){
-  cat("\n")
+    tmp_CAM_nodes <- CAMfiles[[1]][CAMfiles[[1]]$CAM == c, ]
+    tmp_CAM_nodes$value <- ifelse(test = tmp_CAM_nodes$value == 10, yes = 0, no = tmp_CAM_nodes$value)
+
+    for (w in unique(CAMfiles[[1]]$text)) {
+        if (verbose) {
+            cat("considered concept: ", w, "\n")
         }
+
+        varName_w <- str_remove_all(string = str_to_title(string = w, locale = "en"), pattern = " |\\W+")
+        if (verbose) {
+            cat("   > the freqeuncy, mean, SD are saved with the prefix N_, mean_, SD_ plus
+      word without white spaces: ", varName_w, "\n")
+        }
+
+        if (sum(tmp_CAM_nodes$text == w) > 0) {
+            tmp_CAM_nodes_w <- tmp_CAM_nodes[tmp_CAM_nodes$text == w, ]
+
+            ## add N
+            hc_dat[hc_dat$CAM == c, paste0("N_", varName_w)] <- nrow(tmp_CAM_nodes_w)
+            ## add mean
+            hc_dat[hc_dat$CAM == c, paste0("mean_", varName_w)] <- mean(x = tmp_CAM_nodes_w$value)
+            ## add SD, only if > 1
+            hc_dat[hc_dat$CAM == c, paste0("SD_", varName_w)] <- sd(x = tmp_CAM_nodes_w$value)
+        }
+    }
+    if (verbose) {
+        cat("\n")
+    }
 }
 
 
@@ -945,15 +994,14 @@ set_cutOff <- 25
 
 plot(hc_cluster)
 abline(h = set_cutOff, col = "red", lty = 2)
-rect.hclust(hc_cluster, h=set_cutOff, border = "tomato")
+rect.hclust(hc_cluster, h = set_cutOff, border = "tomato")
 
-groups <- cutree(hc_cluster, h=set_cutOff)
+groups <- cutree(hc_cluster, h = set_cutOff)
 # groupsOut <- names(table(groups))[table(groups) >= 2]
 
 table(groups)
-aggregate(hc_df, by=list(cluster=groups), mean, na.rm = TRUE)
+aggregate(hc_df, by = list(cluster = groups), mean, na.rm = TRUE)
 ```
-
 
 
 
@@ -963,14 +1011,19 @@ aggregate(hc_df, by=list(cluster=groups), mean, na.rm = TRUE)
 ```{r}
 #| label: latent profile analysis
 
-if(runLPA){
-  valenceDataShort <-
-  valenceData %>% pivot_wider(names_from = text,
-                              values_from = value,
-                              id_cols = CAM) # equal to hc_df
+if (runLPA) {
+    valenceDataShort <-
+        valenceData %>% pivot_wider(
+            names_from = text,
+            values_from = value,
+            id_cols = CAM
+        ) # equal to hc_df
 
-lpa <- valenceDataShort %>% select(-CAM) %>%
- estimate_profiles(1:9, variances = c("equal", "equal", "varying"),
-                        covariances = c("zero", "equal", "zero"))
+    lpa <- valenceDataShort %>%
+        select(-CAM) %>%
+        estimate_profiles(1:9,
+            variances = c("equal", "equal", "varying"),
+            covariances = c("zero", "equal", "zero")
+        )
 }
 ```
