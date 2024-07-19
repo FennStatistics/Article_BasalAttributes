@@ -9,4 +9,5 @@
     + Experts had the opportunity to propose additional attributes relevant to their distinct research areas.
 3. [Scan publications](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_I/3.%20scan%20publications) - Automated scans of existing livMatS publications were conducted to extract relevant adjectives to augment the attribute list; contains two steps:
     + get titles of all current livMatS publications from https://www.livmats.uni-freiburg.de/en/publications
-    + download all articles, identify articles containing word "demonstrator", copy abstracts, extract adjectives from abstracts
+    + download all articles, identify articles containing word "demonstrator", copy abstracts, extract adjectives from abstracts by applying standardized part-of-speech tags from the open-source library for Natural Language Processing spaCy (Python)
+        + final result of the cleaned (like removing duplicates) extracted adjectives can be found in "clean list of adjectives.xlsx"
