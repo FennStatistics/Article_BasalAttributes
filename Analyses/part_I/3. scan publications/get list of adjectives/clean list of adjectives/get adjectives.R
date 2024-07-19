@@ -25,14 +25,37 @@ for(i in 1:length(vec_adjectices)){
 
 
 vec_adjectices_adjusted <- tolower(vec_adjectices_adjusted)
-vec_adjectices_adjusted <- unique(vec_adjectices_adjusted)
 vec_adjectices_adjusted <- sort(vec_adjectices_adjusted)
 
+## manual adjustements
+vec_adjectices_adjusted[vec_adjectices_adjusted == "diﬀerent"] <- "different"
+vec_adjectices_adjusted[vec_adjectices_adjusted == "electric"] <- "electronic"
+
+# Create a table of frequencies
+word_freq <- table(vec_adjectices_adjusted)
+
+# Convert the table to a data frame
+df <- as.data.frame(word_freq)
+
+# Rename the columns
+names(df) <- c("word", "frequency")
+
+# Order the data frame by frequency
+df <- df[order(df$frequency, decreasing = TRUE), ]
+
+# Display the data frame
+df
 
 
+
+xlsx::write.xlsx2(x = df, file = "listAdjectives_articles.xlsx")
+
+
+## check for duplicates
 library(stringdist)
 
 
+vec_adjectices_adjusted <- unique(vec_adjectices_adjusted)
 
 for(i in 1:length(vec_adjectices_adjusted)){
   if(nchar(vec_adjectices_adjusted[i]) >= 6){
@@ -44,10 +67,3 @@ for(i in 1:length(vec_adjectices_adjusted)){
     }
   }
 }
-
-
-
-vec_adjectices_adjusted[vec_adjectices_adjusted == "diﬀerent"] <- "different"
-
-
-xlsx::write.xlsx2(x = vec_adjectices_adjusted, file = "listAdjectives_articles.xlsx")
