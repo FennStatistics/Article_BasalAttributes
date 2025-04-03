@@ -39,15 +39,21 @@ In graph theory and network analysis, the terms "micro," "meso" and "macro" refe
 
 ### load packages
 require(pacman)
+
+# if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+# BiocManager::install(version = "3.20")
+
+
 p_load(
-    "tidyverse", "jsonlite", "magrittr", "xlsx",
+    "tidyverse", "jsonlite", "magrittr", "readxl", "writexl",
     "stargazer", "psych", "jtools", "DT", "ggstatsplot",
     "lavaan",
-    "regsem", "MplusAutomation", "igraph", "shiny", "ggplot2", "tidyLPA", "MultilayerExtraction",
+    "MplusAutomation", "igraph", "shiny", "ggplot2", "tidyLPA",
     "Matrix", "igraph", "foreach", "doParallel", "parallel", "R.matlab",
     "reticulate",
-    "RColorBrewer"
-)
+    "RColorBrewer",
+    "leiden"
+) # regsem
 
 # To install MultilayerExtraction (https://github.com/jdwilson4/MultilayerExtraction):
 # install.packages("devtools")
@@ -55,7 +61,6 @@ p_load(
 #
 # #install and load MultilayerExtraction
 # devtools::install_github('jdwilson4/multilayer_extraction')
-#
 library(MultilayerExtraction, quietly = TRUE)
 
 
@@ -110,7 +115,8 @@ CAMaggregated <- readRDS(file = "CAMaggregated.rds")
 
 networkIndicators <- readRDS(file = "networkIndicators.rds")
 
-CAMwordlist <- xlsx::read.xlsx2(file = "CAMwordlist.xlsx", sheetIndex = 1)
+CAMwordlist <- readxl::read_excel(path = "CAMwordlist.xlsx", sheet = 1)
+CAMwordlist <- as.data.frame(CAMwordlist) 
 CAMwordlist$mean_valence <- as.numeric(CAMwordlist$mean_valence)
 CAMwordlist$mean_degree <- as.numeric(CAMwordlist$mean_degree)
 # CAMwordlist$mean_transitivity <- as.numeric(CAMwordlist$mean_transitivity)
@@ -150,6 +156,15 @@ data_summary <- function(data, varname, groupnames) {
     data_sum <- plyr::rename(data_sum, c("mean" = varname))
     return(data_sum)
 }
+
+### load list of translation of basal attributes
+setwd("../data final list basal attributes")
+listBasalAttributes <- readxl::read_excel(path = "final list basal attributes.xlsx", sheet = 1)
+listBasalAttributes <- as.data.frame(listBasalAttributes)
+colnames(listBasalAttributes)[1:3] <- c("Basal.Attribute", "Explenation", "German.Translation") 
+listBasalAttributes$German.Translation[listBasalAttributes$German.Translation == "bio-inspiriert"] <- "bioinspiriert"
+listBasalAttributes$German.Translation[listBasalAttributes$German.Translation == "Energie generierend"] <- "Energie   generierend"
+listBasalAttributes$German.Translation[listBasalAttributes$German.Translation == "Energie speichernd"] <- "Energie   speichernd"
 ```
 
 # Describe sample
@@ -435,15 +450,42 @@ E(g2)$weight <- sapply(E(g2), function(e) {
 E(g2)$weight <- E(g2)$weight * 2
 
 
+
+### translate aggregated CAM
+# Save the original names to use for matching
+original_names <- V(g2)$name
+
+# Create a named vector for translation
+name_translation <- setNames(listBasalAttributes$Basal.Attribute, listBasalAttributes$German.Translation)
+
+# Apply the translation while preserving vertex structure
+V(g2)$name <- ifelse(original_names %in% names(name_translation),
+                     name_translation[original_names],
+                     original_names)
+
+# Optionally set a readable label for plotting
+V(g2)$label <- V(g2)$name
+
+# Specific override for one label
+V(g2)$label[V(g2)$name == "Akzeptanz eines neuen Materialsystems"] <- "Acceptance of a new material system"
+
+
+
 for (i in 1:5) {
     plot(g2,
         edge.arrow.size = 0,
-        layout = layout_nicely, vertex.frame.color = "black", asp = .4, margin = .1,
+        layout = layout_nicely, 
+        vertex.frame.color = "black", 
+        asp = 0.4, 
+        margin = 0.1,
         vertex.size = diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]])) * 5,
-        vertex.label.cex = .9,
-        edge.weight = 2, edge.width = (E(g2)$weight / 35), vertex.color = node.cols
+        vertex.label.cex = 1.2, 
+        edge.weight = 2, 
+        edge.width = (E(g2)$weight / 35), 
+        vertex.color = node.cols
     )
 }
+
 ```
 
 
@@ -503,7 +545,8 @@ dat_out$mean_valence <- round(x = dat_out$mean_valence, digits = 2)
 
 
 ## save as .xlsx file
-xlsx::write.xlsx2(x = dat_out, file = "LeidenAlgorithm_solution.xlsx", row.names = FALSE)
+writexl::write_xlsx(x = dat_out, path = "LeidenAlgorithm_solution.xlsx")
+# xlsx::write.xlsx2(x = dat_out, file = "LeidenAlgorithm_solution.xlsx", row.names = FALSE)
 ## save as R object
 saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
 
@@ -563,7 +606,8 @@ dat_out_hypotheses <- dat_out_hypotheses[order(dat_out_hypotheses$mean), ]
 
 
 ## save as .xlsx file
-xlsx::write.xlsx2(x = dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.xlsx", row.names = FALSE)
+writexl::write_xlsx(x = dat_out_hypotheses, path = "LeidenAlgorithm_hypotheses.xlsx")
+# xlsx::write.xlsx2(x = dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.xlsx", row.names = FALSE)
 ## save as R object
 saveRDS(dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.rds")
 
