@@ -6,5 +6,6 @@ Contains all materials, which were shown / used directly in the article (like gr
 - [part II - saved CAMs](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/savedCAMs_article) - shown CAMs in "Appendix B. Part II: Motivate CAMs, Details of the Task"
 
 
+## Additional Materials
 
-- [summar of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/savedCAMs_article) - summary of study design for coauthors
+- [summar of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Summary%20of%20article) - summary of study design for coauthors
