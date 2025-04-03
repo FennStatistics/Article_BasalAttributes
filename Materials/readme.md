@@ -8,4 +8,4 @@ Contains all materials, which were shown / used directly in the article (like gr
 
 ## Additional Materials
 
-- [summar of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Summary%20of%20article) - summary of study design for coauthors
+- [summary of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Summary%20of%20article) - summary of study design for coauthors
