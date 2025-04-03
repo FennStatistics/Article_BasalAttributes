@@ -1,8 +1,8 @@
 # Article basal attributes
 
-In the article we developed a methodology divided in three parts:
+In the article we developed a methodology divided in three parts, whereby the following links are referencing to the analyses folders:
 - [Part I](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_I): Generated a list of 32 basal attributes based on expert interviews and existing literature.
-- [Part II](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_II): Laypersons cognitively and emotionally evaluated these attributes, forming clusters of semantically related basal attributes using our recently developed [Cognitive-Affective Map Tools](https://github.com/Camel-app).
+- [Part II](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_II): Laypersons cognitively and emotionally evaluated these attributes, forming clusters of semantically related basal attributes using our recently developed [Cognitive-Affective Map Tools](https://drawyourminds.de).
 - [Part III](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses/part_III): Employed [meta-llama/Meta-Llama-3-70B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-70B-Instruct) to systematically generate text about future material systems using identified clusters. These texts were evaluated by both experts and laypersons.
 
 
@@ -12,9 +12,9 @@ The methodology explored two central questions regarding emerging technologies:
 
 
 ## Folders
-- [Online Study Files](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Online%20Study%20Files) - Contains the studies related to the livMatS basal attributes analysis.
-- [Analyses](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses) - Contains the analyses related to the livMatS basal attributes study.
-- [Materials](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials) - Contains the specific study and analysis scripts for the livMatS basal attributes study.
+- [Online Study Files](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Online%20Study%20Files) - Contains the online study files, which were set up using [lab.js](https://lab.js.org/).
+- [Analyses](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses) - Contains the analyses files seperated for the different parts.
+- [Materials](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials) - Contains supplementary materials (manually created figures, figures to "zoom in").
 
 
 *Please refer to the above links for more information about each folder's content.*
@@ -22,9 +22,8 @@ The methodology explored two central questions regarding emerging technologies:
 
 ## License
 
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code and content in this repository, without commercial use.
-
+This project is licensed under the GNU General Public License.
 
 ## Contact Information
 
-For any inquiries or questions, please contact Julius Fenn at [julius.fenn@psychologie.uni-freiburg.de](mailto:julius.fenn@psychologie.uni-freiburg.de).
+For any inquiries or questions regarding this repository, please contact Julius Fenn ([julius.fenn@psychologie.uni-freiburg.de](mailto:julius.fenn@psychologie.uni-freiburg.de)).
