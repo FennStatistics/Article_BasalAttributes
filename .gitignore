@@ -3,10 +3,9 @@ rsconnect/
 # environment variables
 .env
 
+# remove pycache files
 __pycache__/
+**/__pycache__
 
-
+# remove api key files
 api_key.py
-
-
-demonstrator_demonstrators_PS.xlsx
