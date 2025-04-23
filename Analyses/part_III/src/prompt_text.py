@@ -2,79 +2,34 @@
 prompt template
 """
 
-template_partitions = """
+from langchain_core.prompts import ChatPromptTemplate
 
-
-
+system_template = """
 <Aufgabe:
-Entwickle eine für Laien verständliche Beschreibung eines neuen Materialsystems für den Einsatz in einem realen Bau- oder Infrastrukturprojekt. Das Projekt sollte die Eigenschaften des Materials nutzen, um bestehende Probleme effektiv zu adressieren, während es auch auf mögliche Herausforderungen und Schwierigkeiten des Materialsystems eingeht. 
+Entwickle eine für Laien verständliche, aber wissenschaftlich fundierte Beschreibung eines neuartigen Jackensystems namens Nano-Pat-Parka. 
+Ziel ist es, anhand sogenannter basaler Attribute – also grundlegender, semantisch und emotional bewerteter Merkmale neuer Technologien – die möglichen Vorteile und Herausforderungen dieser Technologie zu verdeutlichen.
 
+Basale Attribute sind adjektivische Eigenschaften (z. B. „autonom“, „wartungsintensiv“, „bioinspiriert“), die typischerweise verwendet werden, um neue technologische Systeme zu beschreiben. 
+Sie dienen der kognitiven und affektiven Bewertung und ermöglichen eine strukturierte Beschreibung technischer Systeme auf einer allgemeinen Ebene – unabhängig von konkreten Details.
 
-Genrell zeichnet sich das neue Materialsystem durch neuartige Eigenschaften aus, die es von herkömmlichen Materialien unterscheidet. Verwende hierzu alle Wörter aus der folgenden Liste, um die neuartigen Eigenschaften, aber auch die bestehenden Herausforderungen des Materialsystems zu beschreiben.>
-
-<Liste:
-({items_list})>
+Die Beschreibung des Nano-Pat-Parka soll sich mehrheitliich auf diese basalen Attribute stützen, ohne große Ausführungen zu konkreten technischen Funktionen oder mechanistischen Erklärungen. 
+Das Jackensystem soll funktional generisch beschrieben werden – als Technologie, die auf zukünftige Anforderungen im Bereich Schutzkleidung reagiert.>
 
 <Aufgabenstellungen:
-1) Der Text muss weniger als 150 Wörter beinhalten.
-2) Schreibe neutral aus der Dritten Person und beziehe dich auf das konkrete Projekt.
-3) Achte bei der Verwendung der Wörter darauf, nicht Wörter mit unterschiedlichen emotionalen Konnotationen zu vermischen.
-4) Das Projekt muss konkret und plausibel sein.
-5) Beginne mit einem einleitenden kurzen Satz, der das Projekt beschreibt.
-6) Gehe Schritt für Schritt vor. 
-7) Verwende alle Wörter, die in der Liste angegeben sind.>
+1) ***Der Text MUSS zwischen 60 und 80 Wörter enthalten.*** Weniger als 60 Wörter sind nicht zulässig. Kontrolliere dieses bevor du den Text absendest.
+2) Schreibe sachlich, neutral und aus der dritten Person.
+3) Achte darauf, keine basalen Attribute mit stark gegensätzlicher emotionaler Valenz zu vermischen.
+4) Die Beschreibung muss wissenschaftlich plausibel und begrifflich konsistent sein.
+5) Beginne mit einem einleitenden Satz, der den Anwendungsbereich der Technologie allgemein beschreibt.
+6) Verwende ALLE Wörter, die in der Liste angegeben sind.
+7) Schreibe einen abschließenden Satz, der die Technologie zusammenfasst.>
+"""
 
-    Answer: """
-
-template_partitions_OLD = """
-<Aufgabe:
-"Schreibe eine kurze Erzählung, welche eine neue Materialtechnologie in einer realen Anwendung beschreibt. 
-Die Erzählung sollte sich um ein technisches oder wissenschaftliches Projekt drehen, bei dem 
-Werbematerialien für ein neues Bau- oder Infrastrukturprojekt entwickelt werden, bei dem dieses 
-innovative Material zum Einsatz kommt. Das Projekt sollte in einem Umfeld angesiedelt sein, in dem die 
-einzigartigen Eigenschaften des Materials bestehende Probleme lösen könnten, 
-es aber möglicherweise noch zugrundeliegende Herausforderungen gibt, 
-die in den Werbematerialien nicht vollständig angesprochen werden. 
-Verwende dabei alle Wörter aus der folgenden Liste.>
-
-<Liste:
+user_template = """
+<Liste der zu verwendenden basalen Attribute: 
 ({items_list})>
-
-<Aufgabenstellungen:
-1) Der Text muss weniger als 200 Wörter beinhalten.
-2) Schreibe neutral aus der Dritten Person.
-3) Die Anwendung muss plausibel sein.
-4) Gehe Schritt für Schritt vor. 
-5) Verwende alle Wörter, die in der Liste angegeben sind.>
-
-    Answer: """
-
-
-test_prompt_text = """
-A person is asked to describe a situation based on a few words:
 """
 
-desired_ouput_neg = """
-Dave Smith is developing an advertisement for a new housing development his firm is about to start. 
-The development is located in a low area which has flooded in the past. 
-The company has recently done some work to reduce the danger of flooding in the future. 
-In the preliminary advertisement, Smith has included a statement indicating that the firm has solved the flooding problem. 
-The fact is that if a flood occurs, the homes are still likely to have up to a foot of water standing in the yards.
-"""
-
-desired_ouput_pos = """
-Dave Smith is developing an advertisement for a new housing development his firm is launching soon. 
-Located in an area prone to flooding in the past, the company has undertaken significant improvements to mitigate this risk. 
-In the preliminary advertisement, Smith highlights the firm's commitment to enhancing flood defenses. 
-While acknowledging that extreme weather could still bring water into the yards, the firm has effectively minimized the potential 
-for home damage, ensuring the development is safer and more resilient than ever before.
-"""
-
-task = """
-"Imagine a scenario where a construction company is developing a new housing complex using a revolutionary but untested material system. 
-The material is known to be 'wartungsintensiv' (maintenance-intensive), has an uncertain 'Akzeptanz eines neuen Materialsystems' 
-(acceptance of a new material system), and is 'leicht zerstörbar' (easily destructible). 
-
-Write a short story related to this new material system.
-Imagine you are 'Dave Smith', a marketing manager at the construction company.
-"""
+prompt_template = ChatPromptTemplate.from_messages(
+    [("system", system_template), ("user", user_template)]
+)
