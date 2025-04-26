@@ -417,12 +417,28 @@ const basalAttributes = new lab.flow.Loop({
   templateParameters: [
     {
         "Vignette": "1",
-        "Text": "Das Nano-Pat-Parka-System zielt auf zukünftige Anforderungen an Schutzkleidung durch eine Kombination bioinspirierter und lebensähnlicher Eigenschaften. Die Technologie nutzt insektenähnliche Mikrostrukturen, um atmungsaktive Flexibilität mit Schutzfunktionen zu verbinden. Trotz des Einsatzes von Kunststoffkomponenten ist das Material leicht zerstörbar und erfordert dadurch eine wartungsintensive Pflege. Kritisch bleibt die potenziell umweltschädliche Produktion synthetischer Nanopartikel. Insgesamt vereint die Innovation natürliche Vorbilder mit technischer Anpassungsfähigkeit, steht jedoch vor ökologischen und praktischen Zielkonflikten.",
+        "Text": "<p>Die Nano-Pat-Parka stellt ein neuartiges Jackensystem dar, das bioinspirierte und lebensähnliche Eigenschaften mit modernen Schutzfunktionen verbindet. Ihre Insekten ähnliche Oberflächenstruktur ermöglicht flexibles Anpassungsverhalten, während der Kunststoff enthaltende, leicht zerstörbare Membranaufbau eine minimale Materialbelastung verspricht. Trotz lebensähnlicher Selbstorganisationsprozesse zeigt die Technologie wartungsintensive Pflegeanforderungen und umweltschädliche Nebenwirkungen bei der Zersetzung.<br><br>Diese Kombination aus biologischer Nachbildung und technischer Fragilität verdeutlicht das Potenzial bioinspirierter Ansätze – sowie ihre Grenzen in puncto Nachhaltigkeit und Alltagstauglichkeit.</p>",
     },
     {
       "Vignette": "2",
-      "Text": "aaaaaaa",
+      "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem für zukünftige Schutzkleidung dar, das energieautonom und Energie generierend durch integrierte Nanotechnologie agiert. Sie kombiniert energieeffiziente Regelmechanismen mit Energie speichernden Materialien, um autarke Funktionalität zu gewährleisten. Trotz ihrer Hightech-Eigenschaften enthält sie Kunststoff-basierte Komponenten, die leicht zerstörbar sind und bei unsachgemäßer Entsorgung umweltschädlich wirken können. Zudem erweist sich das System als wartungsintensiv, da regelmäßige Kontrollen der Sensoren notwendig sind.<br><br>Diese Technologie vereint somit fortschrittliche Energieautarkie mit ökologischen und praktischen Zielkonflikten.</p>",
   },
+  {
+    "Vignette": "3",
+    "Text": "<p>Der Nano-Pat-Parka ist ein technologisches Jackensystem, das zukünftige Anforderungen an adaptive Schutzkleidung adressiert. Die intelligente, bioinspirierte Technologie kombiniert aktive und passive Formänderung durch Umwelteinwirkung, etwa durch lebensähnliche Anpassungen an Temperatur oder Feuchtigkeit. Ihre Insekten ähnliche Struktur ermöglicht multifunktionale Reaktionsfähigkeit: autonom gesteuerte Verhaltensänderungen ergänzen passive Schutzmechanismen. Gleichzeitig bleibt das System durch minimale Wartung robust.<br><br>Diese Symbiose aus technologischer Präzision und natürlicher Anpassungsfähigkeit definiert den Nano-Pat-Parka als vielseitige, umweltresponsive Innovation.</p>",
+},
+{
+  "Vignette": "4",
+  "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem dar, das zukünftige Anforderungen an Schutzkleidung durch adaptive Eigenschaften adressiert. Als intelligente, multifunktionale und technologisch fortschrittliche Lösung kombiniert sie aktive und passive Formänderung durch Umwelteinwirkung mit reaktionsfähigen Verhaltensanpassungen. Durch energieeffiziente, energieautonome Mechanismen ermöglicht sie Energie speicherndes und Energie generierendes Verhalten, um autonom auf Umgebungsbedingungen zu reagieren. Gleichzeitig bleibt sie durch passive Verhaltensänderung durch Umwelteinwirkung materialbasiert anpassungsfähig.<br><br>Dies verbindet robusten Schutz mit dynamischer Funktionalität, wodurch die Technologie als vielseitige Antwort auf komplexe Schutzbedürfnisse positioniert wird.</p>",
+},
+{
+  "Vignette": "5",
+  "Text": "<p>Die Nano-Pat-Parka stellt ein technologisch fortschrittliches Jackensystem dar, das durch passive Formänderung durch Umwelteinwirkung und aktive Verhaltensänderung durch Umwelteinwirkung auf Umgebungsbedingungen reagiert. Als intelligente, autonome Lösung vereint sie multifunktionale Anpassungsfähigkeit mit wartungsfreier Zuverlässigkeit. Die selbstheilende und selbstreparierende Materialstruktur gewährleistet robuste Widerstandsfähigkeit bei gleichzeitiger langlebiger Haltbarkeit.<br><br>Durch die Kombination reaktionsfähiger Eigenschaften mit passiver Verhaltensänderung durch Umwelteinwirkung definiert sie einen neuen Standard für widerstandsfähige, dauerhafte Schutzkleidung der Zukunft.</p>",
+},
+{
+  "Vignette": "6",
+  "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem dar, das zukünftige Anforderungen an Nachhaltigkeit adressiert. Die zuverlässige, wartungsfreie und elektronikfreie Technologie kombiniert selbstheilende Materialien mit widerstandsfähigen Oberflächen, die robust gegen Umwelteinflüsse sind. Durch selbstreparierende Eigenschaften bleibt die Jacke haltbar und langlebig, während ökologische Aspekte wie nachhaltige Produktion und umweltfreundliche Rohstoffe im Fokus stehen.<br><br>Dies verbindet Funktionalität mit ressourcenschonender Innovation.</p>",
+},
 ],
   sample: {
     mode: "draw-shuffle",
@@ -739,9 +755,6 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Download()
   ],
   content: [
-    EndingScreen_htmlScreen,
-
-
     // >>> introduction phase
     Greetings_htmlForm,
     InformCon_htmlForm,
