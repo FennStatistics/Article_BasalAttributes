@@ -190,7 +190,22 @@ const ExplenationRatingTask_htmlForm = new lab.html.Form({
 ################### rating basal attributes ###################
 */
 const template = new lab.html.Form({
-  content: '<section style="font-size: 24px; border: 1px dashed black; padding: 10px; width: 80%; margin: 10px auto; text-align: center;">${ parameters.Text }</section>' + `
+  content: `<form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+<p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+Haben Sie Feedback oder Kritik zu dieser Seite?
+</p>
+<p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+Inhaltlich, Rechtschreibung, Layout, etc.
+</p>
+<textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+<hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+</form>
+` + 
+  '<section style="font-size: 24px; border: 1px dashed black; padding: 10px; width: 80%; margin: 10px auto; text-align: center;">${ parameters.Text }</section>' + `
 <!-- Relevancy Rating -->
 <div class="page-item page-item-likert" style="margin-left:20%; margin-right: 20%">
     <!-- Start of Likert Questions -->
@@ -460,69 +475,31 @@ const TransitionToScales_htmlForm = new lab.html.Form({
   },
 });
 
-// >>> Blue Dot Task - check random clicking
-var valueAttention = undefined;
 
-const BlueDotTask_htmlForm = new lab.html.Form({
-  title: "BlueDotTask",
 
-  content: textObj.BlueDotTask,
-  messageHandlers: {
-    run: function anonymous() {
-      $(document).ready(function () {
-        $(".scale-button").click(function () {
-          valueAttention = 0;
-        });
-
-        $("#blueDot").click(function () {
-          valueAttention = 1;
-        });
-      });
-    },
-    commit: () => {
-      study.options.datastore.set("attCheck", valueAttention);
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-
-      if (typeof jatos.jQuery === "function") {
-        // If JATOS is available, send data there
-        var resultJson = study.options.datastore.exportJson();
-        console.log("result data sent to JATOS");
-        jatos
-          .submitResultData(resultJson)
-          .then(() => console.log("success"))
-          .catch(() => console.log("error"));
-      }
-    },
-  },
-});
-
-// >>> Perceived Causes of Obesity Questionnaires
-const PerceivedCausesofObesity_Scale_htmlForm = new lab.html.Page({
-  title: "PerceivedCausesofObesity",
+/* HEXACO */
+const LikertHEXACO_htmlForm = new lab.html.Page({
+  title: "HEXACO",
   items: [
     {
       required: Required_Testing,
       type: "likert",
-      items: items_CausesOfObesity,
+      items: items_HEXACO,
       width: "5",
       anchors: [
-        "not at all important",
-        "somewhat important",
-        "moderately important",
-        "very important",
-        "extremely important",
+        "stimme überhaupt nicht zu",
+        "stimme nicht zu",
+        "neutral (weder Zustimmung noch Ablehnung)",
+        "stimme zu",
+        "stimme vollkommen zu",
       ],
-      label:
-        "Below are some factors that may influence health and weight. Please read each one carefully and rate how important you think it is in contributing to health and weight issues.",
-      help: "Even if you're unsure, please choose the option that best reflects your opinion for each factor.",
+    label:"Im Folgenden finden Sie eine Reihe von Aussagen über <b>Ihre Person</b>. Bitte lesen Sie jede Aussage sorgfältig und entscheiden Sie, inwieweit Sie dieser zustimmen oder nicht zustimmen.",
+    help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
       shuffle: false,
-      name: "PerceivedCausesofObesity",
+      name: "HEXACO",
     },
   ],
-  submitButtonText: "Continue →",
+  submitButtonText: "Weiter →",
   submitButtonPosition: "right",
   width: "l",
   messageHandlers: {
@@ -531,13 +508,13 @@ const PerceivedCausesofObesity_Scale_htmlForm = new lab.html.Page({
       document.querySelectorAll("div")[0].classList = ["text-left"];
       document.querySelectorAll("main")[1].classList = ["w-xl"];
       document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 30%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
+      <col style=\"width: 40%\">
+      <col style=\"width: 12%\">
+      <col style=\"width: 12%\">
+      <col style=\"width: 12%\">
+      <col style=\"width: 12%\">
+      <col style=\"width: 12%\">
+      `;
       // sticky labels to front
       $("thead").first().css("z-index", "20");
       // collect paradata
@@ -550,7 +527,7 @@ const PerceivedCausesofObesity_Scale_htmlForm = new lab.html.Page({
       });
     },
     end: function anonymous() {
-      // collect paradata: number of clicks
+      // collect paradata
       let numberitems = document.querySelectorAll("tbody tr").length;
       paracountclicks -= numberitems;
       study.options.datastore.set("para_countclicks", paracountclicks);
@@ -564,31 +541,33 @@ const PerceivedCausesofObesity_Scale_htmlForm = new lab.html.Page({
   },
 });
 
-// >>> Beliefs About Obese Persons Scale
-const BeliefsAboutObesePersons_Scale_htmlForm = new lab.html.Page({
-  title: "BeliefsAboutObesePersons",
+
+
+
+/* Affinity for Technology Interaction Scale */
+const LikertATI_htmlForm = new lab.html.Page({
+  title: "ATI",
   items: [
     {
       required: Required_Testing,
       type: "likert",
-      items: items_BeliefsAboutObesePersons,
+      items: items_ATI,
       width: "6",
       anchors: [
-        "I strongly disagree",
-        "I moderately disagree",
-        "I<br>slightly disagree",
-        "I slightly agree",
-        "I moderately agree",
-        "I strongly agree",
+        "stimmt gar nicht",
+        "stimmt weitgehend nicht",
+        "stimmt eher nicht",
+        "stimmt eher",
+        "stimmt weitgehend",
+        "stimmt völlig",
       ],
-      label:
-        "Please read the following statements and indicate the extent to which you agree with each statement.",
-      help: "Please answer each statement, even if you're not entirely sure what your answer should be.",
+    label:"Im Folgenden geht es um Ihre Interaktion mit technischen Systemen. Mit 'technischen Systemen' sind sowohl Apps und andere Software-Anwendungen als auch komplette digitale Geräte (z.B. Handy, Computer, Fernseher, Auto-Navigation) gemeint. Bitte geben Sie den Grad Ihrer Zustimmung zu folgenden Aussagen an.",
+    help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
       shuffle: false,
-      name: "BeliefsAboutObesePersons",
+      name: "ATI",
     },
   ],
-  submitButtonText: "Continue →",
+  submitButtonText: "Weiter →",
   submitButtonPosition: "right",
   width: "l",
   messageHandlers: {
@@ -597,17 +576,16 @@ const BeliefsAboutObesePersons_Scale_htmlForm = new lab.html.Page({
       document.querySelectorAll("div")[0].classList = ["text-left"];
       document.querySelectorAll("main")[1].classList = ["w-xl"];
       document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 50%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
+      <col style="width: 40%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+      <col style="width: 10%">
+    `;
       // sticky labels to front
       $("thead").first().css("z-index", "20");
-
       // collect paradata
       paracountclicks = 0;
       document.querySelectorAll("input").forEach((item) => {
@@ -618,7 +596,7 @@ const BeliefsAboutObesePersons_Scale_htmlForm = new lab.html.Page({
       });
     },
     end: function anonymous() {
-      // collect paradata: number of clicks
+      // collect paradata
       let numberitems = document.querySelectorAll("tbody tr").length;
       paracountclicks -= numberitems;
       study.options.datastore.set("para_countclicks", paracountclicks);
@@ -632,452 +610,14 @@ const BeliefsAboutObesePersons_Scale_htmlForm = new lab.html.Page({
   },
 });
 
-// >>> Attitude Towards Obese People Scale
-const AttitudeTowardsObesePeople_Scale_1_htmlForm = new lab.html.Page({
-  title: "AttitudeTowardsObesePeople_1",
-  items: [
-    {
-      required: Required_Testing,
-      type: "likert",
-      items: items_AttitudeTowardsObesePeople.slice(0, 10),
-      width: "6",
-      anchors: [
-        "I strongly disagree",
-        "I moderately disagree",
-        "I<br>slightly disagree",
-        "I slightly agree",
-        "I moderately agree",
-        "I strongly agree",
-      ],
-      label:
-        "Please read the following statements and indicate the extent to which you agree with each statement.",
-      help: "Please answer each statement, even if you're not entirely sure what your answer should be.",
-      shuffle: false,
-      name: "AttitudeTowardsObesePeople",
-    },
-  ],
-  submitButtonText: "Continue →",
-  submitButtonPosition: "right",
-  width: "l",
-  messageHandlers: {
-    run: function anonymous() {
-      // adjust size of scale
-      document.querySelectorAll("div")[0].classList = ["text-left"];
-      document.querySelectorAll("main")[1].classList = ["w-xl"];
-      document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 50%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
-      // sticky labels to front
-      $("thead").first().css("z-index", "20");
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-    },
-    end: function anonymous() {
-      // collect paradata: number of clicks
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-    },
-    commit: function anonymous() {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-const AttitudeTowardsObesePeople_Scale_2_htmlForm = new lab.html.Page({
-  title: "AttitudeTowardsObesePeople_2",
-  items: [
-    {
-      required: Required_Testing,
-      type: "likert",
-      items: items_AttitudeTowardsObesePeople.slice(10, 20),
-      width: "6",
-      anchors: [
-        "I strongly disagree",
-        "I moderately disagree",
-        "I<br>slightly disagree",
-        "I slightly agree",
-        "I moderately agree",
-        "I strongly agree",
-      ],
-      label:
-        "Please read the following statements and indicate the extent to which you agree with each statement.",
-      help: "Please answer each statement, even if you're not entirely sure what your answer should be.",
-      shuffle: false,
-      name: "AttitudeTowardsObesePeople",
-    },
-  ],
-  submitButtonText: "Continue →",
-  submitButtonPosition: "right",
-  width: "l",
-  messageHandlers: {
-    run: function anonymous() {
-      // adjust size of scale
-      document.querySelectorAll("div")[0].classList = ["text-left"];
-      document.querySelectorAll("main")[1].classList = ["w-xl"];
-      document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 50%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
-      // sticky labels to front
-      $("thead").first().css("z-index", "20");
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-    },
-    end: function anonymous() {
-      // collect paradata: number of clicks
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-    },
-    commit: function anonymous() {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-const Sequence_AttitudeTowardsObesePeopleScale = new lab.flow.Sequence({
-  title: "Sequence Attitude Towards Obese People Scale",
-  shuffle: false,
-  content: [
-    AttitudeTowardsObesePeople_Scale_1_htmlForm,
-    AttitudeTowardsObesePeople_Scale_2_htmlForm,
-  ],
-});
-
-// >>> Subscale Germ Aversion
-const GermAversion_Subscale_htmlForm = new lab.html.Page({
-  title: "GermAversion",
-  items: [
-    {
-      required: Required_Testing,
-      type: "likert",
-      items: items_GermAversion,
-      width: "7",
-      anchors: [
-        "I strongly disagree",
-        "I moderately disagree",
-        "I<br>slightly disagree",
-        "neutral",
-        "I slightly agree",
-        "I moderately agree",
-        "I strongly agree",
-      ],
-      label:
-        "Please read the following statements and indicate the extent to which you agree with each statement.",
-      help: "Please answer each statement, even if you're not entirely sure what your answer should be.",
-      shuffle: false,
-      name: "GermAversion",
-    },
-  ],
-  submitButtonText: "Continue →",
-  submitButtonPosition: "right",
-  width: "l",
-  messageHandlers: {
-    run: function anonymous() {
-      // adjust size of scale
-      document.querySelectorAll("div")[0].classList = ["text-left"];
-      document.querySelectorAll("main")[1].classList = ["w-xl"];
-      document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 43%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
-      // sticky labels to front
-      $("thead").first().css("z-index", "20");
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-    },
-    end: function anonymous() {
-      // collect paradata: number of clicks
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-    },
-    commit: function anonymous() {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-// >>> Subscale Pathogen Disgust
-const PathogenDisgust_Subscale_htmlForm = new lab.html.Page({
-  title: "PathogenDisgust",
-  items: [
-    {
-      required: Required_Testing,
-      type: "likert",
-      items: items_PathogenDisgust,
-      width: "7",
-      anchors: [
-        "Not at all disgusting",
-        "Slightly disgusting",
-        "Somewhat disgusting",
-        "Moderately disgusting",
-        "Very disgusting",
-        "Highly disgusting",
-        "Extremely disgusting",
-      ],
-      label:
-        "Read each situation below and think about how disgusting it feels to you. Then choose the option that best matches your feelings.",
-      help: "Please answer every question, even if you're unsure or don’t have strong feelings about a particular situation.",
-      shuffle: false,
-      name: "PathogenDisgust",
-    },
-  ],
-  submitButtonText: "Continue →",
-  submitButtonPosition: "right",
-  width: "l",
-  messageHandlers: {
-    run: function anonymous() {
-      // adjust size of scale
-      document.querySelectorAll("div")[0].classList = ["text-left"];
-      document.querySelectorAll("main")[1].classList = ["w-xxl"];
-      document.querySelectorAll(".page-item-table colgroup")[0].innerHTML = `
-     <col style=\"width: 43%\">
-     <col style=\"width: 7%\">
-     <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-      <col style=\"width: 7%\">
-     `;
-      // sticky labels to front
-      $("thead").first().css("z-index", "20");
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-    },
-    end: function anonymous() {
-      // collect paradata: number of clicks
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-    },
-    commit: function anonymous() {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-// >>> Fat Phobia Scale Scale (adjective pairs describing obese or fat people)
-const AdjectivePairsObeseScale_1 = new lab.html.Form({
-  title: "AdjectivePairsObeseScale_1",
-  content: textObj.AdjectivePairsObeseScale, // FirstQuesComponentText,
-  tardy: true,
-  //timeout: 1000,
-  messageHandlers: {
-    run: () => {
-      activeESTA = firstHalf;
-
-      // remove all rows not needed
-      var LengthTr = $("tr").length - 1;
-      if (LengthTr > activeESTA.length) {
-        for (let i = LengthTr; i >= activeESTA.length + 1; i--) {
-          $("tr")[i].remove();
-        }
-      }
-
-      // console.log("len:", activeESTA.length)
-      // fill up needed rows
-      var index_activeESTA = shufflePair(activeESTA);
-      //console.log("index_activeESTA: ", index_activeESTA);
-      var itemName = undefined;
-      for (let i = 1; i <= activeESTA.length; i++) {
-        itemName = activeESTA[index_activeESTA[i - 1]].scale;
-
-        // left and right scale
-        $("tr")[i].children[0].innerHTML =
-          activeESTA[index_activeESTA[i - 1]].left;
-        $("tr")[i].children[6].innerHTML =
-          activeESTA[index_activeESTA[i - 1]].right;
-
-        // single radio buttons
-        for (let n = 1; n <= 5; n++) {
-          $("tr")[i].children[n].innerHTML = `
-                <label style=\"height: 100%; padding: 5px 0\">
-                  <input type=\"radio\" name=\"${itemName}\" value=\"${n}\" required=\"\"
-                  style="transform: scale(2.0); margin: 0; cursor: pointer;">  
-                </label>
-              `;
-        }
-        // background colour
-        if (i % 2 == 0) {
-          $("tr")[i].style.backgroundColor = "#e9e9e9";
-        }
-      }
-
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-
-      // console.log("Component run");
-      // save index values of ESTA:
-      // study.options.datastore.set("index_ESTA", index_ESTA);
-    },
-    commit: () => {
-      // save paradata
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-const AdjectivePairsObeseScale_2 = new lab.html.Form({
-  title: "AdjectivePairsObeseScale_2",
-  content: textObj.AdjectivePairsObeseScale, // FirstQuesComponentText,
-  tardy: true,
-  //timeout: 1000,
-  messageHandlers: {
-    run: () => {
-      activeESTA = secondHalf;
-
-      // remove all rows not needed
-      var LengthTr = $("tr").length - 1;
-      if (LengthTr > activeESTA.length) {
-        for (let i = LengthTr; i >= activeESTA.length + 1; i--) {
-          $("tr")[i].remove();
-        }
-      }
-
-      // console.log("len:", activeESTA.length)
-      // fill up needed rows
-      var index_activeESTA = shufflePair(activeESTA);
-      //console.log("index_activeESTA: ", index_activeESTA);
-      var itemName = undefined;
-      for (let i = 1; i <= activeESTA.length; i++) {
-        itemName = activeESTA[index_activeESTA[i - 1]].scale;
-
-        // left and right scale
-        $("tr")[i].children[0].innerHTML =
-          activeESTA[index_activeESTA[i - 1]].left;
-        $("tr")[i].children[6].innerHTML =
-          activeESTA[index_activeESTA[i - 1]].right;
-
-        // single radio buttons
-        for (let n = 1; n <= 5; n++) {
-          $("tr")[i].children[n].innerHTML = `
-                <label style=\"height: 100%; padding: 5px 0\">
-                  <input type=\"radio\" name=\"${itemName}\" value=\"${n}\" required=\"\">  
-                </label>
-              `;
-        }
-        // background colour
-        if (i % 2 == 0) {
-          $("tr")[i].style.backgroundColor = "#e9e9e9";
-        }
-      }
-
-      // collect paradata
-      paracountclicks = 0;
-      document.querySelectorAll("input").forEach((item) => {
-        item.addEventListener("click", (event) => {
-          paracountclicks++;
-          console.log("input clicked", paracountclicks);
-        });
-      });
-
-      // console.log("Component run");
-      // save index values of ESTA:
-      // study.options.datastore.set("index_ESTA", index_ESTA);
-    },
-    commit: () => {
-      // save paradata
-      let numberitems = document.querySelectorAll("tbody tr").length;
-      paracountclicks -= numberitems;
-      study.options.datastore.set("para_countclicks", paracountclicks);
-
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-const Sequence_AdjectivePairsObeseScale = new lab.flow.Sequence({
-  title: "Sequence Adjective Pairs Obese Scale",
-  shuffle: false,
-  content: [AdjectivePairsObeseScale_1, AdjectivePairsObeseScale_2],
-});
 
 // shuffle all scales:
 const Sequence_Scales = new lab.flow.Sequence({
   title: "Sequence Scales",
   shuffle: true,
   content: [
-    BlueDotTask_htmlForm,
-
-    PerceivedCausesofObesity_Scale_htmlForm,
-    BeliefsAboutObesePersons_Scale_htmlForm,
-    Sequence_AttitudeTowardsObesePeopleScale,
-    GermAversion_Subscale_htmlForm,
-    PathogenDisgust_Subscale_htmlForm,
-
-    Sequence_AdjectivePairsObeseScale,
+    LikertHEXACO_htmlForm,
+    LikertATI_htmlForm,
   ],
 });
 
@@ -1127,23 +667,24 @@ const EndingScreen_htmlScreen = new lab.html.Screen({
   title: "EndingScreen",
   tardy: true,
   content: `
-  <header>
-  <h2> Thank you very much for your participation ! </h2>
-  </header>
+<header>
+  <h2> Vielen Dank für Ihre Teilnahme! </h2>
+</header>
 
-  <main class="content-horizontal-center content-vertical-center">
+<main class="content-horizontal-center content-vertical-center">
   <div class="w-xl text-justify">
-  <br>
-  <div>
-  <i>The experiment will end in a few seconds and you will be automatically redirected back to Prolific.</i> 
-  <br>
-  <br>
-  <br>
-  If you have any questions, please contact the study director Katja Pollak (katja.pollak@psychologie.uni-freiburg.de).
-  </div>
-  </main>
+    <br>
+    <div>
+      <i>Das Experiment endet in wenigen Sekunden und Sie werden automatisch zurück zu Prolific weitergeleitet.</i> 
+      <br>
+      <br>
+      <br>
+      Falls Sie Fragen haben, wenden Sie sich bitte an den Studienleiter Julius Fenn (julius.fenn@psychologie.uni-freiburg.de).
+    </div>
+</main>
+
   `,
-  timeout: 10000,
+  timeout: 9000,
   messageHandlers: {
     run: function anonymous() {
       // progress bar
@@ -1168,7 +709,7 @@ const EndingScreen_htmlScreen = new lab.html.Screen({
           study.options.datastore.extract("sender").includes("FeedbackScreen")
         ) {
           jatos.endStudyAndRedirect(
-            "https://app.prolific.com/submissions/complete?cc=C1DWDISA",
+            "https://www.livmats.uni-freiburg.de/en/research/research-area-d", // !!!!!!!!!!!!!!!!!!!! https://app.prolific.com/submissions/complete?cc=C1DWDISA
             true,
             "everything worked fine"
           );
@@ -1198,25 +739,7 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Download()
   ],
   content: [
-    TransitionToScales_htmlForm,
-    ConscientiousCompletion_htmlScreen,
-
-    FeedbackScreen_htmlScreen,
-
-    ExplenationRatingTask_htmlForm,
-
-    basalAttributesRating,
-
-    ExplenationRatingTask_htmlForm,
-
-    basalAttributesRating,
-
-
-
-
-
-
-    TestingStudy_htmlForm,
+    EndingScreen_htmlScreen,
 
 
     // >>> introduction phase

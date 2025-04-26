@@ -44,7 +44,7 @@ statisticalProceduresStudy: `
 <!-- multiline text --> 
 <div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
   <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite? Welcher der statistischen Verfahren erscheint euch am wichtigsten in dem Kontext unseres Artikels?
+    Haben Sie Feedback oder Kritik zu dieser Seite? Welcher der statistischen Verfahren erscheint euch am wichtigsten in dem Kontext unseres Artikels? Haben Sie Kritik zu den vorherigen Fragebögen?
   </p>
   <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
     Inhaltlich, Rechtschreibung, Layout, etc.
@@ -504,6 +504,23 @@ statisticalProceduresStudy: `
 
  // ################### Rating Task ###################
  ExplenationRatingTask: `
+     <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+ </form>
+
+
 <header>
   <h2>Vielen Dank für Ihre bisherige Teilnahme an der Onlinestudie!</h2>
 </header>
@@ -556,14 +573,16 @@ Antworten Sie bitte möglichst intuitiv. Ihre Einschätzungen sind ein wertvolle
 // ################### Survey Scales ###################
 TransitionToScales: `
 <header>
- <h2>Thank you for completing the Word Association Task!</h2>
- </header>
+  <h2>Danke für die Bewertung der sechs Beschreibungen des Nano-Pat-Parka-Systems!</h2>
+</header>
 
 <main class="content-horizontal-center content-vertical-center">
 <div class="w-xl text-justify">
         <section>
-              <p>You have completed the word association task. Finally, we ask you to answer some <strong>Questionnaires</strong>. These questions will help us understand the context of your responses better. Please respond to each questionnaire carefully.</p>
-        </section>
+Sie haben den ersten Teil der Studie erfolgreich abgeschlossen. Im letzten Abschnitt bitten wir Sie nun, <strong>zwei Fragebögen</strong> auszufüllen. 
+  Ihre Antworten helfen uns, Ihre Einschätzungen besser einzuordnen und den Gesamtkontext der Ergebnisse zu verstehen. 
+  Bitte beantworten Sie alle Fragen sorgfältig und ehrlich.
+          </section>
 </div>
 </main>
 <form id="page-form">
@@ -571,295 +590,32 @@ TransitionToScales: `
 
 <footer class="content-vertical-center content-horizontal-right">
 <button id="continue" type="submit" form="page-form">
-    Continue &rarr;
-</button>
-</footer>
-`,
-
-AdjectivePairsObeseScale:`
- <main class="content-horizontal-center content-vertical-center">
-  
-  <div class="w-xl">
-    <form id="page-form">
-      <!-- START question block --> 
-      <div>
-        <p class="text-left" style="margin: 1rem 0 0.25rem">
-          Below are 14 pairs of adjectives commonly used to describe <strong>obese</strong> individuals. 
-          For each pair, select the point on the scale that most closely reflects your feelings and beliefs in relation to the adjectives.
-        </p>
-        
-        <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-          Please answer every question, even if you feel uncertain or don’t have strong opinions about a specific pair of adjectives.
-        </p>
-            
-        <table class="page-item-table" id="tablerandom">
-          <colgroup>
-            <col style="width: 29%">
-            <col style="width: 6%">
-            <col style="width: 6%">
-            <col style="width: 6%">
-            <col style="width: 6%">
-            <col style="width: 6%">
-            <col style="width: 29%">
-          </colgroup>
-
-         <thead class="sticky-top">
-            <tr><th class="sticky-top "></th>
-              <th class="sticky-top text-center">
-                1
-              </th>
-              <th class="sticky-top text-center">
-                2
-              </th>
-              <th class="sticky-top text-center">
-                3
-              </th>
-              <th class="sticky-top text-center">
-                4
-              </th>
-              <th class="sticky-top text-center">
-                5
-              </th>
-         <th class="sticky-top"></th>
-            </tr>
-          </thead>
-
-        <tbody>
-<!-- bipolar-scale: 1 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 2 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 3 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 4 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 5 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 6 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 7 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 8 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 9 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 10 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-        <!-- bipolar-scale: 11 question --> 
-        <tr>
-          <td class="small" style="padding-left: 0">XXX</td>
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="text-center">
-          </td>
-          <td class="small" style="padding-left: 0">XXX</td>
-        </tr>
-          </tbody>
-          </table>
-        </div>
-  <!-- END question type --> 
-      </form>
-    </div> 
-  </main>
-  
-  
-  
-  <footer class="content-horizontal-right content-vertical-center">
-    <button type="submit" form="page-form">
-      Continue →
-    </button>
-  </footer>
-`,
-// ################### Survey Scales ###################
-BlueDotTask:`
-  <header>
-    <h2>
-   Blue Dot Task
-    </h2>
-  </header>
-  
-  <main class="content-horizontal-center content-vertical-center" >
-  <div class="w-xl">
-      <form id="page-form" style="display: block;" autocomplete="off">
-  <p>Please click on the little blue circle at the bottom of the screen.<br>
-        Do not click on the scale items that are labeled from 1 to 9.<br>
-        This is just to screen out random clicking.</p>
-
-
-<div class="scale">
-        <button class="scale-button" data-value="1">1</button>
-        <button class="scale-button" data-value="2">2</button>
-        <button class="scale-button" data-value="3">3</button>
-        <button class="scale-button" data-value="4">4</button>
-        <button class="scale-button" data-value="5">5</button>
-        <button class="scale-button" data-value="6">6</button>
-        <button class="scale-button" data-value="7">7</button>
-        <button class="scale-button" data-value="8">8</button>
-        <button class="scale-button" data-value="9">9</button>
-    </div>
-    <button class="blue-dot" id="blueDot">•</button>
-     </form>
-  </div> 
-</main>
-  
-  <footer class="content-vertical-center content-horizontal-right" id="blue-dot-footer">
-  <button id="continue" type="submit" form="page-form" style="visibility: hidden;">
-  Continue &rarr;
+    Weiter &rarr;
 </button>
 </footer>
 `,
 // Conscientious Completion
 ConscientiousCompletion: `
+    <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+ </form>
+
+
 <header>
   <h2>
-  Please answer the following question:
+  Bitte beantworten Sie die folgende Frage:
   </h2>
 </header>
 
@@ -870,11 +626,10 @@ ConscientiousCompletion: `
       <div class="page-item page-item-radio" id="page-item-ques_taskcompletion">
 
  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-          Did you complete the tasks in this study conscientiously and to the best of your ability?
+          Haben Sie die Aufgaben in dieser Studie gewissenhaft und nach bestem Wissen und Gewissen bearbeitet?
  </p>
  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-           Please note that your answer to this question will have no impact on your payment via Prolific. It is only important for the scientific validity of this study.
-
+           Bitte beachten Sie, dass Ihre Antwort auf diese Frage keinen Einfluss auf Ihre Vergütung über Prolific hat. Sie ist ausschließlich für die wissenschaftliche Auswertung dieser Studie relevant.
  </p>
         <table class="table-plain page-item-table">
           <colgroup>
@@ -889,7 +644,7 @@ ConscientiousCompletion: `
               </td>
               <td>
                 <label for="task_completion_yes" class="text-left" style="font-size:26px">
-                  Yes, I completed the tasks conscientiously.
+                  Ja, ich habe die Aufgaben gewissenhaft bearbeitet.
                 </label>
               </td>
             </tr>
@@ -900,7 +655,7 @@ ConscientiousCompletion: `
               </td>
               <td>
                 <label for="task_completion_no" class="text-left" style="font-size:26px">
-                  No, I did not complete the tasks conscientiously.
+                  Nein, ich habe die Aufgaben nicht gewissenhaft bearbeitet.
                 </label>
               </td>
             </tr>
@@ -914,44 +669,59 @@ ConscientiousCompletion: `
 
 <footer class="content-vertical-center content-horizontal-right">
   <button id="continue" type="submit" form="page-form">
-    Continue &rarr;
+    Weiter &rarr;
   </button>
 </footer>
-
 `,
 
 
       // feedback question
   feedbackQues: `
-  <header>
-    <h2>
-    Please answer the following last question if you wish:
-    </h2>
-  </header>
-  
-  <main class="content-horizontal-center content-vertical-center" >
-  <div class="w-xl">
-    <form id="page-form" style="display: block;" autocomplete="off">
-<!-- multiline text text --> 
-<div class="page-item page-item-textarea" id="page-item-feedback_critic">
+      <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
   <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-  Do you have any feedback or criticism about the online study? 
+    Haben Sie Feedback oder Kritik zu dieser Seite?
   </p>
   <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-  Any criticism or suggestions for improvement will be of great help in improving future studies. 
+    Inhaltlich, Rechtschreibung, Layout, etc.
   </p>
-  <textarea name="feedback_critic" class="w-100" rows="8"></textarea>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
 </div>
-<!-- END multiline text --> 
-     
+<!-- END multiline text -->
+ </form>
+
+
+<header>
+  <h2>
+    Bitte beantworten Sie, wenn Sie möchten, die folgende letzte Frage:
+  </h2>
+</header>
+
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl">
+    <form id="page-form" style="display: block;" autocomplete="off">
+      <!-- multiline text text --> 
+      <div class="page-item page-item-textarea" id="page-item-feedback_critic">
+        <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+          Haben Sie Feedback oder Kritik zur Onlinestudie?
+        </p>
+        <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+          Jede Kritik oder Anregung hilft uns sehr, zukünftige Studien zu verbessern.
+        </p>
+        <textarea name="feedback_critic" class="w-100" rows="8"></textarea>
+      </div>
+      <!-- END multiline text --> 
     </form>
   </div> 
 </main>
-  
-  <footer class="content-vertical-center content-horizontal-right">
+
+<footer class="content-vertical-center content-horizontal-right">
   <button id="continue" type="submit" form="page-form">
-  Continue &rarr;
-</button>
+    Weiter &rarr;
+  </button>
 </footer>
   `,
 }
