@@ -1,3 +1,30 @@
+
+
+/* other stuff */
+.buttonFeedback {
+  background-color: #4CAF50; /* green */
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 12px; /* round edges */
+  padding: 10px 24px; /* optional: a little padding inside the button */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* smooth hover transition */
+}
+
+.buttonFeedback:hover {
+  background-color: #046809; /* darker green on hover */
+  color: white;
+}
+
+
+
+
+
+
 footer #continue {
   font-size: 22px; /* Adjust the size as needed */
 }
@@ -86,6 +113,14 @@ kbd {
   height: 25px;
   cursor: pointer;
 }
+
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+}
+
 
 /* Style the numbers below the radio buttons */
 .rating-label {

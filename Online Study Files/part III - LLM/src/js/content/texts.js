@@ -1,6 +1,232 @@
 const textObj = {
+// ################### Testing of Study ###################
+testingStudy: `
+<header>
+  <h2>Feedback and general information:</h2>
+</header>
+
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl text-justify">
+    <section>
+      Please note to provide feedback to the study:
+    </section>
+    <ul>
+  <li>At the top of each page, there is a text area available.</li>
+  <li>The text area is separated from the main content by a horizontal line.</li>
+  <li>You can use this area to provide feedback or comments about the specific page.</li>
+</ul>
+    <section>
+     Summary of the study goal:
+    </section>
+<ul>
+  <li>This study examines how specific combinations of material properties (basal attributes) influence the societal acceptance of emerging technologies.</li>
+  <li>Textual descriptions of future material systems are systematically generated using state-of-the-art Large Language Models (LLMs), based on empirically derived clusters of basal attributes.</li>
+  <li>Laypersons assess these descriptions to determine which constellations of attributes enhance perceived acceptability.</li>
+  <li>The study aims to (a) validate the conceptual significance of the basal attribute clusters identified in Part II.</li>
+  <br>
+  <li style="list-style-type: none;">→ Global goal of the article is to contribute to anticipatory technology assessment by integrating societal and ethical perspectives into early-stage technology development.</li>
+  </ul>
+  </div>
+</main>
+
+<form id="page-form"> 
+</form>
+
+<footer class="content-vertical-center content-horizontal-right">
+  <button id="continue" type="submit" form="page-form">
+    Continue &rarr;
+  </button>
+</footer>
+   `,
+// ################### Testing of Study ###################
+statisticalProceduresStudy: `
+    <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite? Welcher der statistischen Verfahren erscheint euch am wichtigsten in dem Kontext unseres Artikels?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+ </form>
+
+ 
+<header>
+  <h2>Information regarding planned statistical analysis:</h2>
+</header>
+
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl text-justify">
+    <h3>Data Structure:</h3>
+    <section>
+      In our study, each participant evaluates six different technological descriptions (L1 level; within) and also provides personal trait measures (L2 level: Affinity for Technology Interaction, Openness to Experience),
+      which results in a nested data structure:
+    </section>
+
+    <div style="overflow-x: auto; max-width: 1200px; margin: 20px 0;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #ddd; padding: 8px;">Participant_ID</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Vignette_ID</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L1_Valence</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L1_Usefulness</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L1_Trust</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L1_Adoption_Intention</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L2_ATI_Score</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">L2_Openness_Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.5</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.8</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.0</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">5.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.8</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.0</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.0</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.5</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.8</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">5.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.8</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.5</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.3</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.7</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">5.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.8</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">2.8</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.6</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.5</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">5.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.8</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">5</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.9</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.1</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.7</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.6</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">2.2</td>
+          </tr>
+                    <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">001</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">6</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">2.2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">4.6</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.2</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">1.7</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">3.6</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">2.2</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+<h3>Planned Statistical Procedures:</h3>
+
+<section>
+  <p><strong>Note:</strong> Each technological description (vignette) is based on a specific set of basal attributes (e.g., "bioinspired", "autonomous", "resource-efficient"). Some vignettes share certain attributes while differing in others. We aim to analyze how individual basal attributes or their combinations influence participants' evaluations (e.g., valence, usefulness, trust).</p>
+
+  <ul style="line-height: 1.6;">
+    <li><strong>Confirmatory Factor Analysis (CFA):</strong> Establishes and verifies the measurement model by testing whether the items for Valence, Usefulness, Trust, and Adoption Intention reliably capture one single latent construct.</li>
+
+    <li><strong>Multi-Group CFA:</strong> Tests whether the established measurement model holds consistently across different vignettes and participant groups (e.g., high vs. low technology affinity).</li>
+
+    <li><strong>Mixed Models:</strong> Analyze repeated ratings within participants and link evaluation patterns to stable individual traits (ATI, Openness).
+      <ul style="margin-top: 5px; margin-bottom: 5px; padding-left: 20px; line-height: 1.5;">
+        <li><strong>Attribute-based Regression Modeling:</strong> Predicts evaluation outcomes based on the presence or absence of specific basal attributes in the vignettes (using dummy coding for attribute sets).</li>
+        <li><strong>Add Random Slopes for Basal Attributes:</strong> Models individual differences in reactions to specific attributes across vignettes (e.g., "Some participants react very positively to 'autonomous', while others react negatively — and this variability can be modeled.").</li>
+      </ul>
+    </li>
+    
+<li><strong>Latent Profile Analysis (LPA):</strong> Identifies hidden participant groups (clusters) based on their evaluation patterns across the six descriptions (e.g., distinguishing technology optimists from technology pessimists).</li>
+  </ul>
+</section>
+
+    A examplary study applying such kind of analyses can be found on <a href="https://eric.ed.gov/?id=ED626889" target="_blank">https://eric.ed.gov/?id=ED626889</a>.
+
+
+    <section>
+  <h3>Details on Measured Variables:</h3>
+  <ul>
+    <li><strong>Perceived Usefulness (L1):</strong> Assesses how helpful and performance-enhancing participants perceive the technology to be.</li>
+    <li><strong>Trust / Trustworthiness (L1):</strong> Captures the degree to which participants trust the technology to work reliably and correctly.</li>
+    <li><strong>Adoption Intentions / Behavioral Intentions (L1):</strong> Reflects participants' likelihood of using the technology and recommending it to others.</li>
+    <li><strong>Valence (L1):</strong> Measures the overall positive or negative evaluation of the technology.</li>
+    <li><strong>Affinity for Technology Interaction (ATI) (L2):</strong> Captures the participants' general tendency to actively engage with and enjoy using new technologies.</li>
+    <li><strong>Openness to Experience (L2):</strong> Assesses participants’ general curiosity, imagination, and willingness to explore new and unconventional ideas or experiences.</li>
+  </ul>
+</section>
+  </div>
+</main>
+
+<form id="page-form"></form>
+
+<footer class="content-vertical-center content-horizontal-right" style="margin-top: 20px;">
+  <button id="continue" type="submit" form="page-form">
+    Continue &rarr;
+  </button>
+</footer>
+
+   `,
+
+   
+
+
 // ################### Start of Study ###################
    greetings: `
+    <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+ </form>
+
       <header>
    <div class="row">
    <div class="column2">
@@ -44,8 +270,7 @@ const textObj = {
    </div>
  </main>
  
- <form id="page-form">
- </form>
+
  
  <footer class="content-vertical-center content-horizontal-right">
    Um mit der Studie fortzufahren, drücken Sie bitte auf &nbsp;
@@ -55,6 +280,24 @@ const textObj = {
  </footer>
    `,
    informCon: `
+    <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
+  
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
+ </form>
+
+
+
    <header>
    <h2>Aufgeklärte Einwilligung</h2>
  </header>
@@ -135,8 +378,7 @@ const textObj = {
    </div>
  </main>
  
- <form id="page-form">
- </form>
+
  
  <footer class="content-vertical-center content-horizontal-right">
    <button id="continue" type="submit" form="page-form">
@@ -156,374 +398,158 @@ const textObj = {
  </main>
    `,
    exclusionCriteria: `
-   <header>
-     <h2>Thank you for agreeing to the conditions of participation. </h2>
- </header>
- 
- <main class="content-horizontal-center content-vertical-center">
-     <div class="w-xl text-justify">
-         <section>
-             Before we begin, we would like to draw your attention to the following rules during the online study:
-         </section>
-         <br>
-         <ul>
-             <li>Please answer the study in a focused manner.</li>
-             <li>Do not leave the browser screen of the study unless you are explicitly asked to do so. </li>
-             <li>Please read all instructions carefully and comply with them.</li>
-         </ul>
-<br>
-<br>
-We care about the quality of our experimental and survey data. To get the most accurate measures of your opinions, it is important that you provide thoughtful answers to each questions in this survey. 
-<br>
-<form id="page-form">
-<!-- see: https://www.qualtrics.com/blog/attention-checks-and-data-quality/ -->
-<!-- multiple choice + text field --> 
-<div class="page-item page-item-radio" id="page-item-ques_dummycam">
- <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
- Do you commit to providing thoughtful answers in this survey?
- </p>
- <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
- </p>
-
- <table class="table-plain page-item-table">
-   <colgroup>
-     <col style="width: 7.5%">
-     <col style="width: 92.5%">
-   </colgroup>
-<tbody>
-<!--ans1--> 
-<tr>
- <td>
-   <input type="radio" name="commCheck" value="0" id="commCheck" required="">
- </td>
- <td>
-   <label for="commCheck" class="text-left" style="font-size:26px">
-   I can't promise either way
-   </label>
- </td>
-</tr>
-<!--ans2--> 
-<tr>
- <td>
-   <input type="radio" name="commCheck" value="1" id="commCheck2" required="">
- </td>
- <td>
-   <label for="commCheck2" class="text-left" style="font-size:26px">
-   Yes, I will
-      </label>
- </td>
-</tr>
-<tr>
- <td>
-   <input type="radio" name="commCheck" value="2" id="commCheck3" required="">
- </td>
- <td>
-   <label for="commCheck3" class="text-left" style="font-size:26px">
-   No, I will not
-      </label>
- </td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- END multiple choice + text field --> 
-
-
-     </div>
- </main>
-
- </form>
- 
- <footer class="content-vertical-center content-horizontal-right">
-     <button id="continue" type="submit" form="page-form">
-         Continue &rarr;
-     </button>
- </footer>
-   `,
-   attentionCheck: `
-   <header>
-     <h2>Before starting the study we would like to get to know you:</h2>
-   </header>
-   
-   <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
- <section>
- Most modern theories of decision-making recognize the fact that decisions do not take place in a vacuum. Individual preferences and knowledge, along with situational variables, 
- can greatly impact the decision process. To facilitate our research on attitudes towards emerging technologies, we are interested in knowing certain factors about you, 
- the decision-maker. Specifically, we are interested in whether you take the time to read the instructions; if not, then some of the specific characteristics of 
- the described emerging technologies can be overlooked. So, to demonstrate that you have read the instructions, please ignore the sports items below and instead 
- select the box marked "other" and type "I read the instructions" in the text box, then click continue. Thank you very much.
- </section>
- <br>
- <br>
- <section >
- <b>Which of these activities do you engage in regularly?</b>
- <br>
- Please check all that apply.
- <br>
- <fieldset id="checkArray"  style="text-align: left; padding: 5px;">
-   <div>
-     <input type="checkbox" id="attCheck_Skiing" name="attCheck_Skiing">
-     <label for="attCheck_Skiing">Skiing</label>
-   </div>
-   <div>
-     <input type="checkbox" id="attCheck_Swimming" name="attCheck_Swimming">
-     <label for="attCheck_Swimming">Swimming</label>
-   </div>
-   <div>
-   <input type="checkbox" id="attCheck_Soccer" name="attCheck_Soccer">
-   <label for="attCheck_Soccer">Soccer</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Tennis" name="attCheck_Tennis">
- <label for="attCheck_Tennis">Tennis</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Snowboarding" name="attCheck_Snowboarding">
- <label for="attCheck_Snowboarding">Snowboarding</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Basketball" name="attCheck_Basketball">
- <label for="attCheck_Basketball">Basketball</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Jogging" name="attCheck_Jogging">
- <label for="attCheck_Jogging">Jogging</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Cycling" name="attCheck_Cycling">
- <label for="attCheck_Cycling">Cycling</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Pingpong" name="attCheck_Pingpong">
- <label for="attCheck_Pingpong">Ping-pong</label>
- </div>
- <div>
- <input type="checkbox" id="attCheck_Other" name="attCheck_Other">
- <label for="attCheck_Other">Other</label>
- <input type="text" id="attCheck_OtherText" name="attCheck_OtherText"></input>
- </fieldset>
- </div>
- </section>
- <br>
-   </div>
- </main>
- 
- 
-   <form id="page-form"> 
-   </form>
-   
-   <footer class="content-vertical-center content-horizontal-right">
-     <button id="continue" form="page-form" onclick="return continueornot();">
-     Continue &rarr;
-     </button>
-   </footer>
-   `,
-   // not needed
-   setupStudy: `
-   <header>
-     <h2>Overview of the study:</h2>
-   </header>
-   
-   <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
- <section>
-The study consists of three parts: 
- </section>
- <br>
- <table>
-   <tr>
-   <td>1) <strong>Reaction Time Task:</strong> In the first part, you will complete a reaction time task. In this task, you will evaluate displayed words as either positive or negative as quickly as possible.</td>
-   </tr>
-   <tr>
-      <td>2) <strong>Word Association Task:</strong> In the second part, you will participate in a word association task. You will be asked to write down the associations that come to your mind when you see specific words.</td>
-   </tr>
-   <tr>
-      <td>3) <strong>Questionnaires:</strong> Finally, you will answer a series of questions.</td>
- </tr>
- </table>
- <br>
- <section>
-Before each task begins, you will receive detailed instructions to ensure that you understand what to do.
- </section>
-   </div>
- </main>
-   <form id="page-form"> 
-   </form>
-   
-   <footer class="content-vertical-center content-horizontal-right">
-     <button id="continue" type="submit" form="page-form">
-     Continue &rarr;
-     </button>
-   </footer>
-   `,
-
-
- // ################### Affective Priming Task ###################
-
-
-
+       <form id="page-form">
+<!-- multiline text --> 
+<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
+  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+    Haben Sie Feedback oder Kritik zu dieser Seite?
+  </p>
+  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+    Inhaltlich, Rechtschreibung, Layout, etc.
+  </p>
+  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
   
-  // ################### Affective Imagery ###################
-  TransitionToAIT: `
-  <header>
-      <h2>Thank you for completing the Reaction Time Task!</h2>
-</header>
-
-<main class="content-horizontal-center content-vertical-center">
-  <div class="w-xl text-justify">
-          <section>
-              <p>You have completed the reaction time task. Next, you will move on to the <strong>Word Association Task</strong>. This task involves responding to specific words with the first thoughts or associations that come to your mind. Please read the instructions for this task carefully before starting.</p>
-          </section>
-  </div>
-</main>
-<form id="page-form">
-</form>
-
-<footer class="content-vertical-center content-horizontal-right">
-  <button id="continue" type="submit" form="page-form">
-      Continue &rarr;
-  </button>
-</footer>
-  `,
-
-
-  AffectiveImageryInst: `
-  <header>
-  <h2>Instructions "Word Association Game" </h2>
-</header>
-
-<main class="content-horizontal-center content-vertical-center">
-  <div class="w-xl text-justify">
-      <strong>How it works...</strong>
-      <section>
-          On the top of the screen a word will be shown. Enter the first word that comes to your mind when reading that
-          word.
-      </section>
-      <br>
-      <section>
-              Use the <kbd>Enter</kbd> key or press the <button style="padding:2px; margin-left:0px; margin-right: 0px; font-size: 30px;" disabled="disabled">Next
-              response</button> button to add five associations.
-      </section>
-      <br>
-      <br>
-      <strong>Hint</strong>
-      <section>
-          Only give associations to the word on top of the screen (not to your previous responses!).
-      </section>
-  </div>
-</main>
-<form id="page-form">
-</form>
-
-<footer class="content-vertical-center content-horizontal-right">
-  <button id="continue" type="submit" form="page-form">
-      Continue &rarr;
-  </button>
-</footer>
-  `,
-   AffectiveImageryInst_full: `
-   <header>
-   <h2>Instructions "Word Association Game" </h2>
- </header>
- 
- <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
-       <strong>How it works...</strong>
-       <section>
-           On the top of the screen a word will be shown. Enter the first word that comes to your mind when reading that
-           word. Only if you really don't know that word, press <button
-               style="padding:2px; margin-left:0px; margin-right: 0px;" disabled="disabled">Unknown word</button>.
-       </section>
-       <br>
-       <section>
-           Press <button style="padding:2px; margin-left:0px; margin-right: 0px;" disabled="disabled">Next
-               response</button> to add up to five words or press <button
-               style="padding:2px; margin-left:0px; margin-right: 0px;" disabled="disabled">No more
-               entries</button> if you can't think of any more.
-               <br>
-               <br>
-               Use the <kbd>Enter</kbd> key or press the <button style="padding:2px; margin-left:0px; margin-right: 0px;" disabled="disabled;>Next
-               response</button> button to add associations.
-       </section>
-       <br>
-       <br>
-       <strong>  Some hints</strong>
-       <section>
-           Only give associations to the word on top of the screen (not to your previous responses!).
-       </section>
-   </div>
- </main>
- <form id="page-form">
+  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
+</div>
+<!-- END multiline text -->
  </form>
- 
- <footer class="content-vertical-center content-horizontal-right">
-   <button id="continue" type="submit" form="page-form">
-       Continue &rarr;
-   </button>
- </footer>
+
+
+
+<header>
+  <h2>Vielen Dank, dass Sie den Teilnahmebedingungen zugestimmt haben.</h2>
+</header>
+
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl text-justify">
+    <section>
+      Bevor wir beginnen, möchten wir Sie auf die folgenden Regeln während der Online-Studie hinweisen:
+    </section>
+    <br>
+    <ul>
+      <li>Bitte beantworten Sie die Studie konzentriert.</li>
+      <li>Verlassen Sie den Browserbildschirm der Studie nicht, es sei denn, Sie werden ausdrücklich dazu aufgefordert.</li>
+      <li>Bitte lesen Sie alle Anweisungen sorgfältig und befolgen Sie diese.</li>
+    </ul>
+    <br>
+    <br>
+    Die Qualität unserer experimentellen und Umfragedaten ist uns sehr wichtig. Um die genauesten Einschätzungen Ihrer Meinungen zu erhalten, ist es wichtig, dass Sie jede Frage dieser Umfrage sorgfältig beantworten.
+    <br>
+    <form id="page-form">
+      <!-- see: https://www.qualtrics.com/blog/attention-checks-and-data-quality/ -->
+      <!-- multiple choice + text field --> 
+      <div class="page-item page-item-radio" id="page-item-ques_dummycam">
+        <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
+          Verpflichten Sie sich, in dieser Umfrage sorgfältige Antworten zu geben?
+        </p>
+        <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
+        </p>
+
+        <table class="table-plain page-item-table">
+          <colgroup>
+            <col style="width: 7.5%">
+            <col style="width: 92.5%">
+          </colgroup>
+          <tbody>
+            <!--ans1--> 
+            <tr>
+              <td>
+                <input type="radio" name="commCheck" value="0" id="commCheck" required="">
+              </td>
+              <td>
+                <label for="commCheck" class="text-left" style="font-size:26px">
+                  Ich kann es nicht versprechen
+                </label>
+              </td>
+            </tr>
+            <!--ans2--> 
+            <tr>
+              <td>
+                <input type="radio" name="commCheck" value="1" id="commCheck2" required="">
+              </td>
+              <td>
+                <label for="commCheck2" class="text-left" style="font-size:26px">
+                  Ja, ich werde
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" name="commCheck" value="2" id="commCheck3" required="">
+              </td>
+              <td>
+                <label for="commCheck3" class="text-left" style="font-size:26px">
+                  Nein, ich werde nicht
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- END multiple choice + text field --> 
+    </div>
+</main>
+
+</form>
+
+<footer class="content-vertical-center content-horizontal-right">
+  <button id="continue" type="submit" form="page-form">
+    Weiter &rarr;
+  </button>
+</footer>
+
    `,
-   AffectiveImagery: `
-   <main class="content-horizontal-center content-vertical-center">
-   <div>
-       What are the first thoughts or images that come to your mind when you think of: 
-       <br>
-       <br>
- <div style="align-items: display: flex;"> <strong style="font-size: 22px;">
-      <span id="cueWord" style="font-size: 36px;">replace me</span>
- </strong>
- </div>
- <br>
-     <form id="affectiveImageryForm">
-       <div class="affectiveImagery">
-           <div class="form-group">
-               <input id="R1" name="R1" class="form-control" placeholder="Enter your first association" type="text"
-                   autocorrect="off" autocapitalize="none" autofocus autocomplete="off" tabindex="1">
-           </div>
-           <div class="form-group">
-               <input id="R2" name="R2" class="form-control" placeholder="" type="text" autocorrect="off"
-                   autocapitalize="none" autofocus="" autocomplete="off" tabindex="2" disabled="">
-           </div>
-           <div class="form-group">
-               <input id="R3" name="R3" class="form-control" placeholder="" type="text" autocorrect="off"
-                   autocapitalize="none" autofocus="" autocomplete="off" tabindex="3" disabled="">
-           </div>
-           <div class="form-group">
-               <input id="R4" name="R4" class="form-control" placeholder="" type="text" autocorrect="off"
-                   autocapitalize="none" autofocus="" autocomplete="off" tabindex="4" disabled="">
-           </div>
-           <div class="form-group">
-               <input id="R5" name="R5" class="form-control" placeholder="" type="text" autocorrect="off"
-                   autocapitalize="none" autofocus="" autocomplete="off" tabindex="5" disabled="">
-           </div>
- 
-           <small class="text-muted" id="progressLabel">Progress</small>
-         
-           <div class="progress" style="background: white;">
-             <div class="progress-bar-AffectiveImg" style="background: #229954;"> 
-           </div>
-         </div>
- 
- 
-         <div style="align-items: display: flex;">
-         <!-- Prevent implicit submission of the form -->
-         <button type="submit" disabled style="display: none" aria-hidden="true"></button>
-       
-               <button type="button" class="btn btn-default" tabindex="-1" id="submitAssoButton"><span
-                       class="glyphicon glyphicon-plus"></span>&nbsp;Next response</button>
-               <button type="submit" class="btn btn-default" tabindex="-1" id="finalResponse"><span
-                       class="glyphicon glyphicon-ok" form="affectiveImageryForm"></span>&nbsp;End the input</button>
-               <button type="submit" class="btn btn-default" tabindex="-1" id="skipResponse"><span
-                       class="glyphicon glyphicon-minus" form="affectiveImageryForm"></span>&nbsp;No more entries</button>
-               <button type="submit" class="btn btn-default" tabindex="-1" id="unknownResponse"><span
-                       class="glyphicon glyphicon-remove" form="affectiveImageryForm"></span>&nbsp;Unknown word</button>
-           </div>
-       </div>
-   </form>
-   </div>
+  
    
- </main>
-   `,
+
+ // ################### Rating Task ###################
+ ExplenationRatingTask: `
+<header>
+  <h2>Vielen Dank für Ihre bisherige Teilnahme an der Onlinestudie!</h2>
+</header>
+
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl text-justify">
+
+<section>
+In dieser Studie untersuchen wir, wie neue Technologien anhand sogenannter basaler Attribute – grundlegender, semantisch und emotional bewerteter Merkmale – wahrgenommen werden. 
+Als Beispiel dient der Nano-Pat-Parka, ein innovatives Schutzjackensystem, dessen Eigenschaften auf Basis solcher Attribute beschrieben werden. 
+</section>
+
+<br><br>
+
+<section>
+❓ <strong>Was sind basale Attribute?</strong>
+<br>
+Basale Attribute fassen zentrale Eigenschaften von Technologien in kurzer, prägnanter Form zusammen. Sie ermöglichen eine strukturierte Beschreibung, ohne in technische Details zu gehen.
+</section>
+
+<br><br>
+
+<section>
+📝 <strong>Ihre Aufgabe:</strong>
+<br>
+Im nächsten Schritt sehen Sie sechs kurze Beschreibungen eines möglichen zukünftigen Jackensystems, dem Nano-Pat-Parka. Bitte bewerten Sie jeweils:
+<ul style="margin-top: 10px;">
+  <li>die wahrgenommene Nützlichkeit,</li>
+  <li>Ihr Vertrauen in die Technologie,</li>
+  <li>Ihre Nutzungswahrscheinlichkeit,</li>
+  <li>und Ihr spontanes emotionales Empfinden.</li>
+</ul>
+Antworten Sie bitte möglichst intuitiv. Ihre Einschätzungen sind ein wertvoller Beitrag zu unserem Forschungsprojekt.
+</section>
+
+  </div>
+</main>
+
+<form id="page-form"></form>
+
+<footer class="content-vertical-center content-horizontal-right">
+  <button id="continue" type="submit" form="page-form">
+    Weiter &rarr;
+  </button>
+</footer>
+  `,
 
 
 
@@ -827,428 +853,6 @@ BlueDotTask:`
   <button id="continue" type="submit" form="page-form" style="visibility: hidden;">
   Continue &rarr;
 </button>
-</footer>
-`,
-// ################### End of Study ###################
-TransitionToFinal: `
-<header>
- <h2>Thank you for completing the Questionnaires!</h2>
- </header>
-
-<main class="content-horizontal-center content-vertical-center">
-<div class="w-xl text-justify">
-        <section>
-                <p>You have successfully completed the questionnaires. As a final step, we kindly ask you to rate the weight of individuals and answer a few additional questions about yourself.</p>
-        </section>
-</div>
-</main>
-<form id="page-form">
-</form>
-
-<footer class="content-vertical-center content-horizontal-right">
-<button id="continue" type="submit" form="page-form">
-    Continue &rarr;
-</button>
-</footer>
-`,
-// socio demographic questions
-socioDemo: `
-<header>
-  <h2>
-Please answer the following questions about yourself:
- </h2>
-</header>
-
-<main class="content-horizontal-center content-vertical-center">
-<div class="w-xl text-justify" style="display: block">
-  
-
-  <form id="demography">
-    <table>
-      <!-- Age -->
-      <tr style="height: 80px">
-        <td class="font-weight-bold text-left">
-      How old are you (in years)?
-           </td>
-        <td>
-        <input name="sociodemo_age" type="number" required class="w-100" min="18" max="120" placeholder="Enter age">
-        </td>
-      </tr>
-      
-      <!-- Gender NOT gender identity, following Tate et al. (2013) -->
-      <tr style="height: 80px">
-        <td class="font-weight-bold text-left">
-      What is your gender?
-              </td>
-        <td>
-      <select name="sociodemo_gender" required class="w-100">
-        <option value="" selected>
-          - Please select -
-        </option>
-        <option value="female">Female</option>
-        <option value="male">Male</option>
-        <option value="intersex">Non-binary</option>
-        <option value="none">I prefer not to say.</option>
-      </select>
-        </td>
-      </tr>
-
-
-            <!-- sexual orientation -->
-      <tr style="height: 80px">
-        <td class="font-weight-bold text-left">
-      What is your sexual orientation?
-              </td>
-        <td>
-      <select name="sociodemo_sexualOrientation" required class="w-100">
-        <option value="" selected>
-          - Please select -
-        </option>
-        <option value="heterosexuell">Heterosexuell</option>
-        <option value="homosexuell">Homosexuell</option>
-        <option value="bisexuell">Bisexuell</option>
-                <option value="other">Other</option>
-        <option value="none">I prefer not to say.</option>
-      </select>
-        </td>
-      </tr>
-
-      <!-- Weight -->
-      <tr style="height: 80px">
-        <td class="font-weight-bold text-left">
-      What is your current weight?
-      <br>
-    <span style="color: lightgray; font-size: smaller;">Please indicate whether the weight is in kilograms (kg) or pounds (lb).</span>
-        </td>
-        <td>
-            <div style="display: flex; gap: 5px; align-items: center;">
-          <input name="sociodemo_weight" type="number" required class="w-100" min="30" max="500" placeholder="Enter weight">
-in
-      <select name="sociodemo_weight_type" required class="w-100">
-        <option value="" selected>
-          - Please select -
-        </option>
-        <option value="kilograms">kilograms</option>
-        <option value="pounds">pounds</option>
-      </select>
-            </div>
-        </td>
-      </tr>
-
-
-      <!-- Height -->
-<tr style="height: 80px">
-  <td class="font-weight-bold text-left">
-    What is your current height?
-    <br>
-    <span style="color: lightgray; font-size: smaller;">Please indicate whether the height is in centimeters (cm) or feet and inches (ft/in).</span>
-  </td>
-  <td>
-    <div style="display: flex; gap: 5px; align-items: center;">
-      <input name="sociodemo_height" type="number" required class="w-100" min="50" max="300" placeholder="Enter height">
-      in
-      <select name="sociodemo_height_type" required class="w-100">
-        <option value="" selected>
-          - Please select -
-        </option>
-        <option value="centimeters">centimeters</option>
-        <option value="feet-inches">feet and inches</option>
-      </select>
-    </div>
-  </td>
-</tr>
-
-
-            <!-- Country / Residency -->
-      <tr style="height: 80px">
-        <td class="font-weight-bold text-left">
-      Where is your current residency?
-       <br>
-    <span style="color: lightgray; font-size: smaller;">Please indicate the name of the country you are currently living.</span>
-        </td>
-        <td>
-            <div>
-                <!-- All countries -->
-              <select class="form-select" autocomplete="country" id="country" name="sociodemo_residency" style="flex: 1;">
-                <option value="">- Please select -</option>
-    <option value="AF">Afghanistan</option>
-    <option value="AX">Åland Islands</option>
-    <option value="AL">Albania</option>
-    <option value="DZ">Algeria</option>
-    <option value="AS">American Samoa</option>
-    <option value="AD">Andorra</option>
-    <option value="AO">Angola</option>
-    <option value="AI">Anguilla</option>
-    <option value="AQ">Antarctica</option>
-    <option value="AG">Antigua & Barbuda</option>
-    <option value="AR">Argentina</option>
-    <option value="AM">Armenia</option>
-    <option value="AW">Aruba</option>
-    <option value="AU">Australia</option>
-    <option value="AT">Austria</option>
-    <option value="AZ">Azerbaijan</option>
-    <option value="BS">Bahamas</option>
-    <option value="BH">Bahrain</option>
-    <option value="BD">Bangladesh</option>
-    <option value="BB">Barbados</option>
-    <option value="BY">Belarus</option>
-    <option value="BE">Belgium</option>
-    <option value="BZ">Belize</option>
-    <option value="BJ">Benin</option>
-    <option value="BM">Bermuda</option>
-    <option value="BT">Bhutan</option>
-    <option value="BO">Bolivia</option>
-    <option value="BA">Bosnia & Herzegovina</option>
-    <option value="BW">Botswana</option>
-    <option value="BV">Bouvet Island</option>
-    <option value="BR">Brazil</option>
-    <option value="IO">British Indian Ocean Territory</option>
-    <option value="BN">Brunei</option>
-    <option value="BG">Bulgaria</option>
-    <option value="BF">Burkina Faso</option>
-    <option value="BI">Burundi</option>
-    <option value="CV">Cape Verde</option>
-    <option value="KH">Cambodia</option>
-    <option value="CM">Cameroon</option>
-    <option value="CA">Canada</option>
-    <option value="BQ">Caribbean Netherlands</option>
-    <option value="KY">Cayman Islands</option>
-    <option value="CF">Central African Republic</option>
-    <option value="TD">Chad</option>
-    <option value="CL">Chile</option>
-    <option value="CN">China</option>
-    <option value="CX">Christmas Island</option>
-    <option value="CC">Cocos (Keeling) Islands</option>
-    <option value="CO">Colombia</option>
-    <option value="KM">Comoros</option>
-    <option value="CG">Congo - Brazzaville</option>
-    <option value="CD">Congo - Kinshasa</option>
-    <option value="CK">Cook Islands</option>
-    <option value="CR">Costa Rica</option>
-    <option value="HR">Croatia</option>
-    <option value="CU">Cuba</option>
-    <option value="CW">Curaçao</option>
-    <option value="CY">Cyprus</option>
-    <option value="CZ">Czechia</option>
-    <option value="CI">Côte d’Ivoire</option>
-    <option value="DK">Denmark</option>
-    <option value="DJ">Djibouti</option>
-    <option value="DM">Dominica</option>
-    <option value="DO">Dominican Republic</option>
-    <option value="EC">Ecuador</option>
-    <option value="EG">Egypt</option>
-    <option value="SV">El Salvador</option>
-    <option value="GQ">Equatorial Guinea</option>
-    <option value="ER">Eritrea</option>
-    <option value="EE">Estonia</option>
-    <option value="SZ">Eswatini</option>
-    <option value="ET">Ethiopia</option>
-    <option value="FK">Falkland Islands (Islas Malvinas)</option>
-    <option value="FO">Faroe Islands</option>
-    <option value="FJ">Fiji</option>
-    <option value="FI">Finland</option>
-    <option value="FR">France</option>
-    <option value="GF">French Guiana</option>
-    <option value="PF">French Polynesia</option>
-    <option value="TF">French Southern Territories</option>
-    <option value="GA">Gabon</option>
-    <option value="GM">Gambia</option>
-    <option value="GE">Georgia</option>
-    <option value="DE">Germany</option>
-    <option value="GH">Ghana</option>
-    <option value="GI">Gibraltar</option>
-    <option value="GR">Greece</option>
-    <option value="GL">Greenland</option>
-    <option value="GD">Grenada</option>
-    <option value="GP">Guadeloupe</option>
-    <option value="GU">Guam</option>
-    <option value="GT">Guatemala</option>
-    <option value="GG">Guernsey</option>
-    <option value="GN">Guinea</option>
-    <option value="GW">Guinea-Bissau</option>
-    <option value="GY">Guyana</option>
-    <option value="HT">Haiti</option>
-    <option value="HM">Heard & McDonald Islands</option>
-    <option value="HN">Honduras</option>
-    <option value="HK">Hong Kong</option>
-    <option value="HU">Hungary</option>
-    <option value="IS">Iceland</option>
-    <option value="IN">India</option>
-    <option value="ID">Indonesia</option>
-    <option value="IR">Iran</option>
-    <option value="IQ">Iraq</option>
-    <option value="IE">Ireland</option>
-    <option value="IM">Isle of Man</option>
-    <option value="IL">Israel</option>
-    <option value="IT">Italy</option>
-    <option value="JM">Jamaica</option>
-    <option value="JP">Japan</option>
-    <option value="JE">Jersey</option>
-    <option value="JO">Jordan</option>
-    <option value="KZ">Kazakhstan</option>
-    <option value="KE">Kenya</option>
-    <option value="KI">Kiribati</option>
-    <option value="KP">North Korea</option>
-    <option value="KR">South Korea</option>
-    <option value="XK">Kosovo</option>
-    <option value="KW">Kuwait</option>
-    <option value="KG">Kyrgyzstan</option>
-    <option value="LA">Laos</option>
-    <option value="LV">Latvia</option>
-    <option value="LB">Lebanon</option>
-    <option value="LS">Lesotho</option>
-    <option value="LR">Liberia</option>
-    <option value="LY">Libya</option>
-    <option value="LI">Liechtenstein</option>
-    <option value="LT">Lithuania</option>
-    <option value="LU">Luxembourg</option>
-    <option value="MO">Macao</option>
-    <option value="MK">North Macedonia</option>
-    <option value="MG">Madagascar</option>
-    <option value="MW">Malawi</option>
-    <option value="MY">Malaysia</option>
-    <option value="MV">Maldives</option>
-    <option value="ML">Mali</option>
-    <option value="MT">Malta</option>
-    <option value="MH">Marshall Islands</option>
-    <option value="MQ">Martinique</option>
-    <option value="MR">Mauritania</option>
-    <option value="MU">Mauritius</option>
-    <option value="YT">Mayotte</option>
-    <option value="MX">Mexico</option>
-    <option value="FM">Micronesia</option>
-    <option value="MD">Moldova</option>
-    <option value="MC">Monaco</option>
-    <option value="MN">Mongolia</option>
-    <option value="ME">Montenegro</option>
-    <option value="MS">Montserrat</option>
-    <option value="MA">Morocco</option>
-    <option value="MZ">Mozambique</option>
-    <option value="MM">Myanmar (Burma)</option>
-    <option value="NA">Namibia</option>
-    <option value="NR">Nauru</option>
-    <option value="NP">Nepal</option>
-    <option value="NL">Netherlands</option>
-    <option value="AN">Curaçao</option>
-    <option value="NC">New Caledonia</option>
-    <option value="NZ">New Zealand</option>
-    <option value="NI">Nicaragua</option>
-    <option value="NE">Niger</option>
-    <option value="NG">Nigeria</option>
-    <option value="NU">Niue</option>
-    <option value="NF">Norfolk Island</option>
-    <option value="MP">Northern Mariana Islands</option>
-    <option value="NO">Norway</option>
-    <option value="OM">Oman</option>
-    <option value="PK">Pakistan</option>
-    <option value="PW">Palau</option>
-    <option value="PS">Palestine</option>
-    <option value="PA">Panama</option>
-    <option value="PG">Papua New Guinea</option>
-    <option value="PY">Paraguay</option>
-    <option value="PE">Peru</option>
-    <option value="PH">Philippines</option>
-    <option value="PN">Pitcairn Islands</option>
-    <option value="PL">Poland</option>
-    <option value="PT">Portugal</option>
-    <option value="PR">Puerto Rico</option>
-    <option value="QA">Qatar</option>
-    <option value="RE">Réunion</option>
-    <option value="RO">Romania</option>
-    <option value="RU">Russia</option>
-    <option value="RW">Rwanda</option>
-    <option value="BL">St. Barthélemy</option>
-    <option value="SH">St. Helena</option>
-    <option value="KN">St. Kitts & Nevis</option>
-    <option value="LC">St. Lucia</option>
-    <option value="MF">St. Martin</option>
-    <option value="PM">St. Pierre & Miquelon</option>
-    <option value="VC">St. Vincent & Grenadines</option>
-    <option value="WS">Samoa</option>
-    <option value="SM">San Marino</option>
-    <option value="ST">São Tomé & Príncipe</option>
-    <option value="SA">Saudi Arabia</option>
-    <option value="SN">Senegal</option>
-    <option value="RS">Serbia</option>
-    <option value="CS">Serbia</option>
-    <option value="SC">Seychelles</option>
-    <option value="SL">Sierra Leone</option>
-    <option value="SG">Singapore</option>
-    <option value="SX">Sint Maarten</option>
-    <option value="SK">Slovakia</option>
-    <option value="SI">Slovenia</option>
-    <option value="SB">Solomon Islands</option>
-    <option value="SO">Somalia</option>
-    <option value="ZA">South Africa</option>
-    <option value="GS">South Georgia & South Sandwich Islands</option>
-    <option value="SS">South Sudan</option>
-    <option value="ES">Spain</option>
-    <option value="LK">Sri Lanka</option>
-    <option value="SD">Sudan</option>
-    <option value="SR">Suriname</option>
-    <option value="SJ">Svalbard & Jan Mayen</option>
-    <option value="SE">Sweden</option>
-    <option value="CH">Switzerland</option>
-    <option value="SY">Syria</option>
-    <option value="TW">Taiwan</option>
-    <option value="TJ">Tajikistan</option>
-    <option value="TZ">Tanzania</option>
-    <option value="TH">Thailand</option>
-    <option value="TL">Timor-Leste</option>
-    <option value="TG">Togo</option>
-    <option value="TK">Tokelau</option>
-    <option value="TO">Tonga</option>
-    <option value="TT">Trinidad & Tobago</option>
-    <option value="TN">Tunisia</option>
-    <option value="TR">Türkiye</option>
-    <option value="TM">Turkmenistan</option>
-    <option value="TC">Turks & Caicos Islands</option>
-    <option value="TV">Tuvalu</option>
-    <option value="UM">U.S. Outlying Islands</option>
-    <option value="UG">Uganda</option>
-    <option value="UA">Ukraine</option>
-    <option value="AE">United Arab Emirates</option>
-    <option value="GB">United Kingdom</option>
-    <option value="US">United States</option>
-    <option value="UY">Uruguay</option>
-    <option value="UZ">Uzbekistan</option>
-    <option value="VU">Vanuatu</option>
-    <option value="VA">Vatican City</option>
-    <option value="VE">Venezuela</option>
-    <option value="VN">Vietnam</option>
-    <option value="VG">British Virgin Islands</option>
-    <option value="VI">U.S. Virgin Islands</option>
-    <option value="WF">Wallis & Futuna</option>
-    <option value="EH">Western Sahara</option>
-    <option value="YE">Yemen</option>
-    <option value="ZM">Zambia</option>
-    <option value="ZW">Zimbabwe</option>
-              </select>
-
-                          <!-- Input field for autocomplete -->
-              <input type="text" id="autocomplete-country" class="form-control" placeholder="... search your residency" style="flex: 1;" />
-
-            </div>
-        </td>
-      </tr>
-      <!-- Column balance -->
-      <colgroup>
-        <col style="width: 45%">
-        <col style="width: 55%">
-      </colgroup>
-    </table>
-    </form>
-</div>
-</main>
-
-
-<footer class="content-vertical-center content-horizontal-right">
-<div class="w-l text-justify">
-</div>
-<button id="continue" type="submit" form="demography">
-Continue &rarr;
-</button>
-
 </footer>
 `,
 // Conscientious Completion

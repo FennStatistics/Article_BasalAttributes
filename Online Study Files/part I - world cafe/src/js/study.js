@@ -1099,6 +1099,10 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Download()
   ],
   content: [  
+    InfosBasalAttributes_htmlForm,
+    basalAttributesRating,
+
+
     QuesTools_htmlForm,
 
     // >>> introduction phase

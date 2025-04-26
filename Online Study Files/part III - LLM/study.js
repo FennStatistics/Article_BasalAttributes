@@ -17,6 +17,33 @@ var paracountclicks = 0;
 var globalCounterAPT = 0;
 
 /* 
+################### Testing of Study ###################
+*/
+const TestingStudy_htmlForm = new lab.html.Form({
+  title: "testingStudy",
+  content: textObj.testingStudy,
+  messageHandlers: {
+    commit: () => {
+      // progress bar
+    },
+  },
+});
+
+/* 
+################### Statistical Procedures of Study ###################
+*/
+const StatisticalProceduresOfStudy_htmlForm = new lab.html.Form({
+  title: "statisticalProceduresStudy",
+  content: textObj.statisticalProceduresStudy,
+  messageHandlers: {
+    commit: () => {
+      // progress bar
+    },
+  },
+});
+
+
+/* 
 ################### Start of Study ###################
 */
 
@@ -120,724 +147,23 @@ const ExclusionCriteria_htmlForm = new lab.html.Form({
   },
 });
 
-// not needed: Attention Check
-function continueornot() {
-  if ($("fieldset :checkbox:checked").length > 0) {
-    // ok
-    return true;
-  } else {
-    alert("Please check at least one of these activities.");
-    return false;
-  }
-}
 
-const AttentionCheck_htmlForm = new lab.html.Form({
-  title: "AttentionCheck",
-  content: textObj.attentionCheck,
-  messageHandlers: {
-    run: function anonymous() {},
-    commit: () => {
-      var attCheck_array = [];
-      $("fieldset :checkbox").each(function () {
-        if (this.checked) {
-          attCheck_array.push(this.id);
-        }
-      });
-      attCheck_array;
 
-      study.options.datastore.set("attCheck_array", attCheck_array);
-      study.options.datastore.set(
-        "attCheck_text",
-        $("#attCheck_OtherText").val()
-      );
 
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
 
-const SetupStudy_htmlForm = new lab.html.Form({
-  title: "SetupStudy",
-  content: textObj.setupStudy,
-  messageHandlers: {
-    commit: () => {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
 
-      if (typeof jatos.jQuery === "function") {
-        // If JATOS is available, send data there
-        var resultJson = study.options.datastore.exportJson();
-        console.log("result data sent to JATOS second time");
-        jatos
-          .submitResultData(resultJson)
-          .then(() => console.log("success"))
-          .catch(() => console.log("error"));
-      }
-    },
-  },
-});
+
+
+
+
 
 /* 
-################### Affective Priming Task (APT) PRACTICE ###################
-*/
-
-// Randomize key assignments
-const isXNegative = Math.random() < 0.5;
-
-const keyAssignments = {
-  xkey: isXNegative ? "negative" : "positive",
-  mkey: isXNegative ? "positive" : "negative",
-};
-
-// instructions
-const PracticeTrialsInstructions_Screen = new lab.html.Screen({
-  title: "PracticeTrialsInstructions",
-  tardy: false,
-  responses: {
-    "keypress(Space)": "",
-  },
-  content: `
-<header>
-<h3>Read the following Reaction Time Task instructions carefully for the practice trials:</h3>
-</header>
-
- <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
-    <p> 
- The following explains the procedure for each trial: At the beginning of each trial, a fixation cross will appear. Please focus your gaze on the cross. After the fixation cross, an image will appear, which you should ignore. The fixation cross and the image will disappear automatically without you needing to press any key. 
-    </p> 
-        <p> 
-        Next, a word will appear. Your task is to decide as <strong>quickly</strong> as possible whether the word is negative or positive. To do this, please press on the keyboard: 
-    </p> 
-    <ul> 
-        <li id="x_placeholder">The <kbd>x</kbd> PLACEHOLDER</li> 
-        <li id="m_placeholder"><kbd>m</kbd> PLACEHOLDER</li> 
-    </ul> 
-    <p> 
-        Please keep one index finger of your left and right hand on the respective keys throughout the experiment. 
-            </p> 
-    <p> 
-        Once you press one of the two keys, the next trial will start automatically. 
-            </p> 
-                <p> 
-        You will begin with 12 practice trials. When you are ready to begin the practice trials, place your index fingers on the respective keys and press the <kbd>Spacebar</kbd> to start. 
-    </p> 
-  </div> 
-</main>
-
-<footer class="content-vertical-center content-horizontal-center">
-
-</footer>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      // Update the instructions dynamically
-      $("#x_placeholder").html(
-        `The <kbd>x</kbd> key if you consider the word to be <strong>${keyAssignments.xkey.toUpperCase()}</strong>, or the`
-      );
-      $("#m_placeholder").html(
-        `The <kbd>m</kbd> key if you consider the word to be <strong>${keyAssignments.mkey.toUpperCase()}</strong>.`
-      );
-    },
-    commit: () => {
-      // reset to 0
-      globalCounterAPT = 0;
-
-      // save data
-      study.options.datastore.set("key_assignment", keyAssignments);
-
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-// fixation cross
-const FixationCross_practice_Screen = new lab.html.Screen({
-  title: "FixationCross_practice",
-  tardy: false,
-  timeout: random_Stimuli_practice[globalCounterAPT]["duration"],
-  content: `
-  <main class="content-canvas">
-  <canvas id="canvas" width="400" height="400"></canvas>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // Set cross size and position
-      const crossLength = 80; // Length of each line of the cross
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const lineWidth = 2;
-
-      // Set line style
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = lineWidth;
-
-      // Draw the horizontal line
-      ctx.beginPath();
-      ctx.moveTo(centerX - crossLength / 2, centerY);
-      ctx.lineTo(centerX + crossLength / 2, centerY);
-      ctx.stroke();
-
-      // Draw the vertical line
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY - crossLength / 2);
-      ctx.lineTo(centerX, centerY + crossLength / 2);
-      ctx.stroke();
-    },
-  },
-});
-
-// prime
-const Prime_practice_Screen = new lab.html.Screen({
-  title: "Prime_practice",
-  tardy: false,
-  timeout: 160,
-  content: `
-<main class="content-canvas">
-  <div class="image-container">
-    <img id="prime_image" src="" alt="Person Image">
-  </div>
-</main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      const primeImage = $("#prime_image");
-      const imagePath =
-        "src/static/primes practice/" +
-        random_Stimuli_practice[globalCounterAPT]["prime"] +
-        ".png";
-      // Set the image source
-      primeImage.attr("src", imagePath);
-
-      primeImage.on("load", function () {
-        // make the image visible only after it's loaded
-        primeImage.css("visibility", "visible");
-      });
-
-      // hide the image in the inital state
-      primeImage.css("visibility", "hidden");
-    },
-  },
-});
-
-const TrialsTask_practice_Screen = new lab.html.Screen({
-  title: "TrialsTask_practice",
-  tardy: false,
-  responses: {
-    "keypress(x)": keyAssignments["xkey"],
-    "keypress(m)": keyAssignments["mkey"],
-  },
-  content: `
-  <main class="content-canvas">
-    <span id="stimulus_task" style="font-size: 70px;">xxx</span>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      $("#stimulus_task").text(
-        random_Stimuli_practice[globalCounterAPT]["stimulus"]
-      );
-    },
-    commit: () => {
-      // save data
-      //> stimulus
-      study.options.datastore.set(
-        "stimulus_practice",
-        random_Stimuli_practice[globalCounterAPT]["stimulus"]
-      );
-      //> prime
-      study.options.datastore.set(
-        "prime_practice",
-        random_Stimuli_practice[globalCounterAPT]["prime"]
-      );
-      //> response_boolean
-      if (
-        positiveWords_practice.includes(
-          random_Stimuli_practice[globalCounterAPT]["stimulus"]
-        ) &&
-        study.options.datastore.state.response == "positive"
-      ) {
-        study.options.datastore.set("response_boolean_practice", true);
-      } else if (
-        negativeWords_practice.includes(
-          random_Stimuli_practice[globalCounterAPT]["stimulus"]
-        ) &&
-        study.options.datastore.state.response == "negative"
-      ) {
-        study.options.datastore.set("response_boolean_practice", true);
-      } else {
-        study.options.datastore.set("response_boolean_practice", false);
-      }
-
-      // increase global counter:
-      globalCounterAPT++;
-
-      // no progress bar
-    },
-  },
-});
-
-// feedback trial
-const FeedbackTrial_practice_Screen = new lab.html.Screen({
-  title: "FeedbackTrial_practice",
-  tardy: true,
-  timeout: 2000,
-  responses: {
-    "keypress(Space)": "",
-  },
-  content: `
-    <main class="content-canvas">
-    <span id="placeholder_correctness"  style="font-size: 70px;">XXX</span>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      if (study.options.datastore.state.response_boolean_practice) {
-        $("#placeholder_correctness").html("correct response");
-      } else {
-        $("#placeholder_correctness").html("incorrect response");
-      }
-    },
-    commit: () => {
-      // no progress bar
-    },
-  },
-});
-
-const Sequence_practice_APT = new lab.flow.Sequence({
-  title: "Sequence Practice Affective Prime Task",
-  shuffle: false,
-  content: [
-    FixationCross_practice_Screen,
-    Prime_practice_Screen,
-    TrialsTask_practice_Screen,
-    FeedbackTrial_practice_Screen,
-  ],
-});
-
-const LoopComponent_practice_APT = new lab.flow.Loop({
-  template: Sequence_practice_APT,
-  templateParameters: [
-    {
-      notneeded: 0,
-    },
-  ],
-  sample: {
-    mode: "draw-replace",
-    n: random_Stimuli_practice.length, // 12
-  },
-  indexParameter: "counter_inner",
-});
-
-/* 
-################### Affective Priming Task (APT) MAIN ###################
-*/
-
-// instructions
-const ExpTrialsInstructions_Screen = new lab.html.Screen({
-  title: "ExpTrialsInstructions",
-  tardy: false,
-  responses: {
-    "keypress(Space)": "",
-  },
-  content: `
-<header>
-<h3>Read the following Reaction Time Task instructions carefully for the experimental trials:</h3>
-</header>
-
- <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
-    <p> 
-        The practice trials are now complete. The experimental trials will begin next. Please remember that your task is to classify the displayed word as positive or negative as QUICKLY as possible. Use the following keys: 
-    </p> 
-        <ul> 
-        <li id="x_placeholder">The <kbd>x</kbd> PLACEHOLDER</li> 
-        <li id="m_placeholder"><kbd>m</kbd> PLACEHOLDER</li> 
-    </ul> 
-    <p> 
-        You will complete a total of four blocks, with each block containing 90 trials. 
-    </p> 
-    <p> 
-        When you are ready to begin the experimental trials, place your index fingers on the respective keys and press the <kbd>Spacebar</kbd> to start. 
-    </p> 
-  </div> 
-</main>
-
-<footer class="content-vertical-center content-horizontal-center">
-
-</footer>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      // Update the instructions dynamically
-      $("#x_placeholder").html(
-        `The <kbd>x</kbd> key if you consider the word to be <strong>${keyAssignments.xkey.toUpperCase()}</strong>, or the`
-      );
-      $("#m_placeholder").html(
-        `The <kbd>m</kbd> key if you consider the word to be <strong>${keyAssignments.mkey.toUpperCase()}</strong>.`
-      );
-    },
-    commit: () => {
-      // reset to 0
-      globalCounterAPT = 0;
-
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-// fixation cross
-const FixationCross_Screen = new lab.html.Screen({
-  title: "FixationCross",
-  tardy: false,
-  timeout: random_Stimuli[globalCounterAPT]["duration"], // random_Stimuli[globalCounterAPT]["duration"],
-  content: `
-  <main class="content-canvas">
-  <canvas id="canvas" width="400" height="400"></canvas>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // Set cross size and position
-      const crossLength = 80; // Length of each line of the cross
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const lineWidth = 2;
-
-      // Set line style
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = lineWidth;
-
-      // Draw the horizontal line
-      ctx.beginPath();
-      ctx.moveTo(centerX - crossLength / 2, centerY);
-      ctx.lineTo(centerX + crossLength / 2, centerY);
-      ctx.stroke();
-
-      // Draw the vertical line
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY - crossLength / 2);
-      ctx.lineTo(centerX, centerY + crossLength / 2);
-      ctx.stroke();
-    },
-  },
-});
-
-// prime
-const Prime_Screen = new lab.html.Screen({
-  title: "Prime",
-  timeout: 160, // 160,
-  tardy: false,
-  content: `
-<main class="content-canvas">
-  <div class="image-container">
-    <img id="prime_image" src="" alt="Person Image">
-  </div>
-</main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      const primeImage = $("#prime_image");
-      const imagePath =
-        "src/static/primes main/" +
-        random_Stimuli[globalCounterAPT]["prime"] +
-        ".png";
-      // Set the image source
-      primeImage.attr("src", imagePath);
-
-      primeImage.on("load", function () {
-        // make the image visible only after it's loaded
-        primeImage.css("visibility", "visible");
-      });
-
-      // hide the image in the inital state
-      primeImage.css("visibility", "hidden");
-    },
-  },
-});
-
-// feedback trial
-var boolSkipFeedbackTrial = true; // skip feedback of single trial
-var boolSkipFeedbackBlock = false;
-
-const TrialsTask_Screen = new lab.html.Screen({
-  title: "TrialsTask",
-  tardy: false,
-  responses: {
-    "keypress(x)": keyAssignments["xkey"],
-    "keypress(m)": keyAssignments["mkey"],
-  },
-  content: `
-  <main class="content-canvas">
-    <span id="stimulus_task" style="font-size: 70px;">xxx</span>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      $("#stimulus_task").text(random_Stimuli[globalCounterAPT]["stimulus"]);
-    },
-    commit: () => {
-      // save data
-      //> stimulus
-      study.options.datastore.set(
-        "stimulus",
-        random_Stimuli[globalCounterAPT]["stimulus"]
-      );
-      //> prime
-      study.options.datastore.set(
-        "prime",
-        random_Stimuli[globalCounterAPT]["prime"]
-      );
-      //> response_boolean
-      if (
-        positiveWords.includes(random_Stimuli[globalCounterAPT]["stimulus"]) &&
-        study.options.datastore.state.response == "positive"
-      ) {
-        study.options.datastore.set("response_boolean", true);
-      } else if (
-        negativeWords.includes(random_Stimuli[globalCounterAPT]["stimulus"]) &&
-        study.options.datastore.state.response == "negative"
-      ) {
-        study.options.datastore.set("response_boolean", true);
-      } else {
-        study.options.datastore.set("response_boolean", false);
-      }
-
-      // if longer than 1.5s return trial feedback
-      if (study.options.datastore.state.duration > 1500) {
-        boolSkipFeedbackTrial = false;
-      } else {
-        boolSkipFeedbackTrial = true;
-      }
-
-      // increase global counter:
-      globalCounterAPT++;
-
-      // Check if the round is every 90th trial
-      if (globalCounterAPT % 90 === 0 && globalCounterAPT !== 0) {
-        boolSkipFeedbackBlock = false; // Show feedback
-      } else {
-        boolSkipFeedbackBlock = true; // Skip feedback
-      }
-
-      // no progress bar
-    },
-  },
-});
-
-// feedback trial
-const ExpTrialsFeedback_Screen = new lab.html.Screen({
-  title: "ExpTrialsFeedback",
-  tardy: true,
-  skip: "${boolSkipFeedbackTrial}",
-  timeout: 2000,
-  responses: {
-    "keypress(Space)": "",
-  },
-  content: `
-    <main class="content-canvas">
-    <span style="font-size: 70px;"> Please respond faster!</span>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {},
-    commit: () => {
-      // no progress bar
-    },
-  },
-});
-
-// feedback block
-//> Ranges for filtering
-const ranges = [
-  { lower: 0, upper: 90 },
-  { lower: 91, upper: 180 },
-  { lower: 181, upper: 270 },
-  { lower: 271, upper: 360 },
-];
-//> Function to extract durations for each range
-function extractDurationsByRange(senders, counters, durations, ranges) {
-  const results = {};
-
-  ranges.forEach(({ lower, upper }) => {
-    const key = `${lower}-${upper}`;
-    results[key] = [];
-
-    for (let i = 0; i < senders.length; i++) {
-      if (
-        senders[i] === "TrialsTask" &&
-        counters[i] >= lower &&
-        counters[i] <= upper
-      ) {
-        results[key].push(durations[i]);
-      }
-    }
-  });
-
-  return results;
-}
-
-//> Function to construct the range key dynamically
-function getRangeKey(counter, ranges) {
-  for (const { lower, upper } of ranges) {
-    if (counter >= lower && counter <= upper) {
-      return `${lower}-${upper}`;
-    }
-  }
-  return null; // Return null if the counter does not match any range
-}
-
-const ExpTrialsFeedbackBlock_Screen = new lab.html.Screen({
-  title: "ExpTrialsFeedbackBlock",
-  tardy: true,
-  skip: "${boolSkipFeedbackBlock}",
-  responses: {
-    "keypress(Space)": "",
-  },
-  content: `
-<header>
-<h3>Feedback of your last block:</h3>
-</header>
-
- <main class="content-horizontal-center content-vertical-center">
-   <div class="w-l text-justify" id="placeholder_lastBlock">
-    <p> 
-        In the last block, your reaction time was <strong id="simulus_block_responseTime">XXX</strong><strong>ms</strong> (milliseconds). Please try to respond even faster in the next block! Remember: 
-    </p> 
-      <ul> 
-        <li id="x_placeholder">The <kbd>x</kbd> PLACEHOLDER</li> 
-        <li id="m_placeholder"><kbd>m</kbd> PLACEHOLDER</li> 
-      </ul> 
-    <p> 
-        When you are ready to begin the next block, place your index fingers on the respective keys and press the <kbd>Spacebar</kbd> to start. 
-    </p> 
-  </div> 
-</main>
-
-<footer class="content-vertical-center content-horizontal-center">
-
-</footer>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      // Update the instructions dynamically
-      $("#x_placeholder").html(
-        `Press the <kbd>x</kbd> key for <strong>${keyAssignments.xkey.toUpperCase()}</strong> words.`
-      );
-      $("#m_placeholder").html(
-        `Press the <kbd>m</kbd> key for <strong>${keyAssignments.mkey.toUpperCase()}</strong> words.`
-      );
-
-      if (globalCounterAPT == random_Stimuli.length) {
-        // 360
-        $("#placeholder_lastBlock").html(`
-          <p> 
-      In the final block, your reaction time was <strong id="simulus_block_responseTime">XXX</strong><strong>ms</strong> (milliseconds).
-  </p> 
-      <p> 
-      Please press the <kbd>Spacebar</kbd> to continue with the study. 
-  </p> 
-      `);
-      }
-
-      const validRange = ranges.some(
-        ({ lower, upper }) =>
-          globalCounterAPT >= lower && globalCounterAPT <= upper
-      );
-
-      if (!validRange) {
-        console.error(
-          `Counter ${globalCounterAPT} is out of the defined ranges.`
-        );
-        return; // Or provide a fallback
-      } else {
-        const durationsByRange = extractDurationsByRange(
-          study.options.datastore.extract("sender"),
-          study.options.datastore.extract("counter_inner"),
-          study.options.datastore.extract("duration"),
-          ranges
-        );
-
-        const rangeKey = getRangeKey(globalCounterAPT, ranges);
-
-        const meanInMS =
-          durationsByRange[rangeKey].reduce((sum, value) => sum + value, 0) /
-          durationsByRange[rangeKey].length;
-        const roundedMeanInMS = Math.round(meanInMS * 100) / 100;
-
-        $("#simulus_block_responseTime").text(roundedMeanInMS);
-      }
-
-      /*
-      if (rangeKey && durationsByRange[rangeKey]) {
-        console.log(
-          `Durations for range ${rangeKey}:`,
-          durationsByRange[rangeKey]
-        );
-      } else {
-        console.error(
-          "Counter is outside the defined ranges or no durations available"
-        );
-      }
-      */
-    },
-    commit: () => {
-      // no progress bar
-    },
-  },
-});
-
-const Sequence_APT = new lab.flow.Sequence({
-  title: "Sequence Affective Prime Task",
-  shuffle: false,
-  content: [
-    FixationCross_Screen,
-    Prime_Screen,
-    TrialsTask_Screen,
-    ExpTrialsFeedback_Screen,
-    ExpTrialsFeedbackBlock_Screen,
-  ],
-});
-
-const LoopComponent_APT = new lab.flow.Loop({
-  template: Sequence_APT,
-  templateParameters: [
-    {
-      notneeded: 0,
-    },
-  ],
-  sample: {
-    mode: "draw-replace",
-    n: random_Stimuli.length, // 360
-  },
-  indexParameter: "counter_inner",
-});
-
-/* 
-################### Affective Imagery ###################
+################### Rating of technology descriptions ###################
 */
 // Transition from APT to AIT
-const TransitionToAIT_htmlForm = new lab.html.Form({
-  title: "TransitionToAIT",
-  content: textObj.TransitionToAIT,
+const ExplenationRatingTask_htmlForm = new lab.html.Form({
+  title: "ExplenationRatingTask",
+  content: textObj.ExplenationRatingTask,
   messageHandlers: {
     commit: () => {
       // progress bar
@@ -858,41 +184,254 @@ const TransitionToAIT_htmlForm = new lab.html.Form({
   },
 });
 
-const Sequence_AIT = new lab.flow.Sequence({
-  title: "Sequence Affective Imagery",
-  shuffle: false,
-  content: [
-    AffectiveImageryInst_htmlForm,
-    AffectiveImagery_htmlForm,
-    AffectiveImageryAffect_htmlForm,
-  ],
-});
 
-const loopAIT = new lab.flow.Loop({
-  template: Sequence_AIT,
+
+/* 
+################### rating basal attributes ###################
+*/
+const template = new lab.html.Form({
+  content: '<section style="font-size: 24px; border: 1px dashed black; padding: 10px; width: 80%; margin: 10px auto; text-align: center;">${ parameters.Text }</section>' + `
+<!-- Relevancy Rating -->
+<div class="page-item page-item-likert" style="margin-left:20%; margin-right: 20%">
+    <!-- Start of Likert Questions -->
+    <form id="ratingBasalAttributes">
+
+<p class="font-weight-bold" style="margin-top:2rem;">Wie hilfreich finden Sie diese Technologie?</p>
+
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
+  <span style="width: 20%; text-align: left;">Nicht hilfreich</span>
+  <span style="width: 30%; text-align: center;">Etwas hilfreich</span>
+  <span style="width: 20%; text-align: center;">Hilfreich</span>
+  <span style="width: 30%; text-align: right;">Sehr hilfreich</span>
+</div>
+
+    <table class="page-item-table" style="margin-top: 1rem;">
+      <colgroup>
+        <col style="width: 6%" span="10">
+      </colgroup>
+      <thead class="sticky-top">
+        <tr>
+          <th class="sticky-top text-center small">1</th>
+          <th class="sticky-top text-center small">2</th>
+          <th class="sticky-top text-center small">3</th>
+          <th class="sticky-top text-center small">4</th>
+          <th class="sticky-top text-center small">5</th>
+          <th class="sticky-top text-center small">6</th>
+          <th class="sticky-top text-center small">7</th>
+          <th class="sticky-top text-center small">8</th>
+          <th class="sticky-top text-center small">9</th>
+          <th class="sticky-top text-center small">10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="1" required></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="2"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="3"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="4"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="5"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="6"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="7"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="8"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="9"></td>
+          <td class="text-center"><input type="radio" name="rat_helpful" value="10"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Question 2: How much do you trust the technology to function correctly? -->
+<p class="font-weight-bold" style="margin-top:2rem;">Wie sehr vertrauen Sie darauf, dass die Technologie korrekt funktioniert?</p>
+
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
+  <span style="width: 20%; text-align: left;">Nicht vertrauenswürdig</span>
+  <span style="width: 30%; text-align: center;">Etwas vertrauenswürdig</span>
+  <span style="width: 20%; text-align: center;">Vertrauenswürdig</span>
+  <span style="width: 30%; text-align: right;">Sehr vertrauenswürdig</span>
+</div>
+    <table class="page-item-table" style="margin-top: 1rem;">
+      <colgroup>
+        <col style="width: 6%" span="10">
+      </colgroup>
+      <thead class="sticky-top">
+        <tr>
+          <th class="sticky-top text-center small">1</th>
+          <th class="sticky-top text-center small">2</th>
+          <th class="sticky-top text-center small">3</th>
+          <th class="sticky-top text-center small">4</th>
+          <th class="sticky-top text-center small">5</th>
+          <th class="sticky-top text-center small">6</th>
+          <th class="sticky-top text-center small">7</th>
+          <th class="sticky-top text-center small">8</th>
+          <th class="sticky-top text-center small">9</th>
+          <th class="sticky-top text-center small">10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="radio" name="rat_trust" value="1" required></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="2"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="3"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="4"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="5"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="6"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="7"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="8"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="9"></td>
+          <td class="text-center"><input type="radio" name="rat_trust" value="10"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Question 3: How likely would you be to use this technology? -->
+<p class="font-weight-bold" style="margin-top:2rem;">Wie wahrscheinlich ist es, dass Sie diese Technologie nutzen würden?</p>
+
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
+  <span style="width: 20%; text-align: left;">Sehr unwahrscheinlich</span>
+  <span style="width: 30%; text-align: center;">Etwas wahrscheinlich</span>
+  <span style="width: 20%; text-align: center;">Wahrscheinlich</span>
+  <span style="width: 30%; text-align: right;">Sehr wahrscheinlich</span>
+</div>
+
+    <table class="page-item-table" style="margin-top: 1rem;">
+      <colgroup>
+        <col style="width: 6%" span="10">
+      </colgroup>
+      <thead class="sticky-top">
+        <tr>
+          <th class="sticky-top text-center small">1</th>
+          <th class="sticky-top text-center small">2</th>
+          <th class="sticky-top text-center small">3</th>
+          <th class="sticky-top text-center small">4</th>
+          <th class="sticky-top text-center small">5</th>
+          <th class="sticky-top text-center small">6</th>
+          <th class="sticky-top text-center small">7</th>
+          <th class="sticky-top text-center small">8</th>
+          <th class="sticky-top text-center small">9</th>
+          <th class="sticky-top text-center small">10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="radio" name="rat_use" value="1" required></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="2"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="3"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="4"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="5"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="6"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="7"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="8"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="9"></td>
+          <td class="text-center"><input type="radio" name="rat_use" value="10"></td>
+        </tr>
+      </tbody>
+    </table>
+        <!-- Question 4: What is your overall emotional reaction to this technology? -->
+<p class="font-weight-bold" style="margin-top:2rem;"> Welche Emotionen löst diese Technologie bei Ihnen aus?</p>
+
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
+  <span style="width: 20%; text-align: left;">Stark negativ</span>
+  <span style="width: 30%; text-align: center;">Negativ</span>
+  <span style="width: 20%; text-align: center;">Positiv</span>
+  <span style="width: 30%; text-align: right;">Stark positiv</span>
+</div>
+
+    <table class="page-item-table" style="margin-top: 1rem;">
+      <colgroup><col style="width: 6%" span="10"></colgroup>
+      <thead class="sticky-top">
+        <tr>
+          <th class="sticky-top text-center small">1</th>
+          <th class="sticky-top text-center small">2</th>
+          <th class="sticky-top text-center small">3</th>
+          <th class="sticky-top text-center small">4</th>
+          <th class="sticky-top text-center small">5</th>
+          <th class="sticky-top text-center small">6</th>
+          <th class="sticky-top text-center small">7</th>
+          <th class="sticky-top text-center small">8</th>
+          <th class="sticky-top text-center small">9</th>
+          <th class="sticky-top text-center small">10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="1" required></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="2"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="3"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="4"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="5"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="6"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="7"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="8"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="9"></td>
+          <td class="text-center"><input type="radio" name="rat_emotion" value="10"></td>
+        </tr>
+      </tbody>
+    </table>
+</form> <!-- End form -->
+
+</div> <!-- End of main container -->
+<br>
+<button id="continue" type="submit" form="ratingBasalAttributes" class="buttonFeedback">
+    Bewertung Technologie abschicken.
+</button>
+`, // parameters substituted ...
+  tardy: true,
+  messageHandlers: {
+    run: function anonymous() {
+
+
+      /*
+      // this.parent.end() !!!s
+      var tmp_this = this;
+      $(document).one('keydown', function (e) {
+        if (e.keyCode == 90) {
+          console.log("clicked z");
+          tmp_this.parent.end();
+        }
+      });
+      */
+
+    },
+    end: function anonymous() {
+      study.options.datastore.set("ratingValence", $("#nodeSlider").val());
+    },
+  },
+})
+
+const basalAttributes = new lab.flow.Loop({
+  template: template,
   templateParameters: [
     {
-      cue: "Person with <strong>underweight</strong>",
-      cue_coding: "underweight",
+        "Vignette": "1",
+        "Text": "Das Nano-Pat-Parka-System zielt auf zukünftige Anforderungen an Schutzkleidung durch eine Kombination bioinspirierter und lebensähnlicher Eigenschaften. Die Technologie nutzt insektenähnliche Mikrostrukturen, um atmungsaktive Flexibilität mit Schutzfunktionen zu verbinden. Trotz des Einsatzes von Kunststoffkomponenten ist das Material leicht zerstörbar und erfordert dadurch eine wartungsintensive Pflege. Kritisch bleibt die potenziell umweltschädliche Produktion synthetischer Nanopartikel. Insgesamt vereint die Innovation natürliche Vorbilder mit technischer Anpassungsfähigkeit, steht jedoch vor ökologischen und praktischen Zielkonflikten.",
     },
     {
-      cue: "Person with <strong>normal weight</strong>",
-      cue_coding: "normalweight",
-    },
-    {
-      cue: "Person with <strong>overweight</strong>",
-      cue_coding: "overweight",
-    },
-    {
-      cue: "Person with <strong>obesity</strong>",
-      cue_coding: "obesity",
-    },
-  ],
+      "Vignette": "2",
+      "Text": "aaaaaaa",
+  },
+],
   sample: {
     mode: "draw-shuffle",
-    n: "4",
+    n: "6",
   },
-});
+})
+
+const basalAttributesRating = new lab.html.Frame({
+  context: `
+    <header>
+  <h4>Bitte bewerten Sie die folgende Beschreibung des Nano-Pat-Parkas:</h4>
+  <h6>
+    Hinweis: Bitte bewerten Sie Ihre Eindrücke hinsichtlich Nützlichkeit, Vertrauen, Nutzungsabsicht und emotionaler Wirkung möglichst intuitiv. 
+  </h6>
+  </header>
+    <main style="width: 100%;">
+      <!-- this is where stimuli will be inserted -->
+    </main>
+  `,
+  contextSelector: 'main',
+  content: basalAttributes,
+})
+
+
 
 /* 
 ################### Survey Scales ###################
@@ -1545,236 +1084,7 @@ const Sequence_Scales = new lab.flow.Sequence({
 /* 
 ################### End of Study ###################
 */
-// Transition from AIT to survey scales
-const TransitionToFinal_htmlForm = new lab.html.Form({
-  title: "TransitionToFinal",
-  content: textObj.TransitionToFinal,
-  messageHandlers: {
-    commit: () => {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-
-      if (typeof jatos.jQuery === "function") {
-        // If JATOS is available, send data there
-        var resultJson = study.options.datastore.exportJson();
-        console.log("result data sent to JATOS");
-        jatos
-          .submitResultData(resultJson)
-          .then(() => console.log("success"))
-          .catch(() => console.log("error"));
-      }
-    },
-  },
-});
-
-// rate primes
-const FixationCross_RatePrime_Screen = new lab.html.Screen({
-  title: "FixationCrossRatePrime",
-  tardy: false,
-  timeout: 500,
-  content: `
-  <main class="content-canvas">
-  <canvas id="canvas" width="400" height="400"></canvas>
-  </main>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // Set cross size and position
-      const crossLength = 80; // Length of each line of the cross
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const lineWidth = 2;
-
-      // Set line style
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = lineWidth;
-
-      // Draw the horizontal line
-      ctx.beginPath();
-      ctx.moveTo(centerX - crossLength / 2, centerY);
-      ctx.lineTo(centerX + crossLength / 2, centerY);
-      ctx.stroke();
-
-      // Draw the vertical line
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY - crossLength / 2);
-      ctx.lineTo(centerX, centerY + crossLength / 2);
-      ctx.stroke();
-    },
-  },
-});
-
-const RatePrime_htmlForm = new lab.html.Form({
-  title: "RatePrime",
-  tardy: false,
-  content: `
-<header>
-<h3>How would you rate this person's weight on a scale from low to high?</h3>
-</header>
-
-<main class="content-horizontal-center content-vertical-center">
-  <div class="w-l">
-<div class="image-container" style="width: 70%; aspect-ratio: 3 / 4; min-width: 300px; min-height: 400px; overflow: hidden; display: flex; justify-content: center; align-items: center; margin: auto;">
-  <img id="prime_image" src="" alt="Person Image" style="width: 100%; height: 100%; object-fit: cover;">
-</div>
-    <!-- Rating scale -->
-    <div class="rating-container">
-      <span class="low-weight">Low Weight</span>
-      <form id="rating_form" class="rating-form">
-        <!-- Radio buttons with labels -->
-        <label>
-          <input type="radio" name="body_shape_rating" value="1" required>
-          <span class="rating-label">1</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="2" required>
-          <span class="rating-label">2</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="3" required>
-          <span class="rating-label">3</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="4" required>
-          <span class="rating-label">4</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="5" required>
-          <span class="rating-label">5</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="6" required>
-          <span class="rating-label">6</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="7" required>
-          <span class="rating-label">7</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="8" required>
-          <span class="rating-label">8</span>
-        </label>
-        <label>
-          <input type="radio" name="body_shape_rating" value="9" required>
-          <span class="rating-label">9</span>
-        </label>
-      </form>
-      <span class="high-weight">High Weight</span>
-    </div>
-  </div> 
-</main>
-
-<footer class="content-vertical-center content-horizontal-center">
-  <button id="continue" type="submit" form="rating_form">
-    Continue &rarr;
-  </button>
-</footer>
-  `,
-  messageHandlers: {
-    run: function anonymous() {
-      var currentPrime = study.options.datastore.get("prime");
-      console.log("currentPrime:", currentPrime);
-
-      $("#prime_image").attr(
-        "src",
-        "src/static/primes main/" + currentPrime + ".png"
-      );
-    },
-    commit: () => {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-const Sequence_RatePrime = new lab.flow.Sequence({
-  title: "Sequence Rate Prime",
-  shuffle: false,
-  content: [FixationCross_RatePrime_Screen, RatePrime_htmlForm],
-});
-
-const loopRatePrime = new lab.flow.Loop({
-  template: Sequence_RatePrime,
-  templateParameters: [
-    {
-      prime: "normalweight_female",
-    },
-    {
-      prime: "normalweight_male",
-    },
-    {
-      prime: "obese_female",
-    },
-    {
-      prime: "obese_male",
-    },
-    {
-      prime: "overweight_female",
-    },
-    {
-      prime: "overweight_male",
-    },
-    {
-      prime: "underweight_female",
-    },
-    {
-      prime: "underweight_male",
-    },
-  ],
-  sample: {
-    mode: "draw-shuffle",
-    n: "8",
-  },
-});
-
-// socio demographic questions
-const SocioDemo_htmlScreen = new lab.html.Form({
-  title: "socio demographic questions",
-  content: textObj.socioDemo,
-  messageHandlers: {
-    run: () => {
-      $(document).ready(function () {
-        // Extract country names from the dropdown
-        let countries = [];
-        $("#country option").each(function () {
-          let countryName = $(this).text();
-          if (countryName.trim() !== "country") {
-            countries.push(countryName);
-          }
-        });
-
-        // Initialize autocomplete
-        $("#autocomplete-country").autocomplete({
-          source: countries,
-          select: function (event, ui) {
-            // When an option is selected, set it in the dropdown
-            let selectedCountry = ui.item.value;
-            $("#country option")
-              .filter(function () {
-                return $(this).text() === selectedCountry;
-              })
-              .prop("selected", true);
-          },
-        });
-      });
-    },
-    commit: () => {
-      // progress bar
-      numElementsCounter++;
-      document.querySelector(".progress-bar").style.width =
-        (numElementsCounter / numElements) * 100 + "%";
-    },
-  },
-});
-
-// feedback screen
+// conscientious completion screen
 const ConscientiousCompletion_htmlScreen = new lab.html.Form({
   title: "ConscientiousCompletion",
   content: textObj.ConscientiousCompletion,
@@ -1876,56 +1186,61 @@ const EndingScreen_htmlScreen = new lab.html.Screen({
 // Define the sequence of components that define the study
 const study = new lab.flow.Sequence({
   metadata: {
-    title:
-      "Assessing underlying processes of weight bias: Adiffusion model analysis",
-    description:
-      "Online study for the assessment of underlying processes of weight bias using an Adiffusion model analysis",
-    repository:
-      "https://github.com/PollakKat/Assessing_underlying_processes_of_weight_bias",
-    contributors:
-      "Katja M. Pollak, Hanna Wachten, Julius Fenn, Raphael Hartmann, Jana Strahler, & Andrea Kiesel; programmed by Julius Fenn",
+    title: "basale Attribute",
+    description: "basal Attributes part III",
+    repository: "",
+    contributors: "Julius Fenn",
   },
   plugins: [
     new lab.plugins.Metadata(),
     // new lab.plugins.Fullscreen(),
-    // new lab.plugins.Debug(), // comment out finally
+     new lab.plugins.Debug(), // comment out finally
     // new lab.plugins.Download()
   ],
   content: [
-    InformCon_htmlForm,
-    InformConsentNO_htmlForm,
+    TransitionToScales_htmlForm,
+    ConscientiousCompletion_htmlScreen,
 
-    
+    FeedbackScreen_htmlScreen,
+
+    ExplenationRatingTask_htmlForm,
+
+    basalAttributesRating,
+
+    ExplenationRatingTask_htmlForm,
+
+    basalAttributesRating,
+
+
+
+
+
+
+    TestingStudy_htmlForm,
+
+
     // >>> introduction phase
     Greetings_htmlForm,
     InformCon_htmlForm,
     InformConsentNO_htmlForm,
     ExclusionCriteria_htmlForm,
-    //AttentionCheck_htmlForm,
-    SetupStudy_htmlForm,
 
-    // >>> APT practice
-    PracticeTrialsInstructions_Screen,
-    LoopComponent_practice_APT,
-
-    // >>> APT main
-    ExpTrialsInstructions_Screen,
-    LoopComponent_APT,
-
-    // >>> AIT
-    TransitionToAIT_htmlForm,
-    loopAIT,
-
+    // >>> rating of technology descriptions
+    ExplenationRatingTask_htmlForm,
+    basalAttributesRating,
+    
+    
     // >>> survey scales
     TransitionToScales_htmlForm,
     Sequence_Scales,
 
-    // >>> ending phase post
-    TransitionToFinal_htmlForm,
-    loopRatePrime,
-    SocioDemo_htmlScreen,
 
-    // >>> ending phase final
+    // for my colleagues !!!
+    StatisticalProceduresOfStudy_htmlForm,
+
+
+
+    // >>> ending phase
     ConscientiousCompletion_htmlScreen,
 
     FeedbackScreen_htmlScreen,
