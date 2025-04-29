@@ -755,6 +755,8 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Download()
   ],
   content: [
+    StatisticalProceduresOfStudy_htmlForm,
+
     // >>> introduction phase
     Greetings_htmlForm,
     InformCon_htmlForm,
