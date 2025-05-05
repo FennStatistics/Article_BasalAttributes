@@ -3,7 +3,7 @@
 # Loading Data -----------------------------------------------------------------
 ## Loading packages
 require(pacman)
-p_load('tidyverse','psych','rjson','data.table', 'xlsx')
+p_load('tidyverse','psych','rjson','data.table', 'writexl')
 options(scipen=999, max.print = 9999)
 
 ## Set working directory to source file location
@@ -14,7 +14,7 @@ data_path <- "data/"
 output_path <- "output/"
 
 ## Reading in data
-json_file <- paste0(data_path, "jatos_results_data_20250502074753.txt")
+json_file <- paste0(data_path, "jatos_results_data_20250505073955.txt")
 
 read_file(json_file) %>%
   # ... split it into lines ...
@@ -57,7 +57,8 @@ df_feedback <- df_feedback %>%
 df_feedback$Vignette <- NULL
 
 
+table(df_feedback$ID)
 table(df_feedback$sender)
 
-xlsx::write.xlsx2(x = df_feedback, file =  file.path(output_path, "feedbackData.xlsx"))
+writexl::write_xlsx(x = df_feedback, path = file.path(output_path, "feedbackData.xlsx"))
 write.csv(x = df_feedback, file.path(output_path, "feedbackData.csv"), row.names = FALSE)
