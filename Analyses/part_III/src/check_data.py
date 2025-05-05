@@ -2,14 +2,28 @@
 Check resulting data from LLM
 """
 
-import string
+import re
+import unicodedata
 import Levenshtein  # Uses fast C-implementation of edit distance
 
 def preprocess(text):
-    return text.lower().translate(str.maketrans("", "", string.punctuation)).strip()
+    text = text.lower()
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("utf-8")
+    text = re.sub(r"[*()\[\]{}]", "", text)           # Remove asterisks and brackets
+    text = text.replace("-", " ")                     # Replace hyphens with spaces
+    text = re.sub(r"[^\w\s]", "", text)               # Remove remaining punctuation
+    text = re.sub(r"\s+", " ", text)                  # Normalize whitespace
+    return text.strip()
 
 def format_results(results):
-    formatted_output = "Missing Words:\n"
+    formatted_output = "Exact Matches:\n"
+    if not results["Exact Matches"]:
+        formatted_output += "None\n"
+    else:
+        for phrase in results["Exact Matches"]:
+            formatted_output += f"- '{phrase}'\n"
+
+    formatted_output += "\nMissing Words:\n"
     if not results["Missing Words"]:
         formatted_output += "None\n"
     else:
@@ -28,33 +42,45 @@ def format_results(results):
     return formatted_output
 
 def check_for_missing_matching_words(description, combined_subset, max_distance=2):
-    # Preprocess text
-    cleaned_text = preprocess(description.replace("**", ""))
-    words_in_text = set(cleaned_text.split())
+    cleaned_text = preprocess(description.replace("*", ""))
+    expected_phrases = [preprocess(phrase) for phrase in combined_subset.split("//")]
 
-    # Preprocess expected words
-    expected_words = [preprocess(word) for word in combined_subset.split("//")]
-
-    missing_words = []
+    exact_matches = []
+    missing_phrases = []
     partial_matches = []
 
-    for expected in expected_words:
-        if expected in words_in_text:
+    text_tokens = cleaned_text.split()
+
+    for expected in expected_phrases:
+        found_exact = False
+        found_partial = False
+        expected_len = len(expected.split())
+
+        # Check exact match using sliding window
+        for i in range(len(text_tokens) - expected_len + 1):
+            window = " ".join(text_tokens[i:i + expected_len])
+            if expected == window:
+                exact_matches.append(expected)
+                found_exact = True
+                break
+
+        if found_exact:
             continue
 
-        # Check Levenshtein distance
-        found_partial = False
-        for text_word in words_in_text:
-            distance = Levenshtein.distance(expected, text_word)
+        # Partial match via Levenshtein
+        for i in range(len(text_tokens) - expected_len + 1):
+            window = " ".join(text_tokens[i:i + expected_len])
+            distance = Levenshtein.distance(expected, window)
             if distance <= max_distance:
-                partial_matches.append((expected, text_word, distance))
+                partial_matches.append((expected, window, distance))
                 found_partial = True
                 break
 
         if not found_partial:
-            missing_words.append(expected)
+            missing_phrases.append(expected)
 
     return format_results({
-        "Missing Words": missing_words,
+        "Exact Matches": exact_matches,
+        "Missing Words": missing_phrases,
         "Partial Matches": partial_matches
     })
