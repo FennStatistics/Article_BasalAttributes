@@ -4,25 +4,36 @@ prompt template
 
 from langchain_core.prompts import ChatPromptTemplate
 
+# new system_template:
+# removed: 3. Anwendungsszenario (ein Satz): Nenne kurz eine konkrete Anwendung, z. B. “Bei starkem Wind …”.
+
 system_template = """
 <Aufgabe:
-Entwickle eine für Laien verständliche, aber wissenschaftlich fundierte Beschreibung eines neuartigen Jackensystems namens Nano-Pat-Parka. 
-Ziel ist es, anhand sogenannter basaler Attribute – also grundlegender, semantisch und emotional bewerteter Merkmale neuer Technologien – die möglichen Vorteile und Herausforderungen dieser Technologie zu verdeutlichen.
+Die R&D-Abteilung hat mehrere Versionen des Jackensystems Nano-Pat-Parka entwickelt. In diesem frühen Entwicklungsstadium sollen Probanden erstes Feedback zu den Konzepten geben, 
+die durch unterschiedliche Kombinationen basaler Attribute charakterisiert sind.
+>
 
-Basale Attribute sind adjektivische Eigenschaften (z. B. „autonom“, „wartungsintensiv“, „bioinspiriert“), die typischerweise verwendet werden, um neue technologische Systeme zu beschreiben. 
-Sie dienen der kognitiven und affektiven Bewertung und ermöglichen eine strukturierte Beschreibung technischer Systeme auf einer allgemeinen Ebene – unabhängig von konkreten Details.
+<Definition basaler Attribute:
+Basale Attribute sind adjektivische Eigenschaften, mit denen grundlegende semantische und emotionale Merkmale neuer Technologien beschrieben werden.
+>
 
-Die Beschreibung des Nano-Pat-Parka soll sich mehrheitliich auf diese basalen Attribute stützen, ohne große Ausführungen zu konkreten technischen Funktionen oder mechanistischen Erklärungen. 
-Das Jackensystem soll funktional generisch beschrieben werden – als Technologie, die auf zukünftige Anforderungen im Bereich Schutzkleidung reagiert.>
+<Struktur (One-Shot):
+1. Einleitungssatz (ein Satz): Beschreibe den Anwendungsbereich der Schutzkleidung und integriere ein erstes Attribut aus der übergebenen Liste.
+2. Hauptteil (zwei Sätze): Kombiniere jeweils zwei Attribute aus der Liste, so dass alle genau einmal verwendet werden.
+3. Anwendungsszenario (ein Satz): Nenne kurz eine konkrete Anwendung, z. B. “Bei starkem Wind …”.
+4. Abschlusssatz (ein Satz): Fasse die wesentliche Innovation des Nano-Pat-Parka prägnant zusammen, ohne Begriffe aus Einleitung oder Hauptteil zu wiederholen.
+
+**Attributs-Check**: Am Ende sollen alle übergebenen basalen Attribute verwendet worden sein.
+>
 
 <Aufgabenstellungen:
-1) ***Der Text MUSS zwischen 60 und 80 Wörter enthalten.*** Weniger als 60 Wörter sind nicht zulässig. Kontrolliere dieses bevor du den Text absendest.
-2) Schreibe sachlich, neutral und aus der dritten Person.
-3) Achte darauf, keine basalen Attribute mit stark gegensätzlicher emotionaler Valenz zu vermischen.
-4) Die Beschreibung muss wissenschaftlich plausibel und begrifflich konsistent sein.
-5) Beginne mit einem einleitenden Satz, der den Anwendungsbereich der Technologie allgemein beschreibt.
-6) Verwende ALLE Wörter, die in der Liste angegeben sind.
-7) Schreibe einen abschließenden Satz, der die Technologie zusammenfasst.>
+- **Attributsnutzung:** Verwende **jedes** Attribut aus der übergebenen Liste **mindestens einmal**.
+- **Wortanzahl:** mindestens 60, höchstens 80 Wörter (prüfen und melden).
+- **Stil:** sachlich, neutral, dritte Person.
+- **Valenz:** alle Attribute müssen dieselbe emotionale Bewertung aufweisen.
+- **Kohärenz:** wissenschaftlich plausibel und begrifflich konsistent.
+- **Pronomen:** Bezeichne den Nano-Pat-Parka mit „er“ und die Technologie mit „sie“.
+>
 """
 
 user_template = """
