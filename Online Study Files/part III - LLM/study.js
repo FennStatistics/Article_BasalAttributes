@@ -190,22 +190,7 @@ const ExplenationRatingTask_htmlForm = new lab.html.Form({
 ################### rating basal attributes ###################
 */
 const template = new lab.html.Form({
-  content: `<form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-<p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-Haben Sie Feedback oder Kritik zu dieser Seite?
-</p>
-<p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-Inhaltlich, Rechtschreibung, Layout, etc.
-</p>
-<textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-<hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
-</form>
-` + 
-  '<section style="font-size: 24px; border: 1px dashed black; padding: 10px; width: 80%; margin: 10px auto; text-align: center;">${ parameters.Text }</section>' + `
+  content: '<section style="font-size: 26px; border: 1px dashed black; padding: 10px; width: 80%; margin: 30px auto; text-align: center;">${ parameters.Text }</section>' + `
 <!-- Relevancy Rating -->
 <div class="page-item page-item-likert" style="margin-left:20%; margin-right: 20%">
     <!-- Start of Likert Questions -->
@@ -755,7 +740,12 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Download()
   ],
   content: [
-    StatisticalProceduresOfStudy_htmlForm,
+    basalAttributesRating,
+
+
+
+
+
 
     // >>> introduction phase
     Greetings_htmlForm,
@@ -771,12 +761,6 @@ const study = new lab.flow.Sequence({
     // >>> survey scales
     TransitionToScales_htmlForm,
     Sequence_Scales,
-
-
-    // for my colleagues !!!
-    StatisticalProceduresOfStudy_htmlForm,
-
-
 
     // >>> ending phase
     ConscientiousCompletion_htmlScreen,

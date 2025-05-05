@@ -211,22 +211,6 @@ statisticalProceduresStudy: `
 
 // ################### Start of Study ###################
    greetings: `
-    <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
       <header>
    <div class="row">
    <div class="column2">
@@ -263,13 +247,15 @@ statisticalProceduresStudy: `
        </section>
        <br>
        <section>
-       Das Ziel der Studie ist es, Ihre Einstellung und Gefühle zu einem neuartigen Jackensystems namens Nano-Pat-Parka zu messen. 
+       Das Ziel der Studie ist es, Ihre Einstellung und Gefühle zu einem neuartigen Jackensystem namens Nano-Pat-Parka zu messen. 
        Dafür zeigen wir Ihnen verschiedene textuelle Beschreibungen des Jackenssystems.
        Auf den nächsten Seiten finden Sie weitere Informationen zum genauen Ablauf der Studie. Zunächst möchten wir Sie bitten, auf der folgenden Seite der informierten Einwilligung zuzustimmen.       
        </section>
    </div>
  </main>
  
+    <form id="page-form">
+ </form>
 
  
  <footer class="content-vertical-center content-horizontal-right">
@@ -280,55 +266,64 @@ statisticalProceduresStudy: `
  </footer>
    `,
    informCon: `
-    <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
-
-
    <header>
    <h2>Aufgeklärte Einwilligung</h2>
  </header>
  
- <main class="content-horizontal-center content-vertical-center">
-   <div class="w-xl text-justify">
-  <section>
-       Im Folgenden erhalten Sie Informationen über Ihre Teilnahme an der Studie. Bitte lesen Sie diese sorgfältig durch:
-       </section>
-       <br>
-       <section>
-       Vielen Dank, dass Sie in Erwägung ziehen, an unserer Online-Studie teilzunehmen. Wir möchten betonen, dass Ihre Beteiligung vollkommen freiwillig ist und Sie 
-       jederzeit ohne Angabe von Gründen Ihre Einwilligung zurückziehen können.
-       </section>
-       <br>
-       <section>
-       Es ist wichtig für Sie zu wissen, dass wir während dieser Studie keine persönlichen Daten erfassen. 
-       Folglich werden die Daten nach Abschluss der Datenerhebungsphase vollständig anonymisiert sein, so dass es unmöglich ist, irgendwelche Daten mit Ihnen in Verbindung zu bringen.
-       </section>
-       <br>
-       <section>
-       Trotz der Anonymität bitten wir Sie freundlich um Ihre volle Konzentration und Aufmerksamkeit während der Teilnahme an der Studie. Dies trägt wesentlich zur Qualität und Zuverlässigkeit unserer Forschung bei.
-       </section>
-       <br>
-       <section>
-       Abschließend planen wir, die Ergebnisse und Daten aus dieser Studie in zukünftigen Veröffentlichungen zu verwenden. Seien Sie jedoch versichert, dass alle veröffentlichten Materialien in anonymisierter Form vorliegen werden. 
-       Wenn Sie jetzt oder nach dem Experiment Fragen haben, kontaktieren Sie bitte Julius Fenn 
-       (<a href="mailto:julius.fenn@psychologie.uni-freiburg.de">julius.fenn@psychologie.uni-freiburg.de</a>)
-        oder Prof. Andrea Kiesel (<a href="mailto:kiesel@psychologie.uni-freiburg.de">kiesel@psychologie.uni-freiburg.de</a>).
-       </section>
-       <br>
+<main class="content-horizontal-center content-vertical-center">
+  <div class="w-xl text-justify">
+
+    <section>
+      <strong>Titel der Studie:</strong> Psychologische Untersuchung zur Wahrnehmung und Bewertung eines neuartigen Jackensystems
+    </section>
+    <br>
+
+    <section>
+      Mit dieser Einwilligungserklärung bestätigen Sie, dass Sie über Ziel, Ablauf und Inhalte der Studie verständlich informiert wurden und offene Fragen in zufriedenstellender Weise geklärt werden konnten.
+    </section>
+    <br>
+
+    <section>
+      <strong>Zweck der Studie:</strong> Die Studie dient ausschließlich wissenschaftlichen Zwecken und untersucht und ihre Angaben werden nur zu Forschungszwecken verwendet.
+    </section>
+    <br>
+
+    <section>
+      <strong>Datenverarbeitung & Datenschutz:</strong> Es werden keine personenbezogenen Daten wie Name, Adresse oder IP-Adresse erhoben. Alle Daten werden vollständig anonymisiert, sodass eine nachträgliche Zuordnung zu Ihrer Person ausgeschlossen ist. Die Datenspeicherung erfolgt gemäß den Richtlinien der Datenschutzgrundverordnung (DSGVO) für mindestens 10 Jahre. Es erfolgt keine Weitergabe an Dritte. 
+    </section>
+    <br>
+
+    <section>
+      <strong>Widerruf:</strong> Sie können Ihre Teilnahme jederzeit ohne Angabe von Gründen abbrechen, ohne dass Ihnen daraus Nachteile entstehen. Ein Rücktritt ist auch nach Einwilligung möglich. Sofern Ihre Daten individuell zuordenbar wären (z. B. bei Studien mit Code), könnten Sie deren Löschung bis zu zwei Wochen nach dem Ende der Studie verlangen. Bei vollständiger Anonymisierung ist dies nicht möglich.
+    </section>
+    <br>
+
+    <section>
+      <strong>Risiken und Nutzen:</strong> Die Teilnahme ist mit keinen bekannten Risiken verbunden. Persönliche Vorteile ergeben sich möglicherweise nicht, jedoch leisten Sie einen Beitrag zur wissenschaftlichen Erkenntnis.
+    </section>
+    <br>
+
+    <section>
+      <strong>Veröffentlichung:</strong> Die Studienergebnisse werden anonymisiert publiziert. Es ist ausgeschlossen, dass Rückschlüsse auf Ihre Person möglich sind. Die anonymen Datensätze können im Rahmen guter wissenschaftlicher Praxis auch in öffentlichen Archiven veröffentlicht werden.
+    </section>
+    <br>
+
+    <section>
+      <strong>Institutioneller Rahmen:</strong> Die Studie wird durchgeführt von der Abteilung Allgemeine Psychologie der Universität Freiburg unter Leitung von Prof. Andrea Kiesel.
+    </section>
+    <br>
+
+    <section>
+      <strong>Kontakt:</strong> Für Fragen steht Ihnen Julius Fenn (<a href="mailto:julius.fenn@psychologie.uni-freiburg.de">julius.fenn@psychologie.uni-freiburg.de</a>) oder Prof. Andrea Kiesel (<a href="mailto:kiesel@psychologie.uni-freiburg.de">kiesel@psychologie.uni-freiburg.de</a>) zur Verfügung.
+    </section>
+    <br>
+
+    <!--
+    <section>
+      <strong>Datenschutzbeauftragte:</strong> XXX
+    </section>
+    -->
+    <br>
        <form id="page-form" style="display: block;" autocomplete="off">
            <!-- BEGIN multiple choice -->
            <div class="page-item page-item-radio" id="page-item-ques_dummycam">
@@ -398,24 +393,6 @@ statisticalProceduresStudy: `
  </main>
    `,
    exclusionCriteria: `
-       <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
-
-
 <header>
   <h2>Vielen Dank, dass Sie den Teilnahmebedingungen zugestimmt haben.</h2>
 </header>
@@ -458,7 +435,7 @@ statisticalProceduresStudy: `
               </td>
               <td>
                 <label for="commCheck" class="text-left" style="font-size:26px">
-                  Ich kann es nicht versprechen
+                  Ich kann es nicht versprechen.
                 </label>
               </td>
             </tr>
@@ -469,7 +446,7 @@ statisticalProceduresStudy: `
               </td>
               <td>
                 <label for="commCheck2" class="text-left" style="font-size:26px">
-                  Ja, ich werde
+                  Ja, das werde ich.
                 </label>
               </td>
             </tr>
@@ -479,7 +456,7 @@ statisticalProceduresStudy: `
               </td>
               <td>
                 <label for="commCheck3" class="text-left" style="font-size:26px">
-                  Nein, ich werde nicht
+                  Nein, das werde ich nicht.
                 </label>
               </td>
             </tr>
@@ -504,41 +481,16 @@ statisticalProceduresStudy: `
 
  // ################### Rating Task ###################
  ExplenationRatingTask: `
-     <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
-
 <header>
   <h2>Vielen Dank für Ihre bisherige Teilnahme an der Onlinestudie!</h2>
 </header>
 
 <main class="content-horizontal-center content-vertical-center">
   <div class="w-xl text-justify">
-
 <section>
-In dieser Studie untersuchen wir, wie neue Technologien anhand sogenannter basaler Attribute – grundlegender, semantisch und emotional bewerteter Merkmale – wahrgenommen werden. 
-Als Beispiel dient der Nano-Pat-Parka, ein innovatives Schutzjackensystem, dessen Eigenschaften auf Basis solcher Attribute beschrieben werden. 
-</section>
-
-<br><br>
-
-<section>
-❓ <strong>Was sind basale Attribute?</strong>
+❓ <strong>Ziel:</strong>
 <br>
-Basale Attribute fassen zentrale Eigenschaften von Technologien in kurzer, prägnanter Form zusammen. Sie ermöglichen eine strukturierte Beschreibung, ohne in technische Details zu gehen.
+Wir wollen die Akzeptanz neuartiger Technologien anhand des Nano-Pat-Parkas, eines innovativen Schutzjackensystems, erforschen.
 </section>
 
 <br><br>
@@ -546,11 +498,13 @@ Basale Attribute fassen zentrale Eigenschaften von Technologien in kurzer, präg
 <section>
 📝 <strong>Ihre Aufgabe:</strong>
 <br>
-Im nächsten Schritt sehen Sie sechs kurze Beschreibungen eines möglichen zukünftigen Jackensystems, dem Nano-Pat-Parka. Bitte bewerten Sie jeweils:
+      Im nächsten Abschnitt sehen Sie sechs kurze Beschreibungen verschiedener Varianten des Nano-Pat-Parkas, die sich in bestimmten technischen Merkmalen unterscheiden.
+      Bitte bewerten Sie jede Variante im Hinblick auf:
+
 <ul style="margin-top: 10px;">
   <li>die wahrgenommene Nützlichkeit,</li>
-  <li>Ihr Vertrauen in die Technologie,</li>
-  <li>Ihre Nutzungswahrscheinlichkeit,</li>
+  <li>Ihr wahrgenommenes Vertrauen in die Technologie,</li>
+  <li>Ihre empfundene Nutzungswahrscheinlichkeit,</li>
   <li>und Ihr spontanes emotionales Empfinden.</li>
 </ul>
 Antworten Sie bitte möglichst intuitiv. Ihre Einschätzungen sind ein wertvoller Beitrag zu unserem Forschungsprojekt.
@@ -596,23 +550,6 @@ Sie haben den ersten Teil der Studie erfolgreich abgeschlossen. Im letzten Absch
 `,
 // Conscientious Completion
 ConscientiousCompletion: `
-    <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
-
 <header>
   <h2>
   Bitte beantworten Sie die folgende Frage:
@@ -677,23 +614,6 @@ ConscientiousCompletion: `
 
       // feedback question
   feedbackQues: `
-      <form id="page-form">
-<!-- multiline text --> 
-<div class="page-item page-item-textarea" id="page-item-improvement_critic" style="max-width: 60%; margin: 0 auto;">
-  <p class="text-left font-weight-bold" style="margin: 1rem 0 0.25rem">
-    Haben Sie Feedback oder Kritik zu dieser Seite?
-  </p>
-  <p class="text-left small text-muted hide-if-empty" style="margin: 0.25rem 0">
-    Inhaltlich, Rechtschreibung, Layout, etc.
-  </p>
-  <textarea name="improvement_critic" class="w-100" rows="8"></textarea>
-  
-  <hr style="margin: 2rem 0;"> <!-- horizontale Linie -->
-</div>
-<!-- END multiline text -->
- </form>
-
-
 <header>
   <h2>
     Bitte beantworten Sie, wenn Sie möchten, die folgende letzte Frage:
