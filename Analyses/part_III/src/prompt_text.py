@@ -20,8 +20,7 @@ Basale Attribute sind adjektivische Eigenschaften, mit denen grundlegende semant
 <Struktur (One-Shot):
 1. Einleitungssatz (ein Satz): Beschreibe den Anwendungsbereich der Schutzkleidung und integriere ein erstes Attribut aus der übergebenen Liste.
 2. Hauptteil (zwei Sätze): Kombiniere jeweils zwei Attribute aus der Liste, so dass alle genau einmal verwendet werden.
-3. Anwendungsszenario (ein Satz): Nenne kurz eine konkrete Anwendung, z. B. “Bei starkem Wind …”.
-4. Abschlusssatz (ein Satz): Fasse die wesentliche Innovation des Nano-Pat-Parka prägnant zusammen, ohne Begriffe aus Einleitung oder Hauptteil zu wiederholen.
+3. Abschlusssatz (ein Satz): Fasse die wesentliche Innovation des Nano-Pat-Parka prägnant zusammen, ohne Begriffe aus Einleitung oder Hauptteil zu wiederholen.
 
 **Attributs-Check**: Am Ende sollen alle übergebenen basalen Attribute verwendet worden sein.
 >

@@ -490,8 +490,8 @@ statisticalProceduresStudy: `
 <section>
 ❓ <strong>Ziel:</strong>
 <br>
-Wir wollen die Akzeptanz neuartiger Technologien anhand des Nano-Pat-Parkas, eines innovativen Schutzjackensystems, erforschen.
-</section>
+      Unsere Forschungs- und Entwicklungsabteilung hat verschiedene Prototypen des Nano-Pat-Parkas entwickelt. Mit Ihrer Hilfe möchten wir untersuchen, wie diese neuartigen Schutzjackensysteme von potenziellen Anwender*innen wahrgenommen und akzeptiert werden.
+      </section>
 
 <br><br>
 
