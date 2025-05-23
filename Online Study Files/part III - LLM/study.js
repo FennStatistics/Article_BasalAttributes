@@ -277,7 +277,7 @@ const template = new lab.html.Form({
     </table>
 
     <!-- Question 3: How likely would you be to use this technology? -->
-<p class="font-weight-bold" style="margin-top:2rem;">Wie wahrscheinlich ist es, dass Sie diese Hausfassade nutzen würden?</p>
+<p class="font-weight-bold" style="margin-top:2rem;">Wie wahrscheinlich ist es, dass Sie diese Hausfassade kaufen würden?</p>
 
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
   <span style="width: 20%; text-align: left;">Sehr unwahrscheinlich</span>
@@ -306,16 +306,16 @@ const template = new lab.html.Form({
       </thead>
       <tbody>
         <tr>
-          <td class="text-center"><input type="radio" name="rat_use" value="1" required></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="2"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="3"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="4"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="5"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="6"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="7"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="8"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="9"></td>
-          <td class="text-center"><input type="radio" name="rat_use" value="10"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="1" required></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="2"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="3"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="4"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="5"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="6"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="7"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="8"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="9"></td>
+          <td class="text-center"><input type="radio" name="rat_buy" value="10"></td>
         </tr>
       </tbody>
     </table>
@@ -680,6 +680,8 @@ const FeedbackScreen_htmlScreen = new lab.html.Form({
   },
 });
 
+
+
 // ending screen
 const EndingScreen_htmlScreen = new lab.html.Screen({
   title: "EndingScreen",
@@ -696,13 +698,14 @@ const EndingScreen_htmlScreen = new lab.html.Screen({
       <i>Das Experiment endet in wenigen Sekunden und Sie werden automatisch zurück zu Prolific weitergeleitet.</i> 
       <br>
       <br>
+      <b>Anmerkung:</b> Die beschriebenen Hausfassaden waren rein hypothetischer Natur und sind nicht zur Umsetzung geplant. Die Beschreibungen dienten ausschließlich Studienzwecken und hatten das Ziel, Ihre Reaktionen auf unterschiedliche Adjektive zu untersuchen.
+      <br>
       <br>
       Falls Sie Fragen haben, wenden Sie sich bitte an den Studienleiter Julius Fenn (julius.fenn@psychologie.uni-freiburg.de).
     </div>
 </main>
-
   `,
-  timeout: 9000,
+  timeout: 10000,
   messageHandlers: {
     run: function anonymous() {
       // progress bar
@@ -756,7 +759,7 @@ const study = new lab.flow.Sequence({
     // new lab.plugins.Debug(),
     // new lab.plugins.Download()
   ],
-  content: [      
+  content: [    
     // >>> introduction phase
     Greetings_htmlForm,
     InformCon_htmlForm,

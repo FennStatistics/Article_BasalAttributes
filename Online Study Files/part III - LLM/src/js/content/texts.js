@@ -241,7 +241,7 @@ statisticalProceduresStudy: `
        </section>
        <br>
        <section>
-       Die Dauer der Studie beträgt <b>etwa 20 Minuten</b>.
+       Die Dauer der Studie beträgt <b>etwa 10 Minuten</b>.
        Bitte benutzen Sie für die Studie einen <b>Computer oder Laptop mit Tastatur</b>. 
        Bitte stellen Sie sicher, dass Sie an der Studie ungestört teilnehmen können.
        </section>
