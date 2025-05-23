@@ -1,3 +1,35 @@
+/* vignette */
+    .concept {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      text-align: left;
+    }
+    .concept h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      color: #005a9c;
+      border-bottom: 2px solid #005a9c;
+      padding-bottom: 0.3rem;
+      display: block;
+      margin: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .concept p {
+      margin: 0.6rem 0;
+    }
+    .concept p:first-of-type {
+      font-weight: bold;
+    }
+    .concept p:last-of-type {
+      font-style: italic;
+    }
+
+
 
 
 /* other stuff */
@@ -22,7 +54,24 @@
 
 
 
+#continue {
+  background-color: #4CAF50; /* green */
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 12px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+#continue:hover {
+  background-color: #046809;
+  color: white;
+}
 
 
 footer #continue {

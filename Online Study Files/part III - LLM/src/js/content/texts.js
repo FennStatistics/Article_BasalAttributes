@@ -247,8 +247,8 @@ statisticalProceduresStudy: `
        </section>
        <br>
        <section>
-       Das Ziel der Studie ist es, Ihre Einstellung und Gefühle zu einem neuartigen Jackensystem namens Nano-Pat-Parka zu messen. 
-       Dafür zeigen wir Ihnen verschiedene textuelle Beschreibungen des Jackenssystems.
+       Das Ziel der Studie ist es, Ihre Einstellung und Gefühle zu einer neuartigen Hausfassade namens Bio-Smart zu messen. 
+       Dafür zeigen wir Ihnen verschiedene textuelle Beschreibungen der Hausfassade.
        Auf den nächsten Seiten finden Sie weitere Informationen zum genauen Ablauf der Studie. Zunächst möchten wir Sie bitten, auf der folgenden Seite der informierten Einwilligung zuzustimmen.       
        </section>
    </div>
@@ -274,7 +274,7 @@ statisticalProceduresStudy: `
   <div class="w-xl text-justify">
 
     <section>
-      <strong>Titel der Studie:</strong> Psychologische Untersuchung zur Wahrnehmung und Bewertung eines neuartigen Jackensystems
+      <strong>Titel der Studie:</strong> Psychologische Untersuchung zur Wahrnehmung und Bewertung einer neuartigen Hausfassade
     </section>
     <br>
 
@@ -490,15 +490,15 @@ statisticalProceduresStudy: `
 <section>
 ❓ <strong>Ziel:</strong>
 <br>
-      Unsere Forschungs- und Entwicklungsabteilung hat verschiedene Prototypen des Nano-Pat-Parkas entwickelt. Mit Ihrer Hilfe möchten wir untersuchen, wie diese neuartigen Schutzjackensysteme von potenziellen Anwender*innen wahrgenommen und akzeptiert werden.
-      </section>
+Unsere Forschungs- und Entwicklungsabteilung hat verschiedene Prototypen der Hausfassade Bio-Smart entwickelt. Mit Ihrer Hilfe möchten wir untersuchen, wie diese neuartigen Hausfassade von potenziellen Anwender*innen wahrgenommen und akzeptiert werden.
+</section>
 
 <br><br>
 
 <section>
 📝 <strong>Ihre Aufgabe:</strong>
 <br>
-      Im nächsten Abschnitt sehen Sie sechs kurze Beschreibungen verschiedener Varianten des Nano-Pat-Parkas, die sich in bestimmten technischen Merkmalen unterscheiden.
+      Im nächsten Abschnitt sehen Sie sechs kurze Beschreibungen verschiedener Varianten der Hausfassade, die sich in bestimmten technischen Merkmalen unterscheiden.
       Bitte bewerten Sie jede Variante im Hinblick auf:
 
 <ul style="margin-top: 10px;">
@@ -527,7 +527,7 @@ Antworten Sie bitte möglichst intuitiv. Ihre Einschätzungen sind ein wertvolle
 // ################### Survey Scales ###################
 TransitionToScales: `
 <header>
-  <h2>Danke für die Bewertung der sechs Beschreibungen des Nano-Pat-Parka-Systems!</h2>
+  <h2>Danke für die Bewertung der sechs Beschreibungen der Hausfassade Bio-Smart!</h2>
 </header>
 
 <main class="content-horizontal-center content-vertical-center">

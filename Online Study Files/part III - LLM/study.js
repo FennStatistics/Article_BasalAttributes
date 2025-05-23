@@ -3,7 +3,7 @@
 */
 
 /* for testing study */
-const Required_Testing = true; // set to false for production !!!
+const Required_Testing = true; // set to false for testing
 
 /* number of components / elements to set progress bar */
 const numElements = 11;
@@ -41,7 +41,6 @@ const StatisticalProceduresOfStudy_htmlForm = new lab.html.Form({
     },
   },
 });
-
 
 /* 
 ################### Start of Study ###################
@@ -147,16 +146,6 @@ const ExclusionCriteria_htmlForm = new lab.html.Form({
   },
 });
 
-
-
-
-
-
-
-
-
-
-
 /* 
 ################### Rating of technology descriptions ###################
 */
@@ -184,19 +173,24 @@ const ExplenationRatingTask_htmlForm = new lab.html.Form({
   },
 });
 
-
-
 /* 
 ################### rating basal attributes ###################
 */
 const template = new lab.html.Form({
-  content: '<section style="font-size: 26px; border: 1px dashed black; padding: 10px; width: 80%; margin: 30px auto; text-align: center;">${ parameters.Text }</section>' + `
+  content: `
 <!-- Relevancy Rating -->
-<div class="page-item page-item-likert" style="margin-left:20%; margin-right: 20%">
+<div class="page-item page-item-likert" style="margin-left:10%; margin-right: 10%">
+  <div class="concept">
+    <h2 id="vignette_title">XX</h2>
+    <p id="vignette_first">XX1</p>
+    <p id="vignette_second">XX2</p>
+    <p id="vignette_third">XX3</p>
+  </div>
+
     <!-- Start of Likert Questions -->
     <form id="ratingBasalAttributes">
 
-<p class="font-weight-bold" style="margin-top:2rem;">Wie hilfreich finden Sie diese Technologie?</p>
+<p class="font-weight-bold" style="margin-top:2rem;">Wie hilfreich finden Sie diese Hausfassade?</p>
 
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
   <span style="width: 20%; text-align: left;">Nicht hilfreich</span>
@@ -240,7 +234,7 @@ const template = new lab.html.Form({
     </table>
 
     <!-- Question 2: How much do you trust the technology to function correctly? -->
-<p class="font-weight-bold" style="margin-top:2rem;">Wie sehr vertrauen Sie darauf, dass die Technologie korrekt funktioniert?</p>
+<p class="font-weight-bold" style="margin-top:2rem;">Wie sehr vertrauen Sie darauf, dass diese Hausfassade korrekt funktioniert?</p>
 
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
   <span style="width: 20%; text-align: left;">Nicht vertrauenswürdig</span>
@@ -283,7 +277,7 @@ const template = new lab.html.Form({
     </table>
 
     <!-- Question 3: How likely would you be to use this technology? -->
-<p class="font-weight-bold" style="margin-top:2rem;">Wie wahrscheinlich ist es, dass Sie diese Technologie nutzen würden?</p>
+<p class="font-weight-bold" style="margin-top:2rem;">Wie wahrscheinlich ist es, dass Sie diese Hausfassade nutzen würden?</p>
 
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
   <span style="width: 20%; text-align: left;">Sehr unwahrscheinlich</span>
@@ -326,7 +320,7 @@ const template = new lab.html.Form({
       </tbody>
     </table>
         <!-- Question 4: What is your overall emotional reaction to this technology? -->
-<p class="font-weight-bold" style="margin-top:2rem;"> Welche Emotionen löst diese Technologie bei Ihnen aus?</p>
+<p class="font-weight-bold" style="margin-top:2rem;"> Welche Emotionen löst diese Hausfassade bei Ihnen aus?</p>
 
 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; margin-bottom: 10px;">
   <span style="width: 20%; text-align: left;">Stark negativ</span>
@@ -377,77 +371,103 @@ const template = new lab.html.Form({
   tardy: true,
   messageHandlers: {
     run: function anonymous() {
+      console.log("Current Vignette:", this.parameters.Vignette);
 
-
-      /*
-      // this.parent.end() !!!s
-      var tmp_this = this;
-      $(document).one('keydown', function (e) {
-        if (e.keyCode == 90) {
-          console.log("clicked z");
-          tmp_this.parent.end();
-        }
-      });
-      */
-
+      $("#vignette_title").text(this.parameters.Vignette_header);
+      $("#vignette_first").text(this.parameters.Vignette_text1);
+      $("#vignette_second").text(this.parameters.Vignette_text2);
+      $("#vignette_third").text(this.parameters.Vignette_text3);
     },
     end: function anonymous() {
-      study.options.datastore.set("ratingValence", $("#nodeSlider").val());
+      // study.options.datastore.set("ratingValence", $("#nodeSlider").val());
     },
   },
-})
+});
 
 const basalAttributes = new lab.flow.Loop({
   template: template,
   templateParameters: [
     {
-        "Vignette": "1",
-        "Text": "<p>Die Nano-Pat-Parka stellt ein neuartiges Jackensystem dar, das bioinspirierte und lebensähnliche Eigenschaften mit modernen Schutzfunktionen verbindet. Ihre Insekten ähnliche Oberflächenstruktur ermöglicht flexibles Anpassungsverhalten, während der Kunststoff enthaltende, leicht zerstörbare Membranaufbau eine minimale Materialbelastung verspricht. Trotz lebensähnlicher Selbstorganisationsprozesse zeigt die Technologie wartungsintensive Pflegeanforderungen und umweltschädliche Nebenwirkungen bei der Zersetzung.<br><br>Diese Kombination aus biologischer Nachbildung und technischer Fragilität verdeutlicht das Potenzial bioinspirierter Ansätze – sowie ihre Grenzen in puncto Nachhaltigkeit und Alltagstauglichkeit.</p>",
+      Vignette: "1",
+      Vignette_header: "Insekten ähnliche Hausfassade",
+      Vignette_text1: "Bio-Smart ist eine bioinspirierte Hausfassade.",
+      Vignette_text2:
+        "Die Oberfläche der neuen Hausfassade Bio-Smart ist leicht zerstörbar und daher wartungsintensiv. Trotz ihrer umweltschädlichen Bestandteile, denn sie enthält Kunststoff, überzeugt Bio-Smart durch ihre lebensähnlichen Eigenschaften.",
+      Vignette_text3:
+        "Die Innovation liegt in der Übertragung lebensähnlicher Eigenschaften von Insektenoberflächen auf die Oberfläche der Hausfassade.",
     },
     {
-      "Vignette": "2",
-      "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem für zukünftige Schutzkleidung dar, das energieautonom und Energie generierend durch integrierte Nanotechnologie agiert. Sie kombiniert energieeffiziente Regelmechanismen mit Energie speichernden Materialien, um autarke Funktionalität zu gewährleisten. Trotz ihrer Hightech-Eigenschaften enthält sie Kunststoff-basierte Komponenten, die leicht zerstörbar sind und bei unsachgemäßer Entsorgung umweltschädlich wirken können. Zudem erweist sich das System als wartungsintensiv, da regelmäßige Kontrollen der Sensoren notwendig sind.<br><br>Diese Technologie vereint somit fortschrittliche Energieautarkie mit ökologischen und praktischen Zielkonflikten.</p>",
-  },
-  {
-    "Vignette": "3",
-    "Text": "<p>Der Nano-Pat-Parka ist ein technologisches Jackensystem, das zukünftige Anforderungen an adaptive Schutzkleidung adressiert. Die intelligente, bioinspirierte Technologie kombiniert aktive und passive Formänderung durch Umwelteinwirkung, etwa durch lebensähnliche Anpassungen an Temperatur oder Feuchtigkeit. Ihre Insekten ähnliche Struktur ermöglicht multifunktionale Reaktionsfähigkeit: autonom gesteuerte Verhaltensänderungen ergänzen passive Schutzmechanismen. Gleichzeitig bleibt das System durch minimale Wartung robust.<br><br>Diese Symbiose aus technologischer Präzision und natürlicher Anpassungsfähigkeit definiert den Nano-Pat-Parka als vielseitige, umweltresponsive Innovation.</p>",
-},
-{
-  "Vignette": "4",
-  "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem dar, das zukünftige Anforderungen an Schutzkleidung durch adaptive Eigenschaften adressiert. Als intelligente, multifunktionale und technologisch fortschrittliche Lösung kombiniert sie aktive und passive Formänderung durch Umwelteinwirkung mit reaktionsfähigen Verhaltensanpassungen. Durch energieeffiziente, energieautonome Mechanismen ermöglicht sie Energie speicherndes und Energie generierendes Verhalten, um autonom auf Umgebungsbedingungen zu reagieren. Gleichzeitig bleibt sie durch passive Verhaltensänderung durch Umwelteinwirkung materialbasiert anpassungsfähig.<br><br>Dies verbindet robusten Schutz mit dynamischer Funktionalität, wodurch die Technologie als vielseitige Antwort auf komplexe Schutzbedürfnisse positioniert wird.</p>",
-},
-{
-  "Vignette": "5",
-  "Text": "<p>Die Nano-Pat-Parka stellt ein technologisch fortschrittliches Jackensystem dar, das durch passive Formänderung durch Umwelteinwirkung und aktive Verhaltensänderung durch Umwelteinwirkung auf Umgebungsbedingungen reagiert. Als intelligente, autonome Lösung vereint sie multifunktionale Anpassungsfähigkeit mit wartungsfreier Zuverlässigkeit. Die selbstheilende und selbstreparierende Materialstruktur gewährleistet robuste Widerstandsfähigkeit bei gleichzeitiger langlebiger Haltbarkeit.<br><br>Durch die Kombination reaktionsfähiger Eigenschaften mit passiver Verhaltensänderung durch Umwelteinwirkung definiert sie einen neuen Standard für widerstandsfähige, dauerhafte Schutzkleidung der Zukunft.</p>",
-},
-{
-  "Vignette": "6",
-  "Text": "<p>Die Nano-Pat-Parka stellt ein innovatives Jackensystem dar, das zukünftige Anforderungen an Nachhaltigkeit adressiert. Die zuverlässige, wartungsfreie und elektronikfreie Technologie kombiniert selbstheilende Materialien mit widerstandsfähigen Oberflächen, die robust gegen Umwelteinflüsse sind. Durch selbstreparierende Eigenschaften bleibt die Jacke haltbar und langlebig, während ökologische Aspekte wie nachhaltige Produktion und umweltfreundliche Rohstoffe im Fokus stehen.<br><br>Dies verbindet Funktionalität mit ressourcenschonender Innovation.</p>",
-},
-],
+      Vignette: "2",
+      Vignette_header: "Energieautonome Außenhülle für Häuser",
+      Vignette_text1:
+        "Bio-Smart ist eine wartungsintensive, gleichzeitig aber energie-effiziente Gebäudehülle.",
+      Vignette_text2:
+        "Moderne Gebäudehüllen wie Bio-Smart sollen Energie generierend sein, aber auch Energie speichernd genutzt werden können. Diese Eigenschaften gleichen eine mögliche umweltschädliche Belastung aus, denn Bio-Smart enthält Kunststoff.",
+      Vignette_text3:
+        "Die Innovation liegt in der Entwicklung einer energieautonomen Schutzhülle für Gebäude.",
+    },
+    {
+      Vignette: "3",
+      Vignette_header: "Intelligente und reaktionsfähige Fassadenoberfläche",
+      Vignette_text1:
+        "Bio-Smart reagiert durch aktive und passive Formänderungen durch Umwelteinwirkung.",
+      Vignette_text2:
+        "Die bioinspirierte Fassadenoberfläche Bio-Smart ist eine multifunktionale Gebäudehülle mit autonomer Schutzfunktion, basierend auf lebensähnlichen Eigenschaften wie aktive und passive Verhaltensänderungen durch Umwelteinwirkung.",
+      Vignette_text3:
+        "Die Innovation liegt in der Übertragung von Insekten ähnlichen Eigenschaften auf technologische Oberflächenmaterialien.",
+    },
+    {
+      Vignette: "4",
+      Vignette_header: "Multifunktionale und energieeffiziente Gebäudehülle",
+      Vignette_text1:
+        "Bio-Smart ermöglicht eine autonome Anpassung an Umwelteinwirkungen.",
+      Vignette_text2:
+        "Bio-Smart gehört zu den intelligenten Häuserfassaden, die sowohl energieautonom als auch reaktionsfähig sind. Die technologische Materialentwicklung ermöglicht eine aktive und passive Formänderung durch Umwelteinwirkung und kann gleichzeitig Energie generierend und Energie speichernd arbeiten.",
+      Vignette_text3:
+        "Die Innovation liegt in der Entwicklung einer energieautonomen Fassade, die durch aktive und passive Verhaltensänderung durch Umweltwirkung reagieren kann.",
+    },
+    {
+      Vignette: "5",
+      Vignette_header: "Langlebige selbstreparierende Gebäudehülle",
+      Vignette_text1:
+        "Bio-Smart ist eine zuverlässige und autonome Hausfassade.",
+      Vignette_text2:
+        "Aufgrund ihrer selbstheilenden Funktion ist die multifunktionale Fassadenoberfläche reaktionsfähig. Somit ist Bio-Smart auch bei Beschädigungen wartungsfrei und außergewöhnlich haltbar. Die technologische Entwicklung ist aufgrund aktiver und passiver Verhaltensänderungen durch Umwelteinwirkung widerstandsfähig und robust.",
+      Vignette_text3:
+        "Die Innovation liegt in der Entwicklung einer intelligenten Fassade, deren selbstreparierenden Funktion auf aktiver und passiver Formänderung durch Umwelteinwirkung beruht.",
+    },
+    {
+      Vignette: "6",
+      Vignette_header: "Ökologische elektronikfreie Hausfassade",
+      Vignette_text1:
+        "Bio-Smart ist eine widerstandsfähige und zugleich robuste Hülle für Gebäude.",
+      Vignette_text2:
+        "Bio-Smart ist aufgrund ihrer selbstheilenden Funktion wartungsfrei, zuverlässig und haltbar. Aus ökologischer Sicht ist die Fassade umweltfreundlich, da sie langlebig ist.",
+      Vignette_text3:
+        "Die Innovation einer selbstreparierenden Fassade leistet einen Beitrag zur nachhaltigen Entwicklung.",
+    },
+  ],
   sample: {
     mode: "draw-shuffle",
     n: "6",
   },
-})
+});
 
 const basalAttributesRating = new lab.html.Frame({
   context: `
     <header>
-  <h4>Bitte bewerten Sie die folgende Beschreibung des Nano-Pat-Parkas:</h4>
+  <h4>Bitte bewerten Sie das folgende Konzept einer Hausfassade:</h4>
   <h6>
-    Hinweis: Bitte bewerten Sie Ihre Eindrücke hinsichtlich Nützlichkeit, Vertrauen, Nutzungsabsicht und emotionaler Wirkung möglichst intuitiv. 
+    Hinweis: Geben Sie bitte Ihre Einschätzung zu Nützlichkeit, Vertrauen, Nutzungsabsicht und emotionaler Wirkung nach Ihrem ersten Eindruck ab.
   </h6>
   </header>
     <main style="width: 100%;">
       <!-- this is where stimuli will be inserted -->
     </main>
   `,
-  contextSelector: 'main',
+  contextSelector: "main",
   content: basalAttributes,
-})
-
-
+});
 
 /* 
 ################### Survey Scales ###################
@@ -476,8 +496,6 @@ const TransitionToScales_htmlForm = new lab.html.Form({
   },
 });
 
-
-
 /* HEXACO */
 const LikertHEXACO_htmlForm = new lab.html.Page({
   title: "HEXACO",
@@ -494,8 +512,9 @@ const LikertHEXACO_htmlForm = new lab.html.Page({
         "stimme zu",
         "stimme vollkommen zu",
       ],
-    label:"Im Folgenden finden Sie eine Reihe von Aussagen über <b>Ihre Person</b>. Bitte lesen Sie jede Aussage sorgfältig und entscheiden Sie, inwieweit Sie dieser zustimmen oder nicht zustimmen.",
-    help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
+      label:
+        "Im Folgenden finden Sie eine Reihe von Aussagen über <b>Ihre Person</b>. Bitte lesen Sie jede Aussage sorgfältig und entscheiden Sie, inwieweit Sie dieser zustimmen oder nicht zustimmen.",
+      help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
       shuffle: false,
       name: "HEXACO",
     },
@@ -505,6 +524,8 @@ const LikertHEXACO_htmlForm = new lab.html.Page({
   width: "l",
   messageHandlers: {
     run: function anonymous() {
+      // add id continue to button
+      $('button[type="submit"][form="page-form"]').attr("id", "continue");
       // adjust size of scale
       document.querySelectorAll("div")[0].classList = ["text-left"];
       document.querySelectorAll("main")[1].classList = ["w-xl"];
@@ -542,9 +563,6 @@ const LikertHEXACO_htmlForm = new lab.html.Page({
   },
 });
 
-
-
-
 /* Affinity for Technology Interaction Scale */
 const LikertATI_htmlForm = new lab.html.Page({
   title: "ATI",
@@ -562,8 +580,9 @@ const LikertATI_htmlForm = new lab.html.Page({
         "stimmt weitgehend",
         "stimmt völlig",
       ],
-    label:"Im Folgenden geht es um Ihre Interaktion mit technischen Systemen. Mit 'technischen Systemen' sind sowohl Apps und andere Software-Anwendungen als auch komplette digitale Geräte (z.B. Handy, Computer, Fernseher, Auto-Navigation) gemeint. Bitte geben Sie den Grad Ihrer Zustimmung zu folgenden Aussagen an.",
-    help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
+      label:
+        "Im Folgenden geht es um Ihre Interaktion mit technischen Systemen. Mit 'technischen Systemen' sind sowohl Apps und andere Software-Anwendungen als auch komplette digitale Geräte (z.B. Handy, Computer, Fernseher, Auto-Navigation) gemeint. Bitte geben Sie den Grad Ihrer Zustimmung zu folgenden Aussagen an.",
+      help: "Bitte beantworten Sie jede Aussage, auch wenn Sie sich bei Ihrer Antwort nicht ganz sicher sind.",
       shuffle: false,
       name: "ATI",
     },
@@ -573,6 +592,8 @@ const LikertATI_htmlForm = new lab.html.Page({
   width: "l",
   messageHandlers: {
     run: function anonymous() {
+      // add id continue to button
+      $('button[type="submit"][form="page-form"]').attr("id", "continue");
       // adjust size of scale
       document.querySelectorAll("div")[0].classList = ["text-left"];
       document.querySelectorAll("main")[1].classList = ["w-xl"];
@@ -611,15 +632,11 @@ const LikertATI_htmlForm = new lab.html.Page({
   },
 });
 
-
 // shuffle all scales:
 const Sequence_Scales = new lab.flow.Sequence({
   title: "Sequence Scales",
   shuffle: true,
-  content: [
-    LikertHEXACO_htmlForm,
-    LikertATI_htmlForm,
-  ],
+  content: [LikertHEXACO_htmlForm, LikertATI_htmlForm],
 });
 
 /* 
@@ -710,7 +727,7 @@ const EndingScreen_htmlScreen = new lab.html.Screen({
           study.options.datastore.extract("sender").includes("FeedbackScreen")
         ) {
           jatos.endStudyAndRedirect(
-            "https://www.livmats.uni-freiburg.de/en/research/research-area-d", // !!!!!!!!!!!!!!!!!!!! https://app.prolific.com/submissions/complete?cc=C1DWDISA
+            "https://app.prolific.com/submissions/complete?cc=C1PE2AUF",
             true,
             "everything worked fine"
           );
@@ -736,17 +753,10 @@ const study = new lab.flow.Sequence({
   plugins: [
     new lab.plugins.Metadata(),
     // new lab.plugins.Fullscreen(),
-     new lab.plugins.Debug(), // comment out finally
+    // new lab.plugins.Debug(),
     // new lab.plugins.Download()
   ],
-  content: [
-    basalAttributesRating,
-
-
-
-
-
-
+  content: [      
     // >>> introduction phase
     Greetings_htmlForm,
     InformCon_htmlForm,
@@ -756,8 +766,7 @@ const study = new lab.flow.Sequence({
     // >>> rating of technology descriptions
     ExplenationRatingTask_htmlForm,
     basalAttributesRating,
-    
-    
+
     // >>> survey scales
     TransitionToScales_htmlForm,
     Sequence_Scales,
