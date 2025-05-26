@@ -1,0 +1,552 @@
+---
+title: "Data preperation pilot study"
+author: "Julius Fenn, Stephanie Bugler"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    html-math-method: katex
+    number-sections: true
+---
+
+
+# Notes
+
+
+# global variables
+
+Define your global variables (can take some time to run):
+
+```{r}
+#| label: global variables
+
+
+```
+
+
+
+
+# create raw data files
+
+
+
+```{r}
+#| label: create raw files
+#| warning: false
+
+# sets the directory of location of this script as the current directory
+# setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+
+### load packages
+require(pacman)
+p_load('tidyverse', 'jsonlite',
+       'stargazer',  'DT', 'psych',
+       'writexl')
+
+
+### load socio-demographic data
+setwd("data demographic")
+# prolific <- read.csv(file = "prolific_export_65d4744b1373145896174eba.csv", header = TRUE)
+
+### load JATOS data
+setwd("../data")
+suppressMessages(
+  read_file('jatos_results_data_20250526134712.txt') %>%
+    # ... split it into lines ...
+    str_split('\n') %>% first() %>%
+    # ... filter empty rows ...
+    discard(function(x)
+      x == '') %>%
+    discard(function(x)
+      x == '\r') %>%
+    # ... parse JSON into a data.frame
+    map_dfr(fromJSON, flatten = TRUE)
+) -> dat
+
+# Read and parse each JSON line into a list
+# json_data <- suppressMessages(
+#   read_file("jatos_results_data_20250405122610.txt") %>%
+#     str_split("\n") %>%
+#     first() %>%
+#     discard(~ .x == "" || .x == "\r") %>%
+#     map(~ fromJSON(.x, simplifyVector = FALSE)) # Keep full nested structure
+# )
+
+#> add ID counter
+dat$ID <- NA
+
+tmp_IDcounter <- 0
+for (i in 1:nrow(dat)) {
+  if (!is.na(dat$sender[i]) &&
+      dat$sender[i] == "Greetings") {
+    tmp_IDcounter = tmp_IDcounter + 1
+  }
+  dat$ID[i] <- tmp_IDcounter
+}
+rm(tmp_IDcounter)
+
+
+### load functions
+setwd("../functions")
+for(i in 1:length(dir())){
+  # print(dir()[i])
+  source(dir()[i], encoding = "utf-8")
+}
+
+rm(i)
+
+
+### summary function
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      se = sd(x[[col]], na.rm=TRUE) / sqrt(length(x[[col]])))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- plyr::rename(data_sum, c("mean" = varname))
+  return(data_sum)
+}
+```
+
+
+# set up and save data in different formats
+
+```{r}
+### keep only complete data sets
+sort(table(dat$ID))
+sum(table(dat$ID) != max(table(dat$ID)))
+sum(table(dat$ID) == max(table(dat$ID)))
+```
+
+
+```{r}
+dim(dat)
+dat <-
+  dat[dat$ID %in% names(table(dat$ID))[table(dat$ID) == max(table(dat$ID))], ]
+dim(dat)
+```
+
+```{r}
+str_subset(string = colnames(dat), pattern = "^ATI|^HEXACO")
+str_subset(string = colnames(dat), pattern = "^HEXACO")
+```
+
+
+
+```{r}
+#| label: create questionnaires files
+#| warning: false
+
+
+### json (from JATOS) to 2D data.frame
+# > pre study
+# add paradata
+tmp_notNumeric <- c(str_subset(string = colnames(dat), pattern = "^meta"))
+tmp_notNumeric <-
+  str_subset(string = tmp_notNumeric,
+             pattern = "labjs|location",
+             negate = TRUE)
+
+### get survey
+vec_ques <- c("PROLIFIC_PID",
+              "dummy_informedconsent",
+              "commCheck",
+              str_subset(string = colnames(dat), pattern = "^ATI|^HEXACO"),
+              "feedback_conscientiousCompletion",
+              tmp_notNumeric)
+
+vec_notNumeric = c("PROLIFIC_PID", "feedback_critic", tmp_notNumeric)
+
+questionnaire <- questionnairetype(
+  dataset = dat,
+  listvars = vec_ques,
+  notNumeric = vec_notNumeric,
+  verbose = FALSE
+)
+
+dim(questionnaire)
+```
+
+
+
+```{r}
+psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^ATI")]))
+
+psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^HEXACO")]))
+```
+
+```{r}
+# Pre-define the column names with rat_ pattern
+rat_cols <- str_subset(string = colnames(dat), pattern = "^rat_")
+
+# Create an empty list to store processed data
+result_list <- list()
+
+# Loop over each unique ID
+for (i in unique(dat$ID)) {
+  tmp <- dat[dat$ID == i, c("ID", "PROLIFIC_PID", "Vignette", rat_cols)]
+  
+  # Fill down PROLIFIC_PID if missing
+  tmp <- tmp %>%
+    fill(PROLIFIC_PID, .direction = "downup")
+  
+  # Filter rows where all rat_ columns are not NA
+  tmp <- tmp %>%
+    filter(if_any(all_of(rat_cols), ~ !is.na(.)))
+  
+  # Append to result list
+  result_list[[as.character(i)]] <- tmp
+}
+
+# Combine all into one dataframe
+questionnaire_rating_long <- bind_rows(result_list)
+questionnaire_rating_long$Vignette <- factor(questionnaire_rating_long$Vignette)
+
+questionnaire_rating_long <- questionnaire_rating_long %>%
+  mutate(across(starts_with("rat_"), as.numeric))
+```
+
+
+```{r}
+summary_stats <- questionnaire_rating_long %>%
+  group_by(Vignette) %>%
+  summarise(
+    N = n(),
+    across(
+      .cols = starts_with("rat_"),
+      .fns = list(mean = ~ mean(as.numeric(.), na.rm = TRUE),
+                  sd = ~ sd(as.numeric(.), na.rm = TRUE)),
+      .names = "{.col}_{.fn}"
+    )
+  )
+
+
+summary_stats
+```
+
+
+
+```{r}
+# Pivot longer for ggplot
+summary_long <- summary_stats %>%
+  pivot_longer(
+    cols = -c(Vignette, N),
+    names_to = c("Rating", ".value"),
+    names_pattern = "(rat_.*)_(mean|sd)"
+  )
+
+ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
+  geom_col(position = position_dodge(width = 0.9), width = 0.7) +
+  geom_errorbar(
+    aes(ymin = mean - sd, ymax = mean + sd),
+    position = position_dodge(width = 0.9),
+    width = 0.2
+  ) +
+  facet_wrap(~ Rating, scales = "free_y") +
+  labs(
+    title = "Mean Ratings per Vignette",
+    y = "Mean Rating ± SD",
+    x = "Vignette"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+# library(ggstatsplot)
+# # One plot for a single rating variable, e.g., rat_helpful
+# ggbetweenstats(
+#   data = questionnaire_rating_long,
+#   x = Vignette,
+#   y = as.numeric(rat_helpful),
+#   title = "Comparison of 'Helpful' Ratings Across Vignettes",
+#   xlab = "Vignette",
+#   ylab = "Helpful Rating",
+#   type = "parametric",  # or "nonparametric"
+#   messages = FALSE
+# )
+```
+
+```{r}
+library(afex)
+# Run repeated measures ANOVA (within-subjects)
+anova_result <- aov_ez(
+  id = "PROLIFIC_PID",
+  dv = "rat_helpful",
+  data = questionnaire_rating_long,
+  within = "Vignette",   # <- not between
+  type = 3
+)
+
+summary(anova_result)
+
+
+library(emmeans)
+
+# Get estimated marginal means and post hoc comparisons
+emmeans_result <- emmeans(anova_result, pairwise ~ Vignette)
+
+emmeans_result$contrasts
+
+```
+
+
+```{r}
+library(psych)
+library(dplyr)
+library(ggplot2)
+library(cluster)
+library(factoextra)  # for fviz_cluster, optional visualization
+
+rat_vars <- c("rat_helpful", "rat_trust", "rat_buy", "rat_emotion")
+unique_vignettes <- sort(unique(questionnaire_rating_long$Vignette))
+
+for (v in unique_vignettes) {
+  cat("\n=== Vignette:", v, "===\n")
+  
+  # Subset and clean data
+  vignette_data <- questionnaire_rating_long %>%
+    filter(Vignette == v) %>%
+    select(all_of(rat_vars)) %>%
+    na.omit()
+  
+  # Check if enough data
+  if (nrow(vignette_data) >= 5) {
+    
+    # 1. Correlation matrix plot
+    cat("Correlation matrix:\n")
+    corPlot(cor(vignette_data), main = paste("Correlation Plot - Vignette", v))
+    
+    # 2. Parallel analysis (scree plot)
+    cat("Parallel analysis:\n")
+    efa_parallel <- fa.parallel(vignette_data, fa = "fa", fm = "ml", main = paste("Parallel Analysis - Vignette", v))
+    
+    # 3. Optional: Run EFA with 1 factor if unidimensional
+    efa <- fa(vignette_data, nfactors = efa_parallel$nfact, fm = "ml")
+    print(efa$loadings)
+    
+     # 4. K-means clustering (set k = 2 or pick adaptively)
+    vignette_scaled <- scale(vignette_data)
+
+    cat("Selecting optimal number of clusters (k):\n")
+    # Use elbow method to find optimal k
+    nb <- fviz_nbclust(
+      vignette_scaled,
+      FUNcluster = kmeans,
+      method = "wss",
+      k.max = 6,
+      nstart = 25  # needed by kmeans
+    )
+    
+    print(nb)
+    
+    # Extract optimal k (visually, or use function if needed)
+    optimal_k <- which.min(diff(diff(nb$data$y))) + 1
+    cat("Auto-selected k =", optimal_k, "\n")
+    
+    set.seed(123)
+    km <- kmeans(vignette_scaled, centers = optimal_k, nstart = 25)
+    
+    cat("K-means clustering results (k =", optimal_k, "):\n")
+    print(km$size)
+    print(km$centers)
+    
+    # 5. Plot clusters using PCA
+    fviz_cluster(km, data = vignette_scaled, main = paste("K-Means Clusters - Vignette", v))
+    
+    
+    
+  } else {
+    cat("Not enough complete responses for Vignette", v, "\n")
+  }
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+library(psych)
+library(dplyr)
+library(ggplot2)
+library(cluster)
+library(factoextra)
+
+rat_vars <- c("rat_helpful", "rat_trust", "rat_buy", "rat_emotion")
+unique_vignettes <- sort(unique(questionnaire_rating_long$Vignette))
+
+# === NEW: list to store assignments ===
+cluster_assignments <- list()
+
+for (v in unique_vignettes) {
+  cat("\n=== Vignette:", v, "===\n")
+  
+  # Subset and clean data
+  vignette_subset <- questionnaire_rating_long %>%
+    filter(Vignette == v) %>%
+    select(PROLIFIC_PID, all_of(rat_vars)) %>%
+    na.omit()
+  
+  # Keep PID separate and scale only the rating data
+  pids <- vignette_subset$PROLIFIC_PID
+  vignette_data <- vignette_subset %>% select(-PROLIFIC_PID)
+  
+  if (nrow(vignette_data) >= 5) {
+    
+    # 1. Correlation matrix plot
+    cat("Correlation matrix:\n")
+    corPlot(cor(vignette_data), main = paste("Correlation Plot - Vignette", v))
+    
+    # 2. Parallel analysis
+    cat("Parallel analysis:\n")
+    efa_parallel <- fa.parallel(vignette_data, fa = "fa", fm = "ml", main = paste("Parallel Analysis - Vignette", v))
+    
+    # 3. Run EFA
+    efa <- fa(vignette_data, nfactors = efa_parallel$nfact, fm = "ml")
+    print(efa$loadings)
+    
+    # 4. K-means clustering
+    vignette_scaled <- scale(vignette_data)
+    
+    cat("Selecting optimal number of clusters (k):\n")
+    nb <- fviz_nbclust(
+      vignette_scaled,
+      FUNcluster = kmeans,
+      method = "wss",
+      k.max = 6,
+      nstart = 25
+    )
+    print(nb)
+    
+    optimal_k <- which.min(diff(diff(nb$data$y))) + 1
+    cat("Auto-selected k =", optimal_k, "\n")
+    
+    set.seed(123)
+    km <- kmeans(vignette_scaled, centers = optimal_k, nstart = 25)
+    
+    cat("K-means clustering results (k =", optimal_k, "):\n")
+    print(km$size)
+    
+    # 5. Plot clusters
+    fviz_cluster(km, data = vignette_scaled, main = paste("K-Means Clusters - Vignette", v))
+    
+    # === NEW: store cluster assignments ===
+    cluster_assignments[[as.character(v)]] <- data.frame(
+      PROLIFIC_PID = pids,
+      Vignette = v,
+      Cluster = km$cluster
+    )
+    
+  } else {
+    cat("Not enough complete responses for Vignette", v, "\n")
+  }
+}
+
+# === NEW: Combine all vignette cluster assignments into one data frame ===
+cluster_df <- bind_rows(cluster_assignments)
+
+# Preview
+head(cluster_df)
+
+```
+
+
+
+```{r}
+# Reshape to wide format: one row per PROLIFIC_PID, columns for each Vignette
+cluster_wide <- cluster_df %>%
+  mutate(Vignette = paste0("V", Vignette)) %>%
+  pivot_wider(
+    names_from = Vignette,
+    values_from = Cluster
+  )
+
+# View result
+head(cluster_wide)
+
+
+
+# Get vignette cluster columns (excluding PROLIFIC_PID)
+vignette_cols <- setdiff(colnames(cluster_wide), "PROLIFIC_PID")
+
+# All pairwise combinations of vignette cluster columns
+combinations <- combn(vignette_cols, 2, simplify = FALSE)
+
+# Run Chi-squared tests
+for (pair in combinations) {
+  cat("\nChi-squared test between", pair[1], "and", pair[2], "\n")
+  
+  tab <- table(cluster_wide[[pair[1]]], cluster_wide[[pair[2]]])
+  print(tab)
+  
+  # Only run if the table has no 0-only rows/cols
+  if (all(rowSums(tab) > 0) && all(colSums(tab) > 0)) {
+    chisq <- chisq.test(tab)
+    print(chisq)
+  } else {
+    cat("Chi-squared test not valid due to empty rows/columns.\n")
+  }
+}
+
+```
+
+
+
+
+
+
+
+# aaaa
+
+
+
+
+```{r eval=FALSE}
+### save files
+setwd("outputs")
+#> questionnaire
+## save as .xlsx file
+writexl::write_xlsx(x = questionnaire, path = "questionnaire.xlsx")
+## save as R object
+saveRDS(questionnaire, file = "questionnaire.rds")
+
+#> wordlistAssociations
+## save as .xlsx file
+writexl::write_xlsx(x = wordlistAssociations, path = "wordlistAssociations.xlsx")
+## save as R object
+saveRDS(wordlistAssociations, file = "wordlistAssociations.rds")
+
+#> edgelistAssociations
+## save as .xlsx file
+writexl::write_xlsx(x = edgelistAssociations, path = "edgelistAssociations.xlsx")
+## save as R object
+saveRDS(edgelistAssociations, file = "edgelistAssociations.rds")
+```
+
+# show data
+
+```{r eval=FALSE}
+DT::datatable(questionnaire, options = list(pageLength = 5))
+
+
+summary(as.numeric(table(edgelistAssociations$ID)))
+table(edgelistAssociations$ID)
+DT::datatable(wordlistAssociations, options = list(pageLength = 5))
+
+
+
+DT::datatable(edgelistAssociations, options = list(pageLength = 5))
+```
+
