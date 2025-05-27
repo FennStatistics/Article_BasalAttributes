@@ -1,0 +1,50 @@
+TITLE:
+CFA for scale Vignette2
+DATA:
+FILE = "CFA_Vignette2_166f9da64b720b869e6549d0302413f9.dat";
+ LISTWISE=ON;
+VARIABLE:
+NAMES = rat1 rat2 rat3 rat4; 
+ MISSING=.;
+ usevariables =rat1
+rat2
+rat3
+rat4;
+ANALYSIS:
+
+    type=general;
+    estimator = MLR;
+  
+MODEL:
+Vignette2 BY rat1*(p1)
+rat2(p2)
+rat3(p3)
+rat4(p4);
+
+Vignette2@1
+
+rat1(e1)
+rat2(e2)
+rat3(e3)
+rat4(e4);
+MODEL CONSTRAINT:
+NEW(CM_True); ! True-Score variance
+CM_True = ((p1 + 
+p2 + 
+p3 + 
+p4)**2)*1.0;
+
+NEW(CM_Error); ! error variance
+CM_Error = (e1 + 
+e2 + 
+e3 + 
+e4);
+
+NEW(CM_OMEGA); ! compute OMEGA (true-Score variance / total variance)
+CM_OMEGA = (CM_True)/(CM_True + CM_Error);
+OUTPUT:
+sampstat standardized stdyx residual modindices;
+PLOT:
+
+    type = plot3;
+  

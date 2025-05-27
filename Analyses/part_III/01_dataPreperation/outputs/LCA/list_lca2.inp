@@ -1,0 +1,30 @@
+TITLE:
+Latent Class Analysis Mean Rating Vignettes c=2
+DATA:
+FILE = "list_lca2_5c43b7ff20cd09bcea2a55665adb8de4.dat";
+ 
+VARIABLE:
+NAMES = v4 v5 v2 v6 v1 v3; 
+ MISSING=.;
+ 
+  usevariables = v1 v2 v3 v4 v5 v6;
+
+  classes      = c(2)
+ANALYSIS:
+
+    Type=mixture; ! LCA analysis
+    STARTS= 500 100;
+    !LRTstarts=0 0 300 20;
+  
+OUTPUT:
+tech11 tech14;
+SAVEDATA:
+file = lca_2.txt ;
+    save = cprob;
+    format = free;
+  
+PLOT:
+
+    type = plot3;
+    series is v1(1) v2(2) v3(3) v4(4) v5(5) v6(6);
+  

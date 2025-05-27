@@ -22,7 +22,8 @@ getLCAfitstatistics <- function(listMplusOutput){
                  res$results$summaries$BIC,
                  res$results$summaries$aBIC,
                  tmp_CAIC,
-                 
+
+
                  res$results$summaries$BLRT_PValue,
                  res$results$summaries$T11_VLMR_PValue,
 

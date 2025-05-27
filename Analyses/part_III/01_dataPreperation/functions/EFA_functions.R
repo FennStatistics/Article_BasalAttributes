@@ -11,7 +11,7 @@ dimensionalityTest <- function(label, regEx, dataset){
   }else if(label == "Trust"){
     fa_parallel_out <- fa.parallel(x = tmp_dat, fm = "minres", fa="both", main = label, cor = "cor")
   }else{
-    fa_parallel_out <- fa.parallel(x = tmp_dat, fm = "minres", fa="both", main = label, cor = "poly")
+    fa_parallel_out <- fa.parallel(x = tmp_dat, fm = "minres", fa="both", main = label, cor = "cor") # poly
   }
 
   cat(label, "\n")
@@ -43,10 +43,12 @@ explorativeFactorAnalysis <- function(label, regEx, dataset, nfac = 1, showCronb
 
     tmp_fa_out <- fa(r = tmp_dat, nfactors = nfac, rotate = "promax", cor ="cor")
   }else{
-    tmp_cor <- polychoric(tmp_dat)
-    tmp_cor <- tmp_cor$rho
+    tmp_cor <- cor(tmp_dat)
 
-    tmp_fa_out <- fa(r = tmp_dat, nfactors = nfac, rotate = "promax", cor ="poly")
+    # tmp_cor <- polychoric(tmp_dat)
+    # tmp_cor <- tmp_cor$rho
+
+    tmp_fa_out <- fa(r = tmp_dat, nfactors = nfac, rotate = "promax", cor ="cor") # poly
   }
 
 

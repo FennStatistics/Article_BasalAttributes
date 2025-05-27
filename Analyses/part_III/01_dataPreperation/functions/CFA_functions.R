@@ -2,13 +2,15 @@
 # get CFA fit statistics
 ########################################
 ## args
-# dataset = questionnaire_reduced
-# regularExp = "^HEXACO-A"
-# labelLatent = "risk"
-# showPlots = FALSE
-# computeEFA = FALSE
-# computeCFA = FALSE
-# computeCFAMplus = TRUE
+dataset = questionnaire_rating_wide
+regularExp = "_v1$"
+labelLatent = "Vignette1"
+showPlots = TRUE
+computeEFA = TRUE
+computeCFA = TRUE
+computeCFAMplus = TRUE
+
+
 
 CFAstats <- function(dataset, regularExp, labelLatent = "latentVar",
                      showPlots = FALSE,
@@ -78,7 +80,7 @@ CFAstats <- function(dataset, regularExp, labelLatent = "latentVar",
   if(computeCFA){
     mod_lavaan <- model_lavaan(vars = tmp_vars, labelLatentVar = labelLatent)
     ### MLM estimator
-    fit <-cfa(mod_lavaan, data = dataset, estimator = "MLR")
+    fit <- cfa(mod_lavaan, data = dataset, estimator = "MLR")
     ### WLSMV estimator
     # fit <-cfa(mod_lavaan, data = dataset, estimator = "WLSMV")
     # summary

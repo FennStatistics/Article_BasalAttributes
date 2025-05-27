@@ -18,12 +18,13 @@ format:
 Define your global variables (can take some time to run):
 
 ```{r}
-#| label: global variables
-
-
+## global variables
+runMplusLCA <- FALSE
+## set to lower values to reduce compilation time: 
+nRep_def = 100 # 100
+n.lambda_def = 40 # 40
+LCArunsDef = 6 # 10
 ```
-
-
 
 
 # create raw data files
@@ -41,17 +42,18 @@ Define your global variables (can take some time to run):
 require(pacman)
 p_load('tidyverse', 'jsonlite',
        'stargazer',  'DT', 'psych',
-       'writexl')
+       'writexl',
+       'lavaan', 'MplusAutomation', 'semPlot')
 
 
 ### load socio-demographic data
 setwd("data demographic")
-# prolific <- read.csv(file = "prolific_export_65d4744b1373145896174eba.csv", header = TRUE)
+prolific <- read.csv(file = "prolific_export_6830619c7e8edcf34faa12ff.csv", header = TRUE)
 
 ### load JATOS data
 setwd("../data")
 suppressMessages(
-  read_file('jatos_results_data_20250526134712.txt') %>%
+  read_file('jatos_results_data_20250527052454.txt') %>%
     # ... split it into lines ...
     str_split('\n') %>% first() %>%
     # ... filter empty rows ...
@@ -111,7 +113,10 @@ data_summary <- function(data, varname, groupnames){
 ```
 
 
-# set up and save data in different formats
+# set up and save data
+
+## get overview over data
+
 
 ```{r}
 ### keep only complete data sets
@@ -132,8 +137,9 @@ dim(dat)
 str_subset(string = colnames(dat), pattern = "^ATI|^HEXACO")
 str_subset(string = colnames(dat), pattern = "^HEXACO")
 ```
+## create data files
 
-
+Set up questionnaire:
 
 ```{r}
 #| label: create questionnaires files
@@ -168,14 +174,30 @@ questionnaire <- questionnairetype(
 
 dim(questionnaire)
 ```
-
-
+Add Prolific data to data set:
 
 ```{r}
-psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^ATI")]))
+### add prolific data
+prolific <- prolific[prolific$Participant.id %in% questionnaire$PROLIFIC_PID,]
+prolific <- prolific %>%
+  arrange(sapply(Participant.id, function(y) which(y == questionnaire$PROLIFIC_PID)))
 
-psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^HEXACO")]))
+
+
+if(all(prolific$Participant.id == questionnaire$PROLIFIC_PID)){
+  print("prolific data sucessfully added")
+
+  questionnaire$socio_age <- prolific$Age
+  questionnaire$socio_sex <- prolific$Sex
+  questionnaire$socio_ethnicity <- prolific$Ethnicity.simplified
+  questionnaire$socio_student <- prolific$Student.status
+  questionnaire$socio_employment <- prolific$Employment.status
+  questionnaire$total_min_prolific <- prolific$Time.taken / 60
+
+  questionnaire$socio_age <- as.numeric(questionnaire$socio_age)
+}
 ```
+Get Ratings of Vignettes:
 
 ```{r}
 # Pre-define the column names with rat_ pattern
@@ -206,22 +228,368 @@ questionnaire_rating_long$Vignette <- factor(questionnaire_rating_long$Vignette)
 
 questionnaire_rating_long <- questionnaire_rating_long %>%
   mutate(across(starts_with("rat_"), as.numeric))
+
+questionnaire_rating_long$rat_mean <- rowMeans(x = questionnaire_rating_long[, str_subset(string = colnames(questionnaire_rating_long), pattern = "^rat_")])
+
+
+
+
+
+# Assuming your dataset is named questionnaire_rating_long
+questionnaire_rating_wide <- questionnaire_rating_long %>%
+  pivot_wider(
+    id_cols = c(ID, PROLIFIC_PID),
+    names_from = Vignette,
+    values_from = c(rat_helpful, rat_trust, rat_buy, rat_emotion, rat_mean),
+    names_glue = "{.value}_v{Vignette}"
+  )
+
+```
+
+
+# analyze data
+
+## describe sample
+
+```{r}
+table(questionnaire$socio_sex)
+round(x = table(questionnaire$socio_sex) / nrow(questionnaire) * 100, digits = 2)
+
+psych::describe(x = questionnaire[, c("socio_age", "total_min_prolific")])
+```
+
+
+## analyze and summarize surveyed scales
+
+```{r}
+psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^ATI")]))
+```
+```{r}
+questionnaire$`ATI-6` <- 7 - questionnaire$`ATI-6`
+questionnaire$`ATI-3` <- 7 - questionnaire$`ATI-3`
+questionnaire$`ATI-8` <- 7 - questionnaire$`ATI-8`
 ```
 
 
 ```{r}
-summary_stats <- questionnaire_rating_long %>%
-  group_by(Vignette) %>%
+psych::cor.plot(r = cor(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^ATI")]))
+```
+```{r}
+questionnaire$mean_ATI <- rowMeans(questionnaire[, str_subset(string = colnames(questionnaire), pattern = "^ATI")])
+
+
+questionnaire_rating_wide$mean_ATI <- questionnaire$mean_ATI
+```
+
+
+
+
+
+
+
+
+## analyze and summarize ratings
+
+### overall EFA
+
+```{r}
+# ...
+```
+
+
+
+### EFA, CFA single scales
+
+```{r}
+setwd("outputs/CFAs")
+#### Vignette 1
+out_V1 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v1$",
+                           labelLatent = "Vignette1",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+
+#### Vignette 2
+out_V2 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v2$",
+                           labelLatent = "Vignette2",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+
+#### Vignette 3
+out_V3 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v3$",
+                           labelLatent = "Vignette3",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+
+#### Vignette 4
+out_V4 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v4$",
+                           labelLatent = "Vignette4",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+
+#### Vignette 5
+out_V5 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v5$",
+                           labelLatent = "Vignette5",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+
+#### Vignette 6
+out_V6 <- CFAstats(dataset = questionnaire_rating_wide ,
+                           regularExp = "^(?!rat_mean).*_v6$",
+                           labelLatent = "Vignette6",
+                           showPlots = TRUE, computeEFA = TRUE, computeCFA = TRUE, computeCFAMplus = TRUE)
+```
+
+
+
+
+### CFA first order
+
+```{r}
+model <- '
+  # Measurement model
+  Vignette1 =~ rat_helpful_v1 + rat_trust_v1 + rat_buy_v1 + rat_emotion_v1
+  Vignette2 =~ rat_helpful_v2 + rat_trust_v2 + rat_buy_v2 + rat_emotion_v2
+  Vignette3 =~ rat_helpful_v3 + rat_trust_v3 + rat_buy_v3 + rat_emotion_v3
+  Vignette4 =~ rat_helpful_v4 + rat_trust_v4 + rat_buy_v4 + rat_emotion_v4
+  Vignette5 =~ rat_helpful_v5 + rat_trust_v5 + rat_buy_v5 + rat_emotion_v5
+  Vignette6 =~ rat_helpful_v6 + rat_trust_v6 + rat_buy_v6 + rat_emotion_v6
+'
+
+
+
+# Fit the SEM model
+fit <- sem(model, data = questionnaire_rating_wide, meanstructure = FALSE, std.lv = TRUE)
+
+# Print summary with standardized estimates
+summary(fit, standardized = TRUE, fit.measures = TRUE)
+
+head(modificationindices(fit, sort=T))
+
+
+# Plot the SEM model
+semPaths(fit,
+         what = "std",            # show standardized estimates
+         layout = "tree",         # neat tree layout
+         edge.label.cex = 0.8,    # size of edge labels
+         sizeMan = 5,             # manifest variable size
+         sizeLat = 6,             # latent variable size
+         fade = FALSE,            # keep all paths visible
+         nCharNodes = 0,          # do not truncate labels
+         rotation = 1)            # vertical tree layout
+
+
+# Extract standardized latent variable correlations
+latent_cor <- lavInspect(fit, "cor.lv")
+print(latent_cor)
+
+corPlot(latent_cor,
+        numbers = TRUE,
+        main = "Latent Correlations",
+        zlim = c(-1, 1),
+        cex = 1)
+
+cor.plot(r = (cor(questionnaire_rating_wide[,sort(str_subset(string = colnames(questionnaire_rating_wide), pattern = "^rat_mean"))])),
+                 numbers = TRUE,
+        main = "Manifest Correlations",
+        zlim = c(-1, 1),
+        cex = 1)
+```
+
+
+
+
+
+
+
+## latent class analysis for "B: Grid (Hierarchy-Egalitarianism)"
+
+over complete data set:
+
+```{r}
+setwd("outputs/LCA")
+
+
+if(runMplusLCA){
+  
+
+  LCA_dat <- questionnaire_rating_wide[, c("ID",
+                                      str_subset(string = colnames(questionnaire_rating_wide), pattern = "^rat_mean"))]
+  tmp <- str_subset(string = colnames(LCA_dat), pattern = "^rat_mean_")
+  tmp <- str_remove_all(string = tmp, pattern = "^rat_mean_")
+  # cat(sort(tmp))
+  # cat(paste0(sort(tmp), "(", 1:length(tmp), ")"))
+
+  colnames(LCA_dat) <- c("ID", tmp)
+
+
+  # prepareMplusData(df = LCA_dat, filename = "LCA_dat.dat")
+
+
+  l = 1
+  list_lca <- list()
+  for(i in 2:LCArunsDef){
+    print(i)
+
+    numClasses <- i
+
+    LCA_mplus  <- mplusObject(
+
+      TITLE = paste0("Latent Class Analysis Mean Rating Vignettes", " c=", numClasses),
+
+      VARIABLE =paste0("
+  usevariables = v1 v2 v3 v4 v5 v6;
+
+  classes      = c(", numClasses, ")"),
+
+  ANALYSIS =
+    "
+    Type=mixture; ! LCA analysis
+    STARTS= 500 100;
+    !LRTstarts=0 0 300 20;
+  ",
+
+  PLOT =
+    "
+    type = plot3;
+    series is v1(1) v2(2) v3(3) v4(4) v5(5) v6(6);
+  ",
+
+  SAVEDATA = paste0("file = lca_", numClasses, ".txt ;
+    save = cprob;
+    format = free;
+  "),
+
+  OUTPUT = "tech11 tech14;", rdata = LCA_dat)
+
+    list_lca[[l]] <- mplusModeler(LCA_mplus,
+                                         modelout = paste0("list_lca", numClasses, ".inp"),
+                                         run = 1L)
+
+    l = l + 1
+  }
+
+  # comment out to avoid overwriting LCA outputs
+  saveRDS(list_lca, file="list_lca.rds")
+
+}else{
+  list_lca <- readRDS("list_lca.rds" )
+}
+```
+
+get fit statistics LCA:
+
+```{r}
+getLCAfitstatistics(listMplusOutput = list_lca)
+```
+
+
+get profile plot:
+
+```{r}
+### number of classes
+num_classes <- 3 # index - 1
+
+# Step 1: Extract means
+params <- list_lca[[num_classes]]$results$parameters$unstandardized
+
+means_df <- params %>%
+  filter(paramHeader == "Means" & !grepl("^C#\\d$", param))
+
+# Step 2: Get class proportions
+class_counts <- table(list_lca[[num_classes]]$results$savedata$C)
+total_n <- sum(class_counts)
+class_props <- round(100 * class_counts / total_n, 1)
+
+# Create descriptive labels
+class_labels <- paste0("Class ", names(class_counts), " (", class_props, "%)")
+
+# Map class numbers to labels
+class_label_map <- setNames(class_labels, paste0("Class ", names(class_counts)))
+
+# Step 3: Prepare data for plotting
+means_long <- means_df %>%
+  mutate(Indicator = param,
+         Class = paste0("Class ", LatentClass)) %>%
+  select(Indicator, Class, est) %>%
+  pivot_wider(names_from = Class, values_from = est) %>%
+  pivot_longer(cols = starts_with("Class"), names_to = "Class", values_to = "Mean")
+
+# Apply the new labels
+means_long$Class <- class_label_map[means_long$Class]
+
+# Optional: Set indicator order
+# means_long$Indicator <- factor(means_long$Indicator,
+#                                 levels = paste0("Vignette", 1:6))
+
+# Step 4: Plot
+ggplot(means_long, aes(x = Indicator, y = Mean, group = Class, color = Class)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(title = "Latent Profiles",
+       x = "Vignettes",
+       y = "Estimated Means") +
+  theme(text = element_text(size = 14),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.title = element_blank())
+
+
+class_counts
+```
+
+
+
+
+
+
+```{r}
+questionnaire_rating_wide$classAssignment <- list_lca[[num_classes]]$results$savedata$C
+boxplot(questionnaire_rating_wide$rat_mean_v1 ~ questionnaire_rating_wide$classAssignment)
+boxplot(questionnaire_rating_wide$rat_mean_v6 ~ questionnaire_rating_wide$classAssignment)
+```
+```{r}
+boxplot(questionnaire_rating_wide$mean_ATI ~ questionnaire_rating_wide$classAssignment)
+summary(aov(questionnaire_rating_wide$mean_ATI ~ questionnaire_rating_wide$classAssignment))
+
+
+summary_stats <- questionnaire_rating_wide %>%
+  group_by(classAssignment) %>%
   summarise(
     N = n(),
     across(
-      .cols = starts_with("rat_"),
+      .cols = starts_with("mean_ATI"),
       .fns = list(mean = ~ mean(as.numeric(.), na.rm = TRUE),
                   sd = ~ sd(as.numeric(.), na.rm = TRUE)),
       .names = "{.col}_{.fn}"
     )
   )
 
+summary_stats
+```
+
+
+```{r}
+questionnaire_rating_long$classAssignment <- NA
+
+
+for(i in 1:length(unique(questionnaire_rating_long$PROLIFIC_PID))){
+  questionnaire_rating_long$classAssignment[questionnaire_rating_long$PROLIFIC_PID %in% unique(questionnaire_rating_long$PROLIFIC_PID)[i]] <- list_lca[[num_classes]]$results$savedata$C[i]
+}
+```
+
+
+```{r}
+summary_stats <- questionnaire_rating_long %>%
+  group_by(Vignette, classAssignment) %>%
+  summarise(
+    N = n(),
+    across(
+      .cols = starts_with("rat_mean"),
+      .fns = list(mean = ~ mean(as.numeric(.), na.rm = TRUE),
+                  sd = ~ sd(as.numeric(.), na.rm = TRUE)),
+      .names = "{.col}_{.fn}"
+    )
+  )
 
 summary_stats
 ```
@@ -257,17 +625,19 @@ ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
 
 ```{r}
 # library(ggstatsplot)
-# # One plot for a single rating variable, e.g., rat_helpful
-# ggbetweenstats(
-#   data = questionnaire_rating_long,
-#   x = Vignette,
-#   y = as.numeric(rat_helpful),
-#   title = "Comparison of 'Helpful' Ratings Across Vignettes",
-#   xlab = "Vignette",
-#   ylab = "Helpful Rating",
-#   type = "parametric",  # or "nonparametric"
-#   messages = FALSE
-# )
+# 
+# One plot for a single rating variable (within-subjects design)
+ggwithinstats(
+  data = questionnaire_rating_long,
+  x = Vignette,
+  y = rat_mean,
+  id = PROLIFIC_PID,  # Participant ID for within-subjects
+  type = "parametric",  # or "nonparametric" based on assumption checks
+  title = "Within-Subjects Comparison of Mean Ratings Across Vignettes",
+  xlab = "Vignette",
+  ylab = "Mean Ratings",
+  messages = FALSE
+)
 ```
 
 ```{r}
@@ -275,7 +645,7 @@ library(afex)
 # Run repeated measures ANOVA (within-subjects)
 anova_result <- aov_ez(
   id = "PROLIFIC_PID",
-  dv = "rat_helpful",
+  dv = "rat_mean",
   data = questionnaire_rating_long,
   within = "Vignette",   # <- not between
   type = 3
@@ -292,6 +662,177 @@ emmeans_result <- emmeans(anova_result, pairwise ~ Vignette)
 emmeans_result$contrasts
 
 ```
+
+
+```{r}
+library(lme4)
+
+model_base <- lmer(
+  rat_mean ~ 1 +
+    (1 | PROLIFIC_PID),
+  data = questionnaire_rating_long
+)
+
+
+var_comp <- as.data.frame(VarCorr(model_base))
+var_participant <- var_comp$vcov[var_comp$grp == "PROLIFIC_PID"]
+var_residual <- var_comp$vcov[var_comp$grp == "Residual"]
+icc <- var_participant / (var_participant + var_residual)
+icc
+
+
+# Make sure Vignette is a factor
+questionnaire_rating_long$Vignette_ref <- factor(questionnaire_rating_long$Vignette)
+
+# Set level 6 as reference
+questionnaire_rating_long$Vignette_ref <- relevel(questionnaire_rating_long$Vignette_ref, ref = "6")
+
+# Fit the model with Vignette as fixed effect and random intercepts per participant
+model_vignette <- lmer(
+  rat_mean ~ Vignette_ref +
+    (1 | PROLIFIC_PID),
+  data = questionnaire_rating_long
+)
+
+summary(model_vignette)
+
+# Load the package
+library(performance)
+
+# Calculate R-squared
+r2_values <- model_performance(model_vignette)
+
+# Print R2 values
+print(r2_values)
+```
+
+
+
+## try dummies:
+
+
+
+
+
+
+
+
+
+```{r}
+questionnaire_rating_long$dummyPart1 <- 0
+questionnaire_rating_long$dummyPart2 <- 0
+questionnaire_rating_long$dummyPart3 <- 0
+questionnaire_rating_long$dummyPart4 <- 0
+questionnaire_rating_long$dummyPart5 <- 0
+questionnaire_rating_long$dummyPart6 <- 0
+
+
+questionnaire_rating_long$dummyPart1[questionnaire_rating_long$Vignette %in% c(3,4,5)] <- 1
+questionnaire_rating_long$dummyPart2[questionnaire_rating_long$Vignette %in% c(5,6)] <- 1
+questionnaire_rating_long$dummyPart3[questionnaire_rating_long$Vignette %in% c(1,2)] <- 1
+questionnaire_rating_long$dummyPart4[questionnaire_rating_long$Vignette %in% c(6)] <- 1
+questionnaire_rating_long$dummyPart5[questionnaire_rating_long$Vignette %in% c(2,4)] <- 1
+questionnaire_rating_long$dummyPart6[questionnaire_rating_long$Vignette %in% c(1,2)] <- 1
+
+```
+
+
+```{r}
+summary_stats <- questionnaire_rating_long %>%
+  group_by(dummyPart1, dummyPart2, dummyPart3, dummyPart4, dummyPart5, dummyPart6) %>%
+  summarise(
+    N = n(),
+    across(
+      .cols = starts_with("rat_mean"),
+      .fns = list(mean = ~ mean(as.numeric(.), na.rm = TRUE),
+                  sd = ~ sd(as.numeric(.), na.rm = TRUE)),
+      .names = "{.col}_{.fn}"
+    )
+  )
+
+summary_stats
+
+
+```
+
+
+
+```{r}
+dummy_matrix <- questionnaire_rating_long[, c("dummyPart1", "dummyPart2", "dummyPart3",
+                                              "dummyPart4", "dummyPart5", "dummyPart6")]
+qr(dummy_matrix)$rank   # Actual rank
+ncol(dummy_matrix)      # Number of columns
+
+library(caret)
+findLinearCombos(dummy_matrix)
+
+```
+
+
+
+```{r}
+library(lme4)
+model_base <- lmer(
+  rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6 +
+    (1 | PROLIFIC_PID),
+  data = questionnaire_rating_long
+)
+
+summary(model_base)
+```
+
+```{r}
+# Convert factors to numeric if needed
+# questionnaire_rating_long$PROLIFIC_PID <- as.factor(questionnaire_rating_long$PROLIFIC_PID)
+
+# library(glmmLasso)
+# 
+# fit_lasso <- glmmLasso(
+#   fixed = rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6,
+#   rnd = list(PROLIFIC_PID = ~1),
+#   family = gaussian(link = "identity"),
+#   data = questionnaire_rating_long,
+#   lambda = 10  # tune this
+# )
+# 
+# summary(fit_lasso)
+
+```
+
+
+```{r}
+library(brms)
+
+fit_bayes <- brm(
+  rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6 + (1 | PROLIFIC_PID),
+  data = questionnaire_rating_long,
+  family = gaussian(),
+  prior = set_prior("normal(0, 1)", class = "b"),
+  chains = 4, iter = 2000
+)
+
+summary(fit_bayes)
+
+```
+
+
+
+
+```{r}
+library(relaimpo)
+
+lm_fit <- lm(
+  rat_mean ~ dummyPart1 + dummyPart3 + dummyPart5 + dummyPart6,
+  data = questionnaire_rating_long[questionnaire_rating_long$Vignette %in%  c(2,3),]
+)
+
+calc.relimp(lm_fit, type = "lmg")  # "lmg" = R² decomposition
+
+```
+
+
+
+
 
 
 ```{r}
