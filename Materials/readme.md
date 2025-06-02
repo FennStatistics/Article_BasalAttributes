@@ -8,5 +8,5 @@ Contains all materials, which were shown / used directly in the article (like gr
 
 ## Additional Materials
 
-- [Summary of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Summary%20of%20study%20design) - summary of study design for coauthors
+- [Summary of study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Summary%20of%20study%20design) - summary of study design for coauthors, and summary of results of part III
 - [Mail Mucha](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Mail%20Mucha) - Mail to Prof. Mucha (https://mucha.host.dartmouth.edu/) regarding developed ModularityPruning tool

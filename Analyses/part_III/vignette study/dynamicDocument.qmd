@@ -1,6 +1,6 @@
 ---
-title: "Data preperation pilot study"
-author: "Julius Fenn, Stephanie Bugler"
+title: "Data preperation and analysis of part III of basal attributes article"
+author: "Julius Fenn"
 format:
   html:
     toc: true
