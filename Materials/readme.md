@@ -2,9 +2,12 @@
 
 Contains all materials, which were shown / used directly in the article (like graphics or manually adjusted tables), all discussed statistical results can be found in the [Analyses](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Analyses) folder
 
-- [part I - final list basal attributes](https://github.com/FennStatistics/Article_BasalAttributes/blob/main/Materials/part%20I%20-%20final%20list%20basal%20attributes.xlsx) - "Table I" containing the final list of the 32 basal attributes
-- [part II - shown CAMs](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/part%20II%20-%20shown%20CAMs) - shown CAMs in "Appendix B. Part II: Motivate CAMs, Details of the Task"
-- [Figures shown in article](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Figures%20within%20article) - all figures shown in article in different data formats
+
+
+- [Figure study design](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/Figure%20study%20design) - Figure of our presented study design within article (Fig. 1)
+- [part_II_aggregatedCAMs](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/part_II_aggregatedCAMs) - Figure of aggregated CAMs within article (Fig. 2)
+- [part_II_exemplaryCAMs](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/part_II_exemplaryCAMs) - Figures of exemplary CAMs within article in Appendix A
+- [part_III_textualDescriptions](https://github.com/FennStatistics/Article_BasalAttributes/tree/main/Materials/part_III_textualDescriptions) - Textual descriptions of house facades for vignette study (part III)
 
 ## Additional Materials
 
