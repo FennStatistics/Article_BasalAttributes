@@ -230,6 +230,7 @@ questionnaire_rating_wide <- questionnaire_rating_long %>%
 ## describe sample
 
 ```{r}
+nrow(questionnaire)
 table(questionnaire$socio_sex)
 round(x = table(questionnaire$socio_sex) / nrow(questionnaire) * 100, digits = 2)
 
