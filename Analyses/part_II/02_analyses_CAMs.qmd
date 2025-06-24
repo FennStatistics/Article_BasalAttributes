@@ -479,7 +479,7 @@ for (i in 1:5) {
         asp = 0.4, 
         margin = 0.1,
         vertex.size = diag(CAMaggregated[[1]]) / max(diag(CAMaggregated[[1]])) * 5,
-        vertex.label.cex = 1.2, 
+        vertex.label.cex = 1.3, 
         edge.weight = 2, 
         edge.width = (E(g2)$weight / 35), 
         vertex.color = node.cols
@@ -499,14 +499,10 @@ membership(imc)
 communities(imc)
 
 edges <- as_edgelist(graph_object)
-
-for (i in edges) {
-    print(i)
-}
 ```
 
 
-### save final parition solution
+### save final partition solution
 
 ```{r}
 #| label: save solution Leiden algorithm
@@ -553,7 +549,7 @@ saveRDS(dat_out, file = "LeidenAlgorithm_solution.rds")
 ## add means for partitions
 
 partitions_means <- dat_out %>%
-    group_by(parition) %>%
+    group_by(partition) %>%
     summarise(N = n(), mean = mean(mean_valence), SD = mean(sd_valence))
 
 dat_out$sd_valence <- NULL
@@ -563,7 +559,7 @@ partitions_means$mean <- round(x = partitions_means$mean, digits = 2)
 partitions_means$SD <- round(x = partitions_means$SD, digits = 2)
 
 for (i in 1:nrow(partitions_means)) {
-    tmp_boolean <- dat_out$parition == i
+    tmp_boolean <- dat_out$partition == i
     tmp_boolean <- which(tmp_boolean)[length(which(tmp_boolean))]
     dat_out$group_mean[tmp_boolean] <- paste0(partitions_means$mean[i], " (", partitions_means$SD[i], ")")
 }
@@ -583,15 +579,15 @@ setwd("outputs/02_analyses_CAMs/Leiden algorithm aggregated CAM")
 
 
 # Generate all combinations of 2 elements
-combinations <- combn(partitions_means$parition, 2, simplify = FALSE)
+combinations <- combn(partitions_means$partition, 2, simplify = FALSE)
 
 for (i in 1:length(combinations)) {
     tmp <- data.frame(
         partitionA = combinations[[i]][1],
         partitionB = combinations[[i]][2],
         mean = mean(partitions_means$mean[combinations[[i]]]),
-        wordsA = paste0(dat_out$words[dat_out$parition == combinations[[i]][1]], collapse = " \\ "),
-        wordsB = paste0(dat_out$words[dat_out$parition == combinations[[i]][2]], collapse = " \\ ")
+        wordsA = paste0(dat_out$words[dat_out$partition == combinations[[i]][1]], collapse = " \\ "),
+        wordsB = paste0(dat_out$words[dat_out$partition == combinations[[i]][2]], collapse = " \\ ")
     )
 
     if (i == 1) {
@@ -613,9 +609,6 @@ saveRDS(dat_out_hypotheses, file = "LeidenAlgorithm_hypotheses.rds")
 
 
 ```
-
-
-
 
 ## Leiden algorithm on aggregated multi-edge graph with ModularityPruning (Gibson and Mucha, 2022)
 
