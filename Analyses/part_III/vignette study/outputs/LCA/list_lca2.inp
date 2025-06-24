@@ -1,7 +1,7 @@
 TITLE:
 Latent Class Analysis Mean Rating Vignettes c=2
 DATA:
-FILE = "list_lca2_5c43b7ff20cd09bcea2a55665adb8de4.dat";
+FILE = "list_lca2_8e91287d8f72d9c9c63c0ebbf1dfd272.dat";
  
 VARIABLE:
 NAMES = v4 v5 v2 v6 v1 v3; 

@@ -1,7 +1,7 @@
 TITLE:
 CFA for scale Vignette5
 DATA:
-FILE = "CFA_Vignette5_011a2bb3d59781412069cf40b8268615.dat";
+FILE = "CFA_Vignette5_b2e3b47234e2078231e20bec6c16bf94.dat";
  LISTWISE=ON;
 VARIABLE:
 NAMES = rat1 rat2 rat3 rat4; 

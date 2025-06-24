@@ -2,13 +2,13 @@
 # get CFA fit statistics
 ########################################
 ## args
-dataset = questionnaire_rating_wide
-regularExp = "_v1$"
-labelLatent = "Vignette1"
-showPlots = TRUE
-computeEFA = TRUE
-computeCFA = TRUE
-computeCFAMplus = TRUE
+# dataset = questionnaire_rating_wide
+# regularExp = "_v1$"
+# labelLatent = "Vignette1"
+# showPlots = TRUE
+# computeEFA = TRUE
+# computeCFA = TRUE
+# computeCFAMplus = TRUE
 
 
 

@@ -1,13 +1,13 @@
 Mplus VERSION 8.6
 MUTHEN & MUTHEN
-05/27/2025   8:07 AM
+06/24/2025  11:32 AM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   CFA for scale Vignette2
   DATA:
-  FILE = "CFA_Vignette2_166f9da64b720b869e6549d0302413f9.dat";
+  FILE = "CFA_Vignette2_fd5c5dc4ae5826b4c3f48eae338c8243.dat";
    LISTWISE=ON;
   VARIABLE:
   NAMES = rat1 rat2 rat3 rat4;
@@ -74,7 +74,7 @@ CFA for scale Vignette2
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         244
+Number of observations                                         298
 
 Number of dependent variables                                    4
 Number of independent variables                                  0
@@ -96,7 +96,7 @@ Convergence criterion                                    0.500D-04
 Maximum number of steepest descent iterations                   20
 
 Input data file(s)
-  CFA_Vignette2_166f9da64b720b869e6549d0302413f9.dat
+  CFA_Vignette2_fd5c5dc4ae5826b4c3f48eae338c8243.dat
 
 Input data format  FREE
 
@@ -110,25 +110,25 @@ SAMPLE STATISTICS
            Means
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
-                5.869         5.172         4.008         5.328
+                5.883         5.154         4.027         5.326
 
 
            Covariances
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
- RAT1           4.286
- RAT2           2.707         3.995
- RAT3           3.071         3.158         4.631
- RAT4           2.801         2.239         2.710         3.171
+ RAT1           4.231
+ RAT2           2.656         3.869
+ RAT3           3.060         3.083         4.516
+ RAT4           2.709         2.168         2.612         3.025
 
 
            Correlations
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1           1.000
- RAT2           0.654         1.000
- RAT3           0.689         0.734         1.000
- RAT4           0.760         0.629         0.707         1.000
+ RAT2           0.656         1.000
+ RAT3           0.700         0.738         1.000
+ RAT4           0.757         0.634         0.707         1.000
 
 
 UNIVARIATE SAMPLE STATISTICS
@@ -139,14 +139,14 @@ UNIVARIATE SAMPLE STATISTICS
          Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
         Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
 
-     RAT1                  5.869      -0.057       1.000    2.05%       4.000      5.000      6.000
-             244.000       4.286      -0.406      10.000    4.92%       6.000      8.000
-     RAT2                  5.172      -0.148       1.000    4.92%       3.000      5.000      5.000
-             244.000       3.995      -0.390      10.000    0.41%       6.000      7.000
-     RAT3                  4.008       0.335       1.000   15.57%       2.000      3.000      4.000
-             244.000       4.631      -0.730      10.000    0.41%       4.000      6.000
-     RAT4                  5.328       0.031       1.000    2.05%       4.000      5.000      5.000
-             244.000       3.171       0.043      10.000    1.23%       6.000      7.000
+     RAT1                  5.883      -0.039       1.000    2.01%       4.000      5.000      6.000
+             298.000       4.231      -0.436      10.000    4.70%       6.000      8.000
+     RAT2                  5.154      -0.115       1.000    4.36%       3.000      5.000      5.000
+             298.000       3.869      -0.400      10.000    0.34%       6.000      7.000
+     RAT3                  4.027       0.353       1.000   14.43%       2.000      3.000      4.000
+             298.000       4.516      -0.631      10.000    0.67%       4.000      6.000
+     RAT4                  5.326       0.014       1.000    2.01%       4.000      5.000      5.000
+             298.000       3.025       0.104      10.000    1.01%       6.000      7.000
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -159,26 +159,26 @@ Number of Free Parameters                       12
 
 Loglikelihood
 
-          H0 Value                       -1759.155
-          H0 Scaling Correction Factor      1.0759
+          H0 Value                       -2126.928
+          H0 Scaling Correction Factor      1.0940
             for MLR
-          H1 Value                       -1748.446
-          H1 Scaling Correction Factor      1.1026
+          H1 Value                       -2115.321
+          H1 Scaling Correction Factor      1.1191
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    3542.310
-          Bayesian (BIC)                  3584.276
-          Sample-Size Adjusted BIC        3546.238
+          Akaike (AIC)                    4277.855
+          Bayesian (BIC)                  4322.220
+          Sample-Size Adjusted BIC        4284.164
             (n* = (n + 2) / 24)
 
 Chi-Square Test of Model Fit
 
-          Value                             16.955*
+          Value                             18.280*
           Degrees of Freedom                     2
-          P-Value                           0.0002
-          Scaling Correction Factor         1.2632
+          P-Value                           0.0001
+          Scaling Correction Factor         1.2698
             for MLR
 
 *   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
@@ -188,24 +188,24 @@ Chi-Square Test of Model Fit
 
 RMSEA (Root Mean Square Error Of Approximation)
 
-          Estimate                           0.175
-          90 Percent C.I.                    0.105  0.256
-          Probability RMSEA <= .05           0.003
+          Estimate                           0.165
+          90 Percent C.I.                    0.101  0.238
+          Probability RMSEA <= .05           0.002
 
 CFI/TLI
 
-          CFI                                0.967
-          TLI                                0.900
+          CFI                                0.970
+          TLI                                0.910
 
 Chi-Square Test of Model Fit for the Baseline Model
 
-          Value                            455.990
+          Value                            549.187
           Degrees of Freedom                     6
           P-Value                           0.0000
 
 SRMR (Standardized Root Mean Square Residual)
 
-          Value                              0.025
+          Value                              0.023
 
 
 
@@ -215,35 +215,35 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  VIGNETTE BY
-    RAT1               1.752      0.105     16.756      0.000
-    RAT2               1.587      0.109     14.548      0.000
-    RAT3               1.830      0.101     18.059      0.000
-    RAT4               1.507      0.099     15.295      0.000
+    RAT1               1.743      0.096     18.205      0.000
+    RAT2               1.571      0.096     16.427      0.000
+    RAT3               1.820      0.092     19.759      0.000
+    RAT4               1.465      0.088     16.683      0.000
 
  Intercepts
-    RAT1               5.869      0.133     44.281      0.000
-    RAT2               5.172      0.128     40.421      0.000
-    RAT3               4.008      0.138     29.094      0.000
-    RAT4               5.328      0.114     46.734      0.000
+    RAT1               5.883      0.119     49.368      0.000
+    RAT2               5.154      0.114     45.237      0.000
+    RAT3               4.027      0.123     32.711      0.000
+    RAT4               5.326      0.101     52.858      0.000
 
  Variances
     VIGNETTE2          1.000      0.000    999.000    999.000
 
  Residual Variances
-    RAT1               1.218      0.197      6.183      0.000
-    RAT2               1.475      0.198      7.470      0.000
-    RAT3               1.282      0.220      5.824      0.000
-    RAT4               0.900      0.120      7.530      0.000
+    RAT1               1.193      0.182      6.555      0.000
+    RAT2               1.402      0.171      8.216      0.000
+    RAT3               1.204      0.192      6.256      0.000
+    RAT4               0.880      0.109      8.088      0.000
 
 New/Additional Parameters
-    CM_TRUE           44.567      3.965     11.242      0.000
-    CM_ERROR           4.876      0.338     14.420      0.000
-    CM_OMEGA           0.901      0.011     83.823      0.000
+    CM_TRUE           43.534      3.561     12.226      0.000
+    CM_ERROR           4.679      0.295     15.854      0.000
+    CM_OMEGA           0.903      0.010     93.094      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.545E-03
+     Condition Number for the Information Matrix              0.435E-03
        (ratio of smallest to largest eigenvalue)
 
 
@@ -256,25 +256,25 @@ STDYX Standardization
                     Estimate       S.E.  Est./S.E.    P-Value
 
  VIGNETTE BY
-    RAT1               0.846      0.028     30.123      0.000
-    RAT2               0.794      0.033     23.918      0.000
-    RAT3               0.850      0.029     29.728      0.000
-    RAT4               0.846      0.025     33.710      0.000
+    RAT1               0.847      0.027     31.946      0.000
+    RAT2               0.798      0.029     27.287      0.000
+    RAT3               0.856      0.025     33.618      0.000
+    RAT4               0.842      0.023     35.872      0.000
 
  Intercepts
-    RAT1               2.835      0.134     21.193      0.000
-    RAT2               2.588      0.129     20.016      0.000
-    RAT3               1.863      0.078     23.933      0.000
-    RAT4               2.992      0.150     19.964      0.000
+    RAT1               2.860      0.120     23.786      0.000
+    RAT2               2.621      0.117     22.483      0.000
+    RAT3               1.895      0.072     26.193      0.000
+    RAT4               3.062      0.141     21.785      0.000
 
  Variances
     VIGNETTE2          1.000      0.000    999.000    999.000
 
  Residual Variances
-    RAT1               0.284      0.048      5.982      0.000
-    RAT2               0.369      0.053      7.002      0.000
-    RAT3               0.277      0.049      5.689      0.000
-    RAT4               0.284      0.042      6.682      0.000
+    RAT1               0.282      0.045      6.273      0.000
+    RAT2               0.362      0.047      7.755      0.000
+    RAT3               0.267      0.044      6.112      0.000
+    RAT4               0.291      0.040      7.357      0.000
 
 
 R-SQUARE
@@ -282,10 +282,10 @@ R-SQUARE
     Observed                                        Two-Tailed
     Variable        Estimate       S.E.  Est./S.E.    P-Value
 
-    RAT1               0.716      0.048     15.062      0.000
-    RAT2               0.631      0.053     11.959      0.000
-    RAT3               0.723      0.049     14.864      0.000
-    RAT4               0.716      0.042     16.855      0.000
+    RAT1               0.718      0.045     15.973      0.000
+    RAT2               0.638      0.047     13.643      0.000
+    RAT3               0.733      0.044     16.809      0.000
+    RAT4               0.709      0.040     17.936      0.000
 
 
 RESIDUAL OUTPUT
@@ -297,7 +297,7 @@ RESIDUAL OUTPUT
            Model Estimated Means
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
-                5.869         5.172         4.008         5.328
+                5.883         5.154         4.027         5.326
 
 
            Residuals for Means
@@ -321,55 +321,55 @@ RESIDUAL OUTPUT
            Model Estimated Covariances
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
- RAT1           4.286
- RAT2           2.780         3.995
- RAT3           3.205         2.905         4.631
- RAT4           2.639         2.392         2.758         3.171
+ RAT1           4.231
+ RAT2           2.738         3.869
+ RAT3           3.172         2.858         4.516
+ RAT4           2.553         2.300         2.665         3.025
 
 
            Model Estimated Correlations
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1           1.000
- RAT2           0.672         1.000
- RAT3           0.719         0.675         1.000
- RAT4           0.716         0.672         0.720         1.000
+ RAT2           0.677         1.000
+ RAT3           0.726         0.684         1.000
+ RAT4           0.714         0.672         0.721         1.000
 
 
            Residuals for Covariances
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1           0.000
- RAT2          -0.073         0.000
- RAT3          -0.135         0.253         0.000
- RAT4           0.162        -0.153        -0.047         0.000
+ RAT2          -0.082         0.000
+ RAT3          -0.112         0.225         0.000
+ RAT4           0.157        -0.132        -0.053         0.000
 
 
            Residuals for Correlations
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1           0.000
- RAT2          -0.018         0.000
- RAT3          -0.030         0.059         0.000
- RAT4           0.044        -0.043        -0.012         0.000
+ RAT2          -0.020         0.000
+ RAT3          -0.026         0.054         0.000
+ RAT4           0.044        -0.039        -0.014         0.000
 
 
            Standardized Residuals (z-scores) for Covariances
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1         999.000
- RAT2          -0.678       999.000
- RAT3          -2.090       999.000       999.000
- RAT4         999.000        -1.873        -1.109       999.000
+ RAT2          -0.876       999.000
+ RAT3          -2.156       999.000       999.000
+ RAT4         999.000        -1.843        -1.332       999.000
 
 
            Normalized Residuals for Covariances
               RAT1          RAT2          RAT3          RAT4
               ________      ________      ________      ________
  RAT1           0.000
- RAT2          -0.239         0.000
- RAT3          -0.466         0.871         0.000
- RAT4           0.579        -0.574        -0.174         0.000
+ RAT2          -0.302         0.000
+ RAT3          -0.424         0.870         0.000
+ RAT4           0.625        -0.565        -0.219         0.000
 
 
 SAMPLE STATISTICS FOR ESTIMATED FACTOR SCORES
@@ -381,13 +381,13 @@ SAMPLE STATISTICS FOR ESTIMATED FACTOR SCORES
            Means
               VIGNETTE      VIGNETTE
               ________      ________
-                0.000         0.311
+                0.000         0.309
 
 
            Covariances
               VIGNETTE      VIGNETTE
               ________      ________
- VIGNETTE       0.903
+ VIGNETTE       0.905
  VIGNETTE       0.000         0.000
 
 
@@ -406,8 +406,8 @@ The following plots are available:
   Scatterplots (sample values, estimated factor scores, estimated values, residuals)
   Latent variable distribution plots
 
-     Beginning Time:  08:07:15
-        Ending Time:  08:07:15
+     Beginning Time:  11:32:24
+        Ending Time:  11:32:24
        Elapsed Time:  00:00:00
 
 

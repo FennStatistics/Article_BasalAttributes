@@ -43,7 +43,8 @@ require(pacman)
 p_load('tidyverse', 'jsonlite',
        'stargazer',  'DT', 'psych',
        'writexl',
-       'lavaan', 'MplusAutomation', 'semPlot')
+       'lavaan', 'MplusAutomation', 'semPlot',
+       'ggstatsplot')
 
 
 ### load socio-demographic data
@@ -53,7 +54,7 @@ prolific <- read.csv(file = "prolific_export_6830619c7e8edcf34faa12ff.csv", head
 ### load JATOS data
 setwd("../data")
 suppressMessages(
-  read_file('jatos_results_data_20250527052454.txt') %>%
+  read_file('jatos_results_data_20250602071616.txt') %>%
     # ... split it into lines ...
     str_split('\n') %>% first() %>%
     # ... filter empty rows ...
@@ -64,15 +65,6 @@ suppressMessages(
     # ... parse JSON into a data.frame
     map_dfr(fromJSON, flatten = TRUE)
 ) -> dat
-
-# Read and parse each JSON line into a list
-# json_data <- suppressMessages(
-#   read_file("jatos_results_data_20250405122610.txt") %>%
-#     str_split("\n") %>%
-#     first() %>%
-#     discard(~ .x == "" || .x == "\r") %>%
-#     map(~ fromJSON(.x, simplifyVector = FALSE)) # Keep full nested structure
-# )
 
 #> add ID counter
 dat$ID <- NA
@@ -96,20 +88,6 @@ for(i in 1:length(dir())){
 }
 
 rm(i)
-
-
-### summary function
-data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
-      se = sd(x[[col]], na.rm=TRUE) / sqrt(length(x[[col]])))
-  }
-  data_sum<-ddply(data, groupnames, .fun=summary_func,
-                  varname)
-  data_sum <- plyr::rename(data_sum, c("mean" = varname))
-  return(data_sum)
-}
 ```
 
 
@@ -585,8 +563,8 @@ summary_stats <- questionnaire_rating_long %>%
     N = n(),
     across(
       .cols = starts_with("rat_mean"),
-      .fns = list(mean = ~ mean(as.numeric(.), na.rm = TRUE),
-                  sd = ~ sd(as.numeric(.), na.rm = TRUE)),
+      .fns = list(mean = ~ mean(as.numeric(.), na.rm = FALSE),
+                  sd = ~ sd(as.numeric(.), na.rm = FALSE)),
       .names = "{.col}_{.fn}"
     )
   )
@@ -627,17 +605,17 @@ ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
 # library(ggstatsplot)
 # 
 # One plot for a single rating variable (within-subjects design)
-ggwithinstats(
-  data = questionnaire_rating_long,
-  x = Vignette,
-  y = rat_mean,
-  id = PROLIFIC_PID,  # Participant ID for within-subjects
-  type = "parametric",  # or "nonparametric" based on assumption checks
-  title = "Within-Subjects Comparison of Mean Ratings Across Vignettes",
-  xlab = "Vignette",
-  ylab = "Mean Ratings",
-  messages = FALSE
-)
+# ggwithinstats(
+#   data = questionnaire_rating_long,
+#   x = Vignette,
+#   y = rat_mean,
+#   id = PROLIFIC_PID,  # Participant ID for within-subjects
+#   type = "parametric",  # or "nonparametric" based on assumption checks
+#   title = "Within-Subjects Comparison of Mean Ratings Across Vignettes",
+#   xlab = "Vignette",
+#   ylab = "Mean Ratings",
+#   messages = FALSE
+# )
 ```
 
 ```{r}
@@ -665,21 +643,24 @@ emmeans_result$contrasts
 
 
 ```{r}
-library(lme4)
+setwd("outputs")
 
+library(lme4)
+library(performance)
+
+# Fit base model
 model_base <- lmer(
   rat_mean ~ 1 +
     (1 | PROLIFIC_PID),
   data = questionnaire_rating_long
 )
 
-
+# ICC calculation
 var_comp <- as.data.frame(VarCorr(model_base))
 var_participant <- var_comp$vcov[var_comp$grp == "PROLIFIC_PID"]
 var_residual <- var_comp$vcov[var_comp$grp == "Residual"]
 icc <- var_participant / (var_participant + var_residual)
-icc
-
+print(icc)
 
 # Make sure Vignette is a factor
 questionnaire_rating_long$Vignette_ref <- factor(questionnaire_rating_long$Vignette)
@@ -694,15 +675,16 @@ model_vignette <- lmer(
   data = questionnaire_rating_long
 )
 
-summary(model_vignette)
+# Use sjPlot instead of stargazer for mixed models
+library(sjPlot)
+tab_model(model_vignette, file = "lmm_vignette.html")
 
-# Load the package
-library(performance)
+
+# Show summary
+summary(model_vignette)
 
 # Calculate R-squared
 r2_values <- model_performance(model_vignette)
-
-# Print R2 values
 print(r2_values)
 ```
 
@@ -780,57 +762,6 @@ model_base <- lmer(
 
 summary(model_base)
 ```
-
-```{r}
-# Convert factors to numeric if needed
-# questionnaire_rating_long$PROLIFIC_PID <- as.factor(questionnaire_rating_long$PROLIFIC_PID)
-
-# library(glmmLasso)
-# 
-# fit_lasso <- glmmLasso(
-#   fixed = rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6,
-#   rnd = list(PROLIFIC_PID = ~1),
-#   family = gaussian(link = "identity"),
-#   data = questionnaire_rating_long,
-#   lambda = 10  # tune this
-# )
-# 
-# summary(fit_lasso)
-
-```
-
-
-```{r}
-library(brms)
-
-fit_bayes <- brm(
-  rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6 + (1 | PROLIFIC_PID),
-  data = questionnaire_rating_long,
-  family = gaussian(),
-  prior = set_prior("normal(0, 1)", class = "b"),
-  chains = 4, iter = 2000
-)
-
-summary(fit_bayes)
-
-```
-
-
-
-
-```{r}
-library(relaimpo)
-
-lm_fit <- lm(
-  rat_mean ~ dummyPart1 + dummyPart3 + dummyPart5 + dummyPart6,
-  data = questionnaire_rating_long[questionnaire_rating_long$Vignette %in%  c(2,3),]
-)
-
-calc.relimp(lm_fit, type = "lmg")  # "lmg" = R² decomposition
-
-```
-
-
 
 
 
@@ -1050,6 +981,57 @@ for (pair in combinations) {
 
 
 # aaaa
+
+
+```{r eval=FALSE}
+# Convert factors to numeric if needed
+# questionnaire_rating_long$PROLIFIC_PID <- as.factor(questionnaire_rating_long$PROLIFIC_PID)
+
+# library(glmmLasso)
+# 
+# fit_lasso <- glmmLasso(
+#   fixed = rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6,
+#   rnd = list(PROLIFIC_PID = ~1),
+#   family = gaussian(link = "identity"),
+#   data = questionnaire_rating_long,
+#   lambda = 10  # tune this
+# )
+# 
+# summary(fit_lasso)
+
+```
+
+
+```{r eval=FALSE}
+library(brms)
+
+fit_bayes <- brm(
+  rat_mean ~ dummyPart1 + dummyPart2 + dummyPart3 + dummyPart4 + dummyPart5 + dummyPart6 + (1 | PROLIFIC_PID),
+  data = questionnaire_rating_long,
+  family = gaussian(),
+  prior = set_prior("normal(0, 1)", class = "b"),
+  chains = 4, iter = 2000
+)
+
+summary(fit_bayes)
+
+```
+
+
+
+
+```{r eval=FALSE}
+library(relaimpo)
+
+lm_fit <- lm(
+  rat_mean ~ dummyPart1 + dummyPart3 + dummyPart5 + dummyPart6,
+  data = questionnaire_rating_long[questionnaire_rating_long$Vignette %in%  c(2,3),]
+)
+
+calc.relimp(lm_fit, type = "lmg")  # "lmg" = R² decomposition
+
+```
+
 
 
 
