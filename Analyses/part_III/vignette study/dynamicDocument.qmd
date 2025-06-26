@@ -202,7 +202,10 @@ for (i in unique(dat$ID)) {
 
 # Combine all into one dataframe
 questionnaire_rating_long <- bind_rows(result_list)
+
 questionnaire_rating_long$Vignette <- factor(questionnaire_rating_long$Vignette)
+
+
 
 questionnaire_rating_long <- questionnaire_rating_long %>%
   mutate(across(starts_with("rat_"), as.numeric))
@@ -270,6 +273,8 @@ questionnaire_rating_long <- questionnaire_rating_long %>%
 ### overall EFA
 
 ```{r}
+# str_subset(string = colnames(questionnaire_rating_wide), pattern = "^(?!rat_mean).*_v[:digit:]$")
+
 ### check number of components
 out_VAll <- CFAstats(dataset = questionnaire_rating_wide ,
                            regularExp = "^(?!rat_mean).*_v[:digit:]$",
@@ -501,6 +506,14 @@ class_labels <- paste0("Class ", names(class_counts), " (", class_props, "%)")
 # Map class numbers to labels
 class_label_map <- setNames(class_labels, paste0("Class ", names(class_counts)))
 
+
+# Create a lookup vector for the replacements
+replacement_labels <- c("C3 + C6", "C3 + C5", "C1 + C6", "C1 + C5", "C1 + C2", "C2 + C4")
+
+# Overwrite means_df$param using recycling based on the positions of "V1" to "V6"
+means_df$param <- replacement_labels[match(means_df$param, c("V1", "V2", "V3", "V4", "V5", "V6"))]
+
+
 # Step 3: Prepare data for plotting
 means_long <- means_df %>%
   mutate(Indicator = param,
@@ -512,24 +525,51 @@ means_long <- means_df %>%
 # Apply the new labels
 means_long$Class <- class_label_map[means_long$Class]
 
-# Optional: Set indicator order
-# means_long$Indicator <- factor(means_long$Indicator,
-#                                 levels = paste0("Vignette", 1:6))
+# Set indicator order
+# > Define desired order from V1 to V6
+indicator_order <- c("C3 + C6", "C3 + C5", "C1 + C6", "C1 + C5", "C1 + C2", "C2 + C4")
+# > Apply ordering
+means_long$Indicator <- factor(means_long$Indicator, levels = indicator_order)
+
 
 # Step 4: Plot
-ggplot(means_long, aes(x = Indicator, y = Mean, group = Class, color = Class)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
+p <- ggplot(means_long, aes(x = Indicator, y = Mean, group = Class, color = Class)) +
+  geom_line(size = 2) +  # Increased line width
+  geom_point(size = 3) +
+  scale_y_continuous(limits = c(1, 10), breaks = 1:10) +
+  labs(
+    title = "Mean Ratings Across Scenarios by Latent Profiles",
+    x = "Scenarios",
+    y = "Estimated Means"
+  ) +
   theme_minimal() +
-  labs(title = "Latent Profiles",
-       x = "Vignettes",
-       y = "Estimated Means") +
-  theme(text = element_text(size = 14),
-        axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.title = element_blank())
+  theme(
+    text = element_text(size = 18),
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1, vjust = 1, face = "plain", colour = "black"),
+    axis.text.y = element_text(size = 14, face = "plain", colour = "black"),
+    panel.border = element_blank(),
+    axis.line = element_line(colour = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    legend.title = element_blank(),
+    legend.position = "bottom"  # move legend to bottom
+  )
 
+# Display plot
+p
 
 class_counts
+
+# Save files
+setwd("outputs")
+
+ggsave("mean_ratings_plot.jpeg", plot = p, width = 8, height = 6, dpi = 300)
+ggsave("mean_ratings_plot.tiff", plot = p, width = 8, height = 6, dpi = 600, compression = "lzw")
+ggsave("mean_ratings_plot.pdf", plot = p, width = 8, height = 6, dpi = 300)
 ```
 
 
@@ -582,6 +622,58 @@ summary_stats <- questionnaire_rating_wide %>%
 
 summary_stats
 ```
+```{r}
+# Load required packages
+# library(tidyverse)
+library(report)
+library(effectsize)
+library(car)
+
+# Step 1: Join classAssignment to the questionnaire data
+# Use PROLIFIC_PID to merge the datasets
+questionnaire_augmented <- questionnaire %>%
+  left_join(
+    questionnaire_rating_long %>%
+      select(PROLIFIC_PID, classAssignment) %>%
+      distinct(),
+    by = "PROLIFIC_PID"
+  )
+
+# Step 2: Check the result
+head(questionnaire_augmented$classAssignment)  # Check if merge succeeded
+# Step 3: Run the t-test (independent groups)
+questionnaire_augmented <- questionnaire_augmented[questionnaire_augmented$classAssignment %in% c(1,4),]
+
+table(questionnaire_augmented$classAssignment)
+
+# StepLevene’s Test for equality of variances
+leveneTest(mean_ATI ~ factor(classAssignment), data = questionnaire_augmented)
+
+t_test_result <- t.test(mean_ATI ~ classAssignment, data = questionnaire_augmented)
+
+
+report(t.test(questionnaire_augmented$classAssignment, questionnaire_augmented$mean_ATI, var.equal = TRUE))
+
+# Step 4: Report the t-test
+print(report(t_test_result))
+
+# Step 5: Effect size (Cohen's d)
+cohen_d_result <- cohens_d(mean_ATI ~ classAssignment, data = questionnaire_augmented)
+print(report(cohen_d_result))
+
+# Step 6: Assumption check – Q-Q plot
+questionnaire_augmented %>%
+  ggplot(aes(sample = mean_ATI)) +
+  stat_qq() +
+  stat_qq_line() +
+  facet_wrap(~ classAssignment) +
+  labs(title = "Q-Q Plot of mean_ATI by Class Assignment")
+
+
+```
+
+
+
 
 
 ```{r}
@@ -591,6 +683,22 @@ questionnaire_rating_long$classAssignment <- NA
 for(i in 1:length(unique(questionnaire_rating_long$PROLIFIC_PID))){
   questionnaire_rating_long$classAssignment[questionnaire_rating_long$PROLIFIC_PID %in% unique(questionnaire_rating_long$PROLIFIC_PID)[i]] <- list_lca[[num_classes]]$results$savedata$C[i]
 }
+```
+
+```{r}
+summary_stats <- questionnaire_rating_long %>%
+  group_by(Vignette) %>%
+  summarise(
+    N = n(),
+    across(
+      .cols = starts_with("rat_mean"),
+      .fns = list(mean = ~ mean(as.numeric(.), na.rm = FALSE),
+                  sd = ~ sd(as.numeric(.), na.rm = FALSE)),
+      .names = "{.col}_{.fn}"
+    )
+  )
+
+summary_stats
 ```
 
 
@@ -621,6 +729,7 @@ summary_long <- summary_stats %>%
     names_pattern = "(rat_.*)_(mean|sd)"
   )
 
+
 ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
   geom_col(position = position_dodge(width = 0.9), width = 0.7) +
   geom_errorbar(
@@ -639,22 +748,96 @@ ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
 
 ```
 
-```{r}
-# library(ggstatsplot)
-# 
+```{r eval=FALSE}
+
+
+# levels(questionnaire_rating_long$Vignette) <- c("C3 + C6", "C3 + C5", "C1 + C6", "C1 + C5", "C1 + C2", "C2 + C4")
+
+
+library(ggstatsplot)
+
 # One plot for a single rating variable (within-subjects design)
-# ggwithinstats(
-#   data = questionnaire_rating_long,
-#   x = Vignette,
-#   y = rat_mean,
-#   id = PROLIFIC_PID,  # Participant ID for within-subjects
-#   type = "parametric",  # or "nonparametric" based on assumption checks
-#   title = "Within-Subjects Comparison of Mean Ratings Across Vignettes",
-#   xlab = "Vignette",
-#   ylab = "Mean Ratings",
-#   messages = FALSE
-# )
+p <- ggwithinstats(
+  data = questionnaire_rating_long,
+  x = Vignette,
+  y = rat_mean,
+  id = PROLIFIC_PID,  # Participant ID for within-subjects
+  type = "parametric",  # or "nonparametric" based on assumption checks
+  title = "Within-Subjects Comparison of Mean Ratings Across Scenarios",
+  xlab = "Scenarios",
+  ylab = "Mean Ratings",
+  messages = FALSE
+)
+
+p
 ```
+
+
+
+```{r eval=FALSE}
+library(ggstatsplot)
+library(ggpubr)
+
+levels(questionnaire_rating_long$Vignette) <- c("C3 + C6", "C3 + C5", "C1 + C6", "C1 + C5", "C1 + C2", "C2 + C4")
+
+
+
+
+p <- ggwithinstats(
+  data = questionnaire_rating_long,
+  x = Vignette,
+  y = rat_mean,
+  id = PROLIFIC_PID,
+  type = "parametric",
+  title = str_wrap(
+    "Within-Subjects Comparison of Mean Ratings Across Scenarios", 
+    width = 40
+  ),
+  xlab = "Scenarios",
+  ylab = "Mean Ratings",
+  messages = FALSE,
+  pairwise.display = "none",
+  ggtheme = theme_minimal(base_size = 14),   # smaller base font
+  ggplot.component = list(
+    scale_y_continuous(limits = c(1, 10), breaks = 1:10),
+    theme(
+      plot.title = element_text(
+        size = 16,       # smaller title
+        face = "bold",
+        hjust = 0.5,
+        margin = margin(b = 10)
+      ),
+      axis.title.x = element_text(size = 12),
+      axis.title.y = element_text(size = 12),
+      axis.text.x = element_text(
+        size = 10, angle = 45, hjust = 1, vjust = 1
+      ),
+      axis.text.y = element_text(size = 10),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(),
+      axis.line = element_line(colour = "black"),
+      legend.title = element_blank(),
+      legend.position = "none"              # remove legend
+    )
+  )
+)
+
+print(p)
+
+# Save files
+setwd("outputs")
+ggsave("aov_mean_ratings_plot.jpeg", plot = p, width = 8, height = 6, dpi = 300)
+ggsave("aov_mean_ratings_plot.tiff", plot = p, width = 8, height = 6, dpi = 600, compression = "lzw")
+ggsave("aov_mean_ratings_plot.pdf", plot = p, width = 8, height = 6, dpi = 300)
+```
+
+
+
+
+
+
+
 
 ```{r}
 library(afex)
@@ -670,13 +853,14 @@ anova_result <- aov_ez(
 summary(anova_result)
 
 
+
+
 library(emmeans)
 
 # Get estimated marginal means and post hoc comparisons
 emmeans_result <- emmeans(anova_result, pairwise ~ Vignette)
 
 emmeans_result$contrasts
-
 ```
 
 
@@ -704,7 +888,9 @@ print(icc)
 questionnaire_rating_long$Vignette_ref <- factor(questionnaire_rating_long$Vignette)
 
 # Set level 6 as reference
-questionnaire_rating_long$Vignette_ref <- relevel(questionnaire_rating_long$Vignette_ref, ref = "6")
+# questionnaire_rating_long$Vignette_ref <- relevel(questionnaire_rating_long$Vignette_ref, ref = "6")
+
+questionnaire_rating_long$Vignette_ref <- relevel(questionnaire_rating_long$Vignette_ref, ref = "C2 + C4")
 
 # Fit the model with Vignette as fixed effect and random intercepts per participant
 model_vignette <- lmer(
