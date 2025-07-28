@@ -623,6 +623,14 @@ summary_stats <- questionnaire_rating_wide %>%
 summary_stats
 ```
 ```{r}
+if(all(questionnaire$PROLIFIC_PID == questionnaire_rating_wide$PROLIFIC_PID)){
+  questionnaire$classAssignment <- questionnaire_rating_wide$classAssignment
+  questionnaire_rating_long <- left_join(x = questionnaire_rating_long, y = questionnaire_rating_wide[, c("PROLIFIC_PID", "classAssignment")], by = "PROLIFIC_PID")
+}
+
+
+
+
 # Load required packages
 # library(tidyverse)
 library(report)
@@ -631,13 +639,7 @@ library(car)
 
 # Step 1: Join classAssignment to the questionnaire data
 # Use PROLIFIC_PID to merge the datasets
-questionnaire_augmented <- questionnaire %>%
-  left_join(
-    questionnaire_rating_long %>%
-      select(PROLIFIC_PID, classAssignment) %>%
-      distinct(),
-    by = "PROLIFIC_PID"
-  )
+questionnaire_augmented <- questionnaire_rating_long
 
 # Step 2: Check the result
 head(questionnaire_augmented$classAssignment)  # Check if merge succeeded
@@ -757,7 +759,7 @@ ggplot(summary_long, aes(x = Vignette, y = mean, fill = Rating)) +
 library(ggstatsplot)
 
 # One plot for a single rating variable (within-subjects design)
-p <- ggwithinstats(
+p3 <- ggwithinstats(
   data = questionnaire_rating_long,
   x = Vignette,
   y = rat_mean,
@@ -769,7 +771,14 @@ p <- ggwithinstats(
   messages = FALSE
 )
 
-p
+print(p3)
+
+
+# Save files
+setwd("outputs")
+ggsave("aov_mean_ratings_plot.jpeg", plot = p, width = 9, height = 6, dpi = 300)
+ggsave("aov_mean_ratings_plot.tiff", plot = p, width = 9, height = 6, dpi = 600, compression = "lzw")
+ggsave("aov_mean_ratings_plot.pdf", plot = p, width = 9, height = 6, dpi = 300)
 ```
 
 
@@ -783,7 +792,7 @@ levels(questionnaire_rating_long$Vignette) <- c("C3 + C6", "C3 + C5", "C1 + C6",
 
 
 
-p <- ggwithinstats(
+p2 <- ggwithinstats(
   data = questionnaire_rating_long,
   x = Vignette,
   y = rat_mean,
@@ -823,13 +832,13 @@ p <- ggwithinstats(
   )
 )
 
-print(p)
+print(p2)
 
 # Save files
 setwd("outputs")
-ggsave("aov_mean_ratings_plot.jpeg", plot = p, width = 8, height = 6, dpi = 300)
-ggsave("aov_mean_ratings_plot.tiff", plot = p, width = 8, height = 6, dpi = 600, compression = "lzw")
-ggsave("aov_mean_ratings_plot.pdf", plot = p, width = 8, height = 6, dpi = 300)
+ggsave("aov_mean_ratings_plot.jpeg", plot = p, width = 9, height = 6, dpi = 300)
+ggsave("aov_mean_ratings_plot.tiff", plot = p, width = 9, height = 6, dpi = 600, compression = "lzw")
+ggsave("aov_mean_ratings_plot.pdf", plot = p, width = 9, height = 6, dpi = 300)
 ```
 
 

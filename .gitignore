@@ -10,3 +10,5 @@ __pycache__/
 # remove api key files
 **/api_key.py
 **/API_key.py
+
+**/zz_internalMaterials/
