@@ -768,6 +768,7 @@ p3 <- ggwithinstats(
   title = "Within-Subjects Comparison of Mean Ratings Across Scenarios",
   xlab = "Scenarios",
   ylab = "Mean Ratings",
+  pairwise.display = "none",
   messages = FALSE
 )
 
@@ -780,6 +781,9 @@ ggsave("aov_mean_ratings_plot.jpeg", plot = p, width = 9, height = 6, dpi = 300)
 ggsave("aov_mean_ratings_plot.tiff", plot = p, width = 9, height = 6, dpi = 600, compression = "lzw")
 ggsave("aov_mean_ratings_plot.pdf", plot = p, width = 9, height = 6, dpi = 300)
 ```
+
+
+
 
 
 
